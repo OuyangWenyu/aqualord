@@ -65,3 +65,4 @@ fabric.properties
 /*.asc
 /config.ini
 /data/
+/tests/
