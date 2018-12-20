@@ -63,3 +63,5 @@ fabric.properties
 .idea/httpRequests
 .idea/
 /*.asc
+/config.ini
+/data/
