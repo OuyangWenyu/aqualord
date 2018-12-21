@@ -27,20 +27,20 @@ def read_rgb(raw_image):
 
 def precipitation_from_pixel(pixel_grey_array):
     """Precipitation has a relationship with the color, so we can get precipitation data from the pixel's rgb value.
-    0-10 mean the corresponding precipitation, and the other four numbers are 241, 243, 254, 255. So 0,241,243,254,
-    255 correspond to 0 precipitation. Since the data given as a range not a number, it would be better using
-    3 dimensional array with an interval represented by two number storing in the 3rd dimension for the return value"""
-    switchDic = {1: [0.1, 5],
-                 2: [5, 10],
-                 3: [10, 25],
-                 4: [25, 38],
-                 5: [38, 50],
-                 6: [50, 63],
-                 7: [63, 75],
-                 8: [75, 100],
-                 9: [100, 125],
-                 10: [125, 10000]
-                 }
+    1-10 mean the corresponding precipitation, and the other four numbers 241,243,254,255 correspond to [0,0]
+    precipitation. Since the data given as a range not a number, it would be better to use 3 dimensional array with
+    an interval represented by two number storing in the 3rd dimension for the return value """
+    switch_dic = {1: [0.1, 5],
+                  2: [5, 10],
+                  3: [10, 25],
+                  4: [25, 38],
+                  5: [38, 50],
+                  6: [50, 63],
+                  7: [63, 75],
+                  8: [75, 100],
+                  9: [100, 125],
+                  10: [125, 10000]
+                  }
     width = len(pixel_grey_array)
     height = len(pixel_grey_array[0])
     array = np.zeros((width, height, 2))
@@ -50,22 +50,26 @@ def precipitation_from_pixel(pixel_grey_array):
                 temp = [0, 0]
                 array[x][y] = temp
             else:
-                array[x][y] = switchDic.get(pixel_grey_array[x][y])
+                array[x][y] = switch_dic.get(pixel_grey_array[x][y])
+    print(array)
+    '''Here, we get an array with precipitation values, but a phenomenon we don't expect still exists that some 
+    pixels with precipitation values may be shadowed by the ones with values in [241,243] which represent some 
+    geological or administrative concepts, so we have to use a window filter to revise this pixels. And how can we 
+    get a suitable filter? search on the Internet...'''
+    # TODO: Question: in the context of radar signal, change 241/243 to 0 or else?
+    # Simple method: choose a fixed-size convolution kernel, a fixed-size stride, and then in the context of radar
+    # signal, move the window. When the number of pixels with number larger than 0 is more than ones equal to 0,
+    # assign the mode of numbers larger than 0 to the pixel with value 241/243.
     return array
-
-
-def pixel_number_position():
-    """Since we have done Guodian Project, data in Guodian Database should be utilized. The number of pixels in
-    Guodian database need to be coordinated with the pixel we get from cma."""
-    return
 
 
 def read_precipitation_from_image(raw_image):
     """The integrated process in which we read precipitation value from images downloaded consists of read_rgb,
     precipitation _from_pixel and pixel_number_position, and then we can get a map with pixel's num from Guodian
     database serving as key, and precipitation value serving as value """
-    read_rgb(raw_image)
-    return
+    grey_value = read_rgb(raw_image)
+    precipitation_raw = precipitation_from_pixel(grey_value)
+    return precipitation_raw
 
 
 if __name__ == "__main__":
