@@ -9,6 +9,16 @@ def pixel_number_position(center_position_array, pixel_x_length, pixel_y_length)
     return
 
 
+def read_rain_gauge_data():
+    """read rain gauge data from database"""
+    return
+
+
+def read_radar_data():
+    """read radar data from database"""
+    return
+
+
 def prepare_rain_gauge_data():
     """Since we have done Guodian Project, data in Guodian Database should be utilized. The position of pixels in
     Guodian database need to be coordinated with the pixel we get from cma in order to utilize other codes,
@@ -45,12 +55,6 @@ def prepare_rain_gauge_data():
             id, ent_id, ent_name, proper_id, proper_name, time_step_unit, time, time_step_length, value, description)
         params.append(temp)
     mysql_insert_batch(url, username, password, database, table, params)
-
-
-def prepare_radar_data():
-    """get data from radar graph and store the data to database, because now I don't know the correct longitude and
-    latitude of radar grids,  what I can store are only the number of grid and corresponding value"""
-    return
 
 
 def oracle_select():

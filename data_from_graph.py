@@ -69,6 +69,10 @@ def read_precipitation_from_image(raw_image):
     database serving as key, and precipitation value serving as value """
     grey_value = read_rgb(raw_image)
     precipitation_raw = precipitation_from_pixel(grey_value)
+    '''After geting data from radar graph, we'd better store the data to database. However, because now I don't know 
+    the correct longitude and latitude of radar grids,  what I can store are only the number of grid and 
+    corresponding value. The data also stored in the table 't_bd_radar_precipitation' '''
+    # TODO: radar precipitation table
     return precipitation_raw
 
 
