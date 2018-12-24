@@ -1,8 +1,19 @@
-"""pykrige库"""
+"""The conditional merging process.
+(a) The rainfall field is observed at discrete points by rain gauges.
+(b) The rainfall field is also observed by radar on a regular, volume-integrated grid.
+(c) Kriging of the rain gauge observations is used to obtain the best linear unbiased estimate of rainfall
+    on the radar grid.
+(d) The radar pixel values at the rain gauge locations are interpolated onto the radar grid using Kriging.
+(e) At each grid point, the deviation C between the observed and interpolated radar value is computed.
+(f) The field of deviations obtained from (e) is applied to the interpolated rainfall field obtained
+    from Kriging the rain gauge observations.
+(g) A rainfall field that follows the mean field of the rain gauge interpolation,
+    while preserving the mean field deviations and the spatial structure of the radar field is obtained"""
 import numpy as np
 import pykrige.kriging_tools as kt
 from pykrige.ok import OrdinaryKriging
 
+'''get discrete points by rain gauges from database'''
 data = np.array([[0.3, 1.2, 0.47],
                  [1.9, 0.6, 0.56],
                  [1.1, 3.2, 0.74],
@@ -12,6 +23,10 @@ data = np.array([[0.3, 1.2, 0.47],
 gridx = np.arange(0.0, 5.5, 0.5)
 gridy = np.arange(0.0, 5.5, 0.5)
 
+'''get volume-integrated grid data by radar from database'''
+
+
+'''krige the rain gauge observations'''
 # Create the ordinary kriging object. Required inputs are the X-coordinates of
 # the data points, the Y-coordinates of the data points, and the Z-values of the
 # data points. If no variogram model is specified, defaults to a linear variogram
@@ -27,5 +42,11 @@ OK = OrdinaryKriging(data[:, 0], data[:, 1], data[:, 2], variogram_model='linear
 # (See OrdinaryKriging.__doc__ for more information.)
 z, ss = OK.execute('grid', gridx, gridy)
 
-# Writes the kriged grid to an ASCII grid file.
-kt.write_asc_grid(gridx, gridy, z, filename="output.asc")
+# visualize the interpolation data
+
+
+'''krige radar data at the rain gauge locations'''
+
+'''compute the deviation between the radar-observation and kriging-radar'''
+
+'''apply deviation to kriging-rain-gauge'''
