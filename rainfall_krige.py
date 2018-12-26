@@ -13,18 +13,25 @@ import numpy as np
 import pykrige.kriging_tools as kt
 from pykrige.ok import OrdinaryKriging
 
+import project_util
+import time_unit_type
+
 '''get discrete points by rain gauges from database'''
+start_time = '2017-08-05 00:00:00'
+end_time = '2017-08-10 00:00:00'
+data = project_util.read_data_from_db_timesequence(15, 114, str(time_unit_type.TimeUnitType.Hour.value), 1, start_time, end_time)
+# transform data to the form of np.array, need zero to fill up the array
 data = np.array([[0.3, 1.2, 0.47],
                  [1.9, 0.6, 0.56],
                  [1.1, 3.2, 0.74],
                  [3.3, 4.4, 1.47],
                  [4.7, 3.8, 1.74]])
-
+# calculate the grid number in radar graph of rain gauge by its geological coordination
+# Firstly, give out a virtual position
 gridx = np.arange(0.0, 5.5, 0.5)
 gridy = np.arange(0.0, 5.5, 0.5)
 
 '''get volume-integrated grid data by radar from database'''
-
 
 '''krige the rain gauge observations'''
 # Create the ordinary kriging object. Required inputs are the X-coordinates of

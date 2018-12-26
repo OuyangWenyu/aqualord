@@ -1,7 +1,7 @@
 # coding:utf-8
 """雨量站数据先从国电数据库中读取,需要对国电数据库里存储的降雨数据有比较清楚的认识,需要核对数据"""
 import read_config
-from utils import mysql_select, mysql_insert_batch
+from project_util import mysql_select, mysql_insert_batch
 
 
 def pixel_number_position(center_position_array, pixel_x_length, pixel_y_length):
@@ -32,11 +32,11 @@ def prepare_rain_gauge_data():
     select_rain_gauge_sql = "select * from t_bd_realtime where ENT_ID in " \
                             "(15, 19, 23, 82, 181, 182, 183, 251, 252, 254, 255, 256, 257, 258, 260, 261, 262, 263, 267, 268, 269, 270, 271, 272, 274, 322, 341, 361, 362)"
     all_rain_gauge_db_data = mysql_select(lab_url, lab_username, lab_password, lab_database, select_rain_gauge_sql)
-    # insert radar data to aliyun database for convenient in batches
-    url = read_config.read_radar_data_dir('config.ini', 'aliyun-db', 'url')
-    username = read_config.read_radar_data_dir('config.ini', 'aliyun-db', 'username')
-    password = read_config.read_radar_data_dir('config.ini', 'aliyun-db', 'password')
-    database = read_config.read_radar_data_dir('config.ini', 'aliyun-db', 'database')
+    # insert radar data to your-data-db database for convenient in batches
+    url = read_config.read_radar_data_dir('config.ini', 'data-db', 'url')
+    username = read_config.read_radar_data_dir('config.ini', 'data-db', 'username')
+    password = read_config.read_radar_data_dir('config.ini', 'data-db', 'password')
+    database = read_config.read_radar_data_dir('config.ini', 'data-db', 'database')
     table = "t_bd_time_sequence"
     params = []
     for i in range(len(all_rain_gauge_db_data)):

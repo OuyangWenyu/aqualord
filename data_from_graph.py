@@ -6,7 +6,7 @@ import os
 
 from PIL import Image
 
-import utils
+import project_util
 import read_config
 from pytime import pytime
 
@@ -138,10 +138,10 @@ def prepare_radar_grid(precipitation_raw):
     """construct all grids and store in the table "t_be_radar_gird"
     1小时累计降水产品采用的是每个 体扫描结束后的小时累计方式，即对对每一个2公里*1度的样本库降水率在每个体扫描结束后进行时间累计，
     得到一小时降水量，并在每个体扫结束后输出，生成该产品至少需要54分钟连续的体扫描资料（体扫瞄间隔不超过30分钟）。"""
-    url = read_config.read_radar_data_dir('config.ini', 'aliyun-db', 'url')
-    username = read_config.read_radar_data_dir('config.ini', 'aliyun-db', 'username')
-    password = read_config.read_radar_data_dir('config.ini', 'aliyun-db', 'password')
-    database = read_config.read_radar_data_dir('config.ini', 'aliyun-db', 'database')
+    url = read_config.read_radar_data_dir('config.ini', 'data-db', 'url')
+    username = read_config.read_radar_data_dir('config.ini', 'data-db', 'username')
+    password = read_config.read_radar_data_dir('config.ini', 'data-db', 'password')
+    database = read_config.read_radar_data_dir('config.ini', 'data-db', 'database')
     table = "t_be_radar_grid"
     params = []
     '''use polar coordinate system, the geological position of the center of radar station is (126.12, 41.59) and the
@@ -175,15 +175,16 @@ def prepare_radar_grid(precipitation_raw):
                 # the area where the distance is shorter than the radius(250 grids)
                 params.append(temp)
                 count = count + 1
-    utils.mysql_insert_batch(url, username, password, database, table, params)
+    project_util.mysql_insert_batch(url, username, password, database, table, params)
 
 
 def prepare_radar_rain_precipitation(precipitation_raw, radar_date_time):
-    """construct all datas and store in the table "t_bd_radar_precipitation" """
-    url = read_config.read_radar_data_dir('config.ini', 'aliyun-db', 'url')
-    username = read_config.read_radar_data_dir('config.ini', 'aliyun-db', 'username')
-    password = read_config.read_radar_data_dir('config.ini', 'aliyun-db', 'password')
-    database = read_config.read_radar_data_dir('config.ini', 'aliyun-db', 'database')
+    """construct all datas and store in the table "t_bd_radar_precipitation". It would be better that zero values are
+    not stored """
+    url = read_config.read_radar_data_dir('config.ini', 'data-db', 'url')
+    username = read_config.read_radar_data_dir('config.ini', 'data-db', 'username')
+    password = read_config.read_radar_data_dir('config.ini', 'data-db', 'password')
+    database = read_config.read_radar_data_dir('config.ini', 'data-db', 'database')
     table = "t_bd_radar_precipitation"
     params = []
     radar_center_x = int(read_config.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_x'))
@@ -209,11 +210,13 @@ def prepare_radar_rain_precipitation(precipitation_raw, radar_date_time):
                 temp = (
                     grid_id, x_in_graph, y_in_graph, time, time_unit_type, time_unit_length, precipitation_value_min,
                     precipitation_value_max)
-                params.append(temp)
                 count = count + 1
+                if precipitation_raw[i][j][1] > 0:
+                    # we won't store 0, or the data in db will be too big.
+                    params.append(temp)
     fields = ['grid_id', 'x_in_graph', 'y_in_graph', 'time', 'time_unit_type', 'time_unit_length',
               'precipitation_value_min', 'precipitation_value_max']
-    utils.mysql_insert_fields_batch(url, username, password, database, table, fields, params)
+    project_util.mysql_insert_fields_batch(url, username, password, database, table, fields, params)
 
 
 def write_radar_graph_data_to_db():

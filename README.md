@@ -6,16 +6,16 @@
 #### 软件架构
 项目文件组织结构（实时更新）：
 
-                              | data                    | "YOUR TEST DATA" ...    
-                              | tests                   | "YOUR TEST CODE" ...
                               | .gitignore
                               | config.ini
                               | data_from_db.py
-    hydro-radar-precipitation | data_from_graph.py                
+    hydro-radar-precipitation | data_from_graph.py  
+                              | project_util.py              
                               | rainfall_krige.py    
                               | rainfall_kriging.py
                               | read_config.py
                               | README.md
+                              | time_unit_type.py
 
 
 #### 使用说明
@@ -25,7 +25,12 @@
 3. config.ini文件，其结构形式如下：
 ```
 [radar-data]
-data_directory = data
+data_directory = YOUR_RADAR_GRAPH_DIRECTORY
+[data-db]
+url = YOUR_DATABASE_URL
+username = YOUR_DATABASE_USERNAME
+password = YOUR_DATABASE_PASSWORD
+database = YOUR_DATABASE
 ```
 
 #### 参与贡献
