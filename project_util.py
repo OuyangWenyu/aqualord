@@ -70,6 +70,36 @@ def read_data_from_db_timesequence(entity_id, entity_attribute_id, time_unit_typ
     return results
 
 
+def read_data_from_db_entity(entity_ids):
+    """从数据库读取实体数据.id表示实体id"""
+    url = read_config.read_radar_data_dir('config.ini', 'data-db', 'url')
+    username = read_config.read_radar_data_dir('config.ini', 'data-db', 'username')
+    password = read_config.read_radar_data_dir('config.ini', 'data-db', 'password')
+    database = read_config.read_radar_data_dir('config.ini', 'data-db', 'database')
+    connect = create_engine("mysql+pymysql://" + username + ":" + password + "@" + url + ":3306/" + database,
+                            encoding="utf-8",
+                            echo=True)  # 连接数据库，echo=True =>把所有的信息都打印出来
+
+    Base = declarative_base()  # 生成ORM基类
+
+    class Entity(Base):
+        __tablename__ = "t_be_entity"  # 表名
+        id = Column(INTEGER, primary_key=True)  # 不能带长度,否则会出现类型对不上的错误
+        name = Column(String)
+        type_id = Column(BIGINT)
+        description = Column(String)
+        longitude = Column(Float)
+        latitude = Column(Float)
+
+    # Base.metadata.create_all(connect)  # 创建表结构
+
+    session_class = sessionmaker(bind=connect)  # 创建与数据库的会话session class ,这里返回给session的是个class,不是实例
+    session = session_class()  # 生成session实例
+    results = session.query(Entity).filter(Entity.id.in_(tuple(entity_ids))).all()
+    logger.debug("获取到的符合条件的记录个数是 '%s'", len(results))
+    return results
+
+
 # 根据开始时间，结束时间和时段类型以及单位时段长，判断时段个数，字符串类型的日期
 def time_period_num(start_time, end_time, time_unit_type, time_unit_num):
     a = parse(start_time)

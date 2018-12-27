@@ -7,12 +7,11 @@
 项目文件组织结构（实时更新）：
 
                               | .gitignore
+                              | conditional_merge.py
                               | config.ini
                               | data_from_db.py
     hydro-radar-precipitation | data_from_graph.py  
                               | project_util.py              
-                              | rainfall_krige.py    
-                              | rainfall_kriging.py
                               | read_config.py
                               | README.md
                               | time_unit_type.py
