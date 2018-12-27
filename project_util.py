@@ -2,17 +2,17 @@
 
 
 """工具类型的代码写到这里,这是一个工具类型的模块"""
+import configparser
+from enum import unique, Enum
 
 import cx_Oracle
 import pymysql
 
-import read_config
 from dateutil import rrule
 from dateutil.parser import parse
 from dateutil.relativedelta import relativedelta
 
 import numpy as np
-from time_unit_type import TimeUnitType
 from sqlalchemy import create_engine, text, Column, BigInteger, DateTime, Numeric, String, Float, Integer, BIGINT, \
     INTEGER
 from sqlalchemy.ext.declarative import declarative_base
@@ -31,10 +31,10 @@ def read_data_from_db_timesequence(entity_id, entity_attribute_id, time_unit_typ
     time_unit_type表示时段类型
     time_unit_num表示单位时段的时段个数
     start_time和end_time是开始和结束时间"""
-    url = read_config.read_radar_data_dir('config.ini', 'data-db', 'url')
-    username = read_config.read_radar_data_dir('config.ini', 'data-db', 'username')
-    password = read_config.read_radar_data_dir('config.ini', 'data-db', 'password')
-    database = read_config.read_radar_data_dir('config.ini', 'data-db', 'database')
+    url = read_radar_data_dir('config.ini', 'data-db', 'url')
+    username = read_radar_data_dir('config.ini', 'data-db', 'username')
+    password = read_radar_data_dir('config.ini', 'data-db', 'password')
+    database = read_radar_data_dir('config.ini', 'data-db', 'database')
     connect = create_engine("mysql+pymysql://" + username + ":" + password + "@" + url + ":3306/" + database,
                             encoding="utf-8",
                             echo=True)  # 连接数据库，echo=True =>把所有的信息都打印出来
@@ -72,10 +72,10 @@ def read_data_from_db_timesequence(entity_id, entity_attribute_id, time_unit_typ
 
 def read_data_from_db_entity(entity_ids):
     """从数据库读取实体数据.id表示实体id"""
-    url = read_config.read_radar_data_dir('config.ini', 'data-db', 'url')
-    username = read_config.read_radar_data_dir('config.ini', 'data-db', 'username')
-    password = read_config.read_radar_data_dir('config.ini', 'data-db', 'password')
-    database = read_config.read_radar_data_dir('config.ini', 'data-db', 'database')
+    url = read_radar_data_dir('config.ini', 'data-db', 'url')
+    username = read_radar_data_dir('config.ini', 'data-db', 'username')
+    password = read_radar_data_dir('config.ini', 'data-db', 'password')
+    database = read_radar_data_dir('config.ini', 'data-db', 'database')
     connect = create_engine("mysql+pymysql://" + username + ":" + password + "@" + url + ":3306/" + database,
                             encoding="utf-8",
                             echo=True)  # 连接数据库，echo=True =>把所有的信息都打印出来
@@ -157,9 +157,9 @@ def oracle_select():
     """connect to oracle database, and execute 'select'"""
     '''Note: Set the environment variable PATH to include the path that contains OCI.dll. After that, remeber restart 
     your python IDE ! '''
-    url = read_config.read_radar_data_dir('config.ini', 'guodian-db', 'url')
-    username = read_config.read_radar_data_dir('config.ini', 'guodian-db', 'username')
-    password = read_config.read_radar_data_dir('config.ini', 'guodian-db', 'password')
+    url = read_radar_data_dir('config.ini', 'guodian-db', 'url')
+    username = read_radar_data_dir('config.ini', 'guodian-db', 'username')
+    password = read_radar_data_dir('config.ini', 'guodian-db', 'password')
     conn = cx_Oracle.connect(username + '/' + password + '@' + url + ':1521/ORCL')
     # 使用cursor()方法获取操作游标
     cursor = conn.cursor()
@@ -256,3 +256,36 @@ def mysql_insert_fields_batch(url, username, password, database, table, fields, 
     conn.commit()
     cur.close()
     conn.close()
+
+
+def read_radar_data_dir(config_file_name, config_section_name, config_option_name):
+    """根据配置文件的名称，配置section的名称和配置option的名称获取目标文件夹"""
+    global target_directory
+    cf = configparser.ConfigParser()
+    # 读配置文件（ini、conf）返回结果是列表
+    config_file = cf.read(config_file_name, encoding="utf-8")
+    # 获取读到的所有sections(域)，返回列表类型
+    config_sections = cf.sections()
+    for config_section in config_sections:
+        if config_section == config_section_name:
+            # 某个域下的所有key，返回列表类型
+            config_options = cf.options(config_section)
+            for config_option in config_options:
+                if config_option == config_option_name:
+                    # 获取某个域下的key对应的value值
+                    target_directory = cf.get(config_section, config_option)
+                    break
+            break
+    return target_directory
+
+
+@unique
+class TimeUnitType(Enum):
+    Year = 'Y'  # Year的value被设定为0
+    Month = 'M'
+    Decad = 'D'
+    Week = 'W'
+    Day = 'd'
+    Hour = 'h'
+    Minute = 'm'
+    Second = 's'

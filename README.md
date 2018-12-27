@@ -7,14 +7,13 @@
 项目文件组织结构（实时更新）：
 
                               | .gitignore
+                              | acquire_data.py
                               | conditional_merge.py
-                              | config.ini
-                              | data_from_db.py
-    hydro-radar-precipitation | data_from_graph.py  
+    hydro-radar-precipitation | config.ini
+                              | data_preprocess.py
                               | project_util.py              
-                              | read_config.py
                               | README.md
-                              | time_unit_type.py
+                              
 
 
 #### 使用说明
@@ -25,6 +24,15 @@
 ```
 [radar-data]
 data_directory = YOUR_RADAR_GRAPH_DIRECTORY
+radar_name = XXXX
+radar_code = XXXX
+radar_center_x = XXXX
+radar_center_y = XXXX
+radar_radius_in_graph = XXXX
+radar_center_longtitude = XXXX
+radar_center_latitude = XXXX
+radar_resolution_x = XXXX
+radar_resolution_y = XXXX
 [data-db]
 url = YOUR_DATABASE_URL
 username = YOUR_DATABASE_USERNAME

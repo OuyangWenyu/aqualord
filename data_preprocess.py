@@ -7,7 +7,6 @@ import os
 from PIL import Image
 
 import project_util
-import read_config
 from pytime import pytime
 
 
@@ -130,31 +129,30 @@ def read_precipitation_from_image(raw_image, radar_date_time):
     corresponding value. The data also stored in the table 't_bd_radar_precipitation' '''
     # Only first time, we have to construct all grids and store in the table "t_be_gird"
     # prepare_radar_grid(precipitation_raw)
-    # Then, store the data in the table "t_bd_radar_precipitation"
-    prepare_radar_rain_precipitation(precipitation_raw, radar_date_time)
+    return precipitation_raw
 
 
 def prepare_radar_grid(precipitation_raw):
     """construct all grids and store in the table "t_be_radar_gird"
     1小时累计降水产品采用的是每个 体扫描结束后的小时累计方式，即对对每一个2公里*1度的样本库降水率在每个体扫描结束后进行时间累计，
     得到一小时降水量，并在每个体扫结束后输出，生成该产品至少需要54分钟连续的体扫描资料（体扫瞄间隔不超过30分钟）。"""
-    url = read_config.read_radar_data_dir('config.ini', 'data-db', 'url')
-    username = read_config.read_radar_data_dir('config.ini', 'data-db', 'username')
-    password = read_config.read_radar_data_dir('config.ini', 'data-db', 'password')
-    database = read_config.read_radar_data_dir('config.ini', 'data-db', 'database')
+    url = project_util.read_radar_data_dir('config.ini', 'data-db', 'url')
+    username = project_util.read_radar_data_dir('config.ini', 'data-db', 'username')
+    password = project_util.read_radar_data_dir('config.ini', 'data-db', 'password')
+    database = project_util.read_radar_data_dir('config.ini', 'data-db', 'database')
     table = "t_be_radar_grid"
     params = []
     '''use polar coordinate system, the geological position of the center of radar station is (126.12, 41.59) and the
     resolution is 1 km * 1 degree. The range of radar is the area where the distance is shorter than the radius(250 grids)'''
-    radar_center_x = int(read_config.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_x'))
-    radar_center_y = int(read_config.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_y'))
-    radar_radius_in_graph = int(read_config.read_radar_data_dir('config.ini', 'radar-data', 'radar_radius_in_graph'))
+    radar_center_x = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_x'))
+    radar_center_y = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_y'))
+    radar_radius_in_graph = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_radius_in_graph'))
     radar_center = np.array([radar_center_x, radar_center_y])
     count = 0
     for i in range(len(precipitation_raw)):
         for j in range(len(precipitation_raw[i])):
             id = count
-            radar_name = read_config.read_radar_data_dir('config.ini', 'radar-data', 'radar_name')
+            radar_name = project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_name')
             x_in_graph = i
             y_in_graph = j
             center_longitude = 0
@@ -178,64 +176,17 @@ def prepare_radar_grid(precipitation_raw):
     project_util.mysql_insert_batch(url, username, password, database, table, params)
 
 
-def prepare_radar_rain_precipitation(precipitation_raw, radar_date_time):
-    """construct all datas and store in the table "t_bd_radar_precipitation". It would be better that zero values are
-    not stored """
-    url = read_config.read_radar_data_dir('config.ini', 'data-db', 'url')
-    username = read_config.read_radar_data_dir('config.ini', 'data-db', 'username')
-    password = read_config.read_radar_data_dir('config.ini', 'data-db', 'password')
-    database = read_config.read_radar_data_dir('config.ini', 'data-db', 'database')
-    table = "t_bd_radar_precipitation"
-    params = []
-    radar_center_x = int(read_config.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_x'))
-    radar_center_y = int(read_config.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_y'))
-    radar_radius_in_graph = int(read_config.read_radar_data_dir('config.ini', 'radar-data', 'radar_radius_in_graph'))
-    radar_center = np.array([radar_center_x, radar_center_y])
-    # sql = "select * from t_be_radar_grid"
-    # radar_grids = utils.mysql_select(url, username, password, database, sql)
-    count = 0
-    for i in range(len(precipitation_raw)):
-        for j in range(len(precipitation_raw[i])):
-            xy_in_graph = np.array([i, j])
-            if np.sqrt(np.sum(np.square(radar_center - xy_in_graph))) <= radar_radius_in_graph:
-                # the area where the distance is shorter than the radius(250 grids)
-                grid_id = count
-                x_in_graph = i
-                y_in_graph = j
-                time = radar_date_time
-                time_unit_type = 'h'
-                time_unit_length = 1
-                precipitation_value_min = str(precipitation_raw[i][j][0])
-                precipitation_value_max = str(precipitation_raw[i][j][1])
-                temp = (
-                    grid_id, x_in_graph, y_in_graph, time, time_unit_type, time_unit_length, precipitation_value_min,
-                    precipitation_value_max)
-                count = count + 1
-                if precipitation_raw[i][j][1] > 0:
-                    # we won't store 0, or the data in db will be too big.
-                    params.append(temp)
-    fields = ['grid_id', 'x_in_graph', 'y_in_graph', 'time', 'time_unit_type', 'time_unit_length',
-              'precipitation_value_min', 'precipitation_value_max']
-    project_util.mysql_insert_fields_batch(url, username, password, database, table, fields, params)
-
-
-def write_radar_graph_data_to_db():
-    """get the precipitation interval from radar graph and insert them into database. Because the directory has two
-    layers, a circle is a need """
-    rootdir = read_config.read_radar_data_dir('config.ini', 'radar-data', 'data_directory')
-    files_list = os.listdir(rootdir)
-    for i in range(0, len(files_list)):
-        if files_list[i][-5:] == 'Z9439':
-            file_list = os.listdir(rootdir + '/' + files_list[i])
-            for j in range(len(file_list)):
-                path = os.path.join(rootdir + '/' + files_list[i] + '/', file_list[i])
-                if os.path.isfile(path):
-                    radar_graph_time = file_list[i][:-4][-14:]
-                    radar_date = radar_graph_time[:8]
-                    radar_time = radar_graph_time[8:10] + ':' + radar_graph_time[10:12] + ':' + radar_graph_time[12:14]
-                    radar_date_time = pytime.parse(radar_date + ' ' + radar_time)
-                    read_precipitation_from_image(path, radar_date_time)
-
-
-if __name__ == "__main__":
-    write_radar_graph_data_to_db()
+def read_radar_graph_data(file_route):
+    """get the precipitation interval from radar graph. Because the directory has two layers, a circle is a need.
+    However, the radar precipitation data is big, if we read them only in one-time, it maybe happens that the memory
+    will leaky. So the better way is reading a graph once a time """
+    # rootdir = read_config.read_radar_data_dir('config.ini', 'radar-data', 'data_directory')
+    if not os.path.isfile(file_route):
+        raise RuntimeError("該路徑下沒有雷達圖！请检查！")
+    else:
+        radar_graph_time = file_route[:-4][-14:]
+        radar_date = radar_graph_time[:8]
+        radar_time = radar_graph_time[8:10] + ':' + radar_graph_time[10:12] + ':' + radar_graph_time[12:14]
+        radar_date_time = pytime.parse(radar_date + ' ' + radar_time)
+        radar_precipitation = read_precipitation_from_image(file_route, radar_date_time)
+    return radar_precipitation

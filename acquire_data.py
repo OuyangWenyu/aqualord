@@ -1,21 +1,8 @@
 # coding:utf-8
-"""雨量站数据先从国电数据库中读取,需要对国电数据库里存储的降雨数据有比较清楚的认识,需要核对数据"""
-import read_config
+"""雨量站数据先从国电数据库中读取,需要对国电数据库里存储的降雨数据有比较清楚的认识,需要核对数据. and the radar data downloading from cma can be referred to
+another project:WaterCrawler """
+import project_util
 from project_util import mysql_select, mysql_insert_batch
-
-
-def pixel_number_position(center_position_array, pixel_x_length, pixel_y_length):
-    return
-
-
-def read_rain_gauge_data():
-    """read rain gauge data from database"""
-    return
-
-
-def read_radar_data():
-    """read radar data from database"""
-    return
 
 
 def prepare_rain_gauge_data():
@@ -25,18 +12,18 @@ def prepare_rain_gauge_data():
     one by one, we can store the value into database directly, else we should rescale the data. But the rescaling
     process is very troubling, so it is a better way to change data from database. """
     # select data from t_bd_realtime as the rain-gauge data.
-    lab_url = read_config.read_radar_data_dir('config.ini', 'lab-db', 'url')
-    lab_username = read_config.read_radar_data_dir('config.ini', 'lab-db', 'username')
-    lab_password = read_config.read_radar_data_dir('config.ini', 'lab-db', 'password')
-    lab_database = read_config.read_radar_data_dir('config.ini', 'lab-db', 'database')
+    lab_url = project_util.read_radar_data_dir('config.ini', 'lab-db', 'url')
+    lab_username = project_util.read_radar_data_dir('config.ini', 'lab-db', 'username')
+    lab_password = project_util.read_radar_data_dir('config.ini', 'lab-db', 'password')
+    lab_database = project_util.read_radar_data_dir('config.ini', 'lab-db', 'database')
     select_rain_gauge_sql = "select * from t_bd_realtime where ENT_ID in " \
                             "(15, 19, 23, 82, 181, 182, 183, 251, 252, 254, 255, 256, 257, 258, 260, 261, 262, 263, 267, 268, 269, 270, 271, 272, 274, 322, 341, 361, 362)"
     all_rain_gauge_db_data = mysql_select(lab_url, lab_username, lab_password, lab_database, select_rain_gauge_sql)
     # insert radar data to your-data-db database for convenient in batches
-    url = read_config.read_radar_data_dir('config.ini', 'data-db', 'url')
-    username = read_config.read_radar_data_dir('config.ini', 'data-db', 'username')
-    password = read_config.read_radar_data_dir('config.ini', 'data-db', 'password')
-    database = read_config.read_radar_data_dir('config.ini', 'data-db', 'database')
+    url = project_util.read_radar_data_dir('config.ini', 'data-db', 'url')
+    username = project_util.read_radar_data_dir('config.ini', 'data-db', 'username')
+    password = project_util.read_radar_data_dir('config.ini', 'data-db', 'password')
+    database = project_util.read_radar_data_dir('config.ini', 'data-db', 'database')
     table = "t_bd_time_sequence"
     params = []
     for i in range(len(all_rain_gauge_db_data)):
