@@ -23,10 +23,9 @@ import logging
 logger = logging.getLogger(__name__)  # __name__=projectA.moduleB
 
 
-def read_data_from_db_timesequence(entity_id, entity_attribute_id, time_unit_type, time_unit_num,
-                                   start_time, end_time):
-    """从数据库读取历史时间序列数据.
-    entity_id表示实体id
+def db_timesequence_by_attribute_time(entity_attribute_id, time_unit_type, time_unit_num,
+                                      start_time, end_time):
+    """从数据库读取all entities' 历史时间序列数据.
     entity_attribute_id表示实体的数据类型id
     time_unit_type表示时段类型
     time_unit_num表示单位时段的时段个数
@@ -61,9 +60,9 @@ def read_data_from_db_timesequence(entity_id, entity_attribute_id, time_unit_typ
 
     results = session.query(TimeSequence).filter(
         text(
-            "ent_id=:ent_id and attribute_id=:attribute_id and time_step_unit=:time_step_unit and "
+            "attribute_id=:attribute_id and time_step_unit=:time_step_unit and "
             "time_step_length=:time_step_length and time>=:start_time and time<:end_time")).params(
-        ent_id=entity_id, attribute_id=entity_attribute_id, time_step_unit=time_unit_type,
+        attribute_id=entity_attribute_id, time_step_unit=time_unit_type,
         time_step_length=time_unit_num, start_time=start_time, end_time=end_time).order_by(
         TimeSequence.time).all()
     logger.debug("获取到的符合条件的记录个数是 '%s'", len(results))
