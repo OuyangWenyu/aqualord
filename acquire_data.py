@@ -19,6 +19,7 @@ def prepare_rain_gauge_data():
     select_rain_gauge_sql = "select * from t_bd_realtime where ENT_ID in " \
                             "(15, 19, 23, 82, 181, 182, 183, 251, 252, 254, 255, 256, 257, 258, 260, 261, 262, 263, 267, 268, 269, 270, 271, 272, 274, 322, 341, 361, 362)"
     all_rain_gauge_db_data = mysql_select(lab_url, lab_username, lab_password, lab_database, select_rain_gauge_sql)
+    # TODO: 修改了代码 mysql_select返回的是dataframe，需要重新测试
     # insert radar data to your-data-db database for convenient in batches
     url = project_util.read_radar_data_dir('config.ini', 'data-db', 'url')
     username = project_util.read_radar_data_dir('config.ini', 'data-db', 'username')

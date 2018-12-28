@@ -1,3 +1,5 @@
+# coding: utf-8
+
 """The conditional merging process.
 (a) The rainfall field is observed at discrete points by rain gauges.
 (b) The rainfall field is also observed by radar on a regular, volume-integrated grid.
@@ -15,6 +17,7 @@ import pykrige.kriging_tools as kt
 import numpy as np
 from geopy.distance import vincenty
 from pytime import pytime
+
 import data_preprocess
 import project_util
 import matplotlib.pyplot as plt
@@ -37,16 +40,25 @@ def read_rain_gauge_data(rain_gauge_sites_id, start_time, end_time, time_step_ty
     rain_gauges_data as a dataframe
     """
     '''read all rain_gauge_sites data, and then use 'iloc'/'loc' to get the data we need '''
-    select_data_temp = pd.DataFrame(
-        project_util.db_timesequence_by_attribute_time(114, time_step_type, time_step_length,
-                                                       start_time, end_time))
-    z_rain_gauge_data = select_data_temp.iloc[rain_gauge_sites_id, [8]]  # 8 is the value
-    rain_gauge_datelist = select_data_temp.iloc[rain_gauge_sites_id, [6]]  # 6 is the time
+    url, username, password, database = project_util.time_sequence_table()
+    sql = "select * from t_bd_time_sequence where attribute_id=114 and time_step_unit=\"" + time_step_type + "\" and time_step_length=" + str(
+        time_step_length) + " and time >= \"" + start_time + "\" and time<\"" + end_time + "\" order by ent_id, time; "
+    select_data_temp = project_util.mysql_select(url, username, password, database, sql)
+    print(select_data_temp)
+    z_rain_gauge_data = select_data_temp.loc[select_data_temp['ent_id'].isin(rain_gauge_sites_id)]
+    print(z_rain_gauge_data)
     # transform data to the form of np.array, need zero to fill up the array
     periods_num = project_util.time_period_num(start_time, end_time, time_step_type, time_step_length)
     datelist = pd.date_range(start_time, freq='H', periods=periods_num)
-    rain_gauges_data = pd.DataFrame({'date_time': datelist, 'rain_gauge': np.zeros(periods_num)})
-    rain_gauges_data.loc[rain_gauges_data['date_time'].isin(rain_gauge_datelist), 'rain_gauge'] = z_rain_gauge_data
+    rain_gauges_data = pd.DataFrame(np.zeros((len(datelist), len(rain_gauge_sites_id))), index=datelist,
+                                    columns=rain_gauge_sites_id)
+    print(rain_gauges_data)
+    for rain_temp in z_rain_gauge_data.iterrows():
+        time_temp = rain_temp[1].values[6]
+        ent_temp = rain_temp[1].values[1]
+        value_temp = rain_temp[1].values[8]
+        rain_gauges_data.loc[time_temp, ent_temp] = value_temp
+    print(rain_gauges_data)
     return rain_gauges_data
 
 
@@ -162,7 +174,30 @@ def write_radar_merge_data(precipitation, rain_date_time):
     project_util.mysql_insert_fields_batch(url, username, password, database, table, fields, params)
 
 
-def radar_rain_gauge_merge(gridx, gridy):
+def radar_map_at_time(rootdir, radar, time):
+    """read a radar map of the 'radar' at the 'time' from the director 'rootdir'.
+    TODO: the radar time is UTC time, so we have to convert it to the Beijing time
+    Return
+    -------
+    the path of the map we need
+    """
+    files_list = os.listdir(rootdir)
+    for i in range(0, len(files_list)):
+        print(files_list[i][-14:-5])
+        date_time_right = pytime.parse(time)
+        if files_list[i][-5:] == radar:
+            date_temp = pytime.parse(files_list[i][-14:-5])
+            if date_temp == date_time_right:
+                file_list = os.listdir(rootdir + '/' + files_list[i])
+                for j in range(len(file_list)):
+                    date_time_temp = pytime.parse(file_list[-18:-5])
+                    if date_time_right == date_time_temp:
+                        path = os.path.join(rootdir + '/' + files_list[i] + '/', file_list[i])
+                        break
+    return path
+
+
+def radar_rain_gauge_merge():
     """merge radar data with rain gauge"""
     start_time = '2017-08-05 00:00:00'
     end_time = '2017-08-10 00:00:00'
@@ -173,38 +208,42 @@ def radar_rain_gauge_merge(gridx, gridy):
     zs_rain_gauge = read_rain_gauge_data(rain_gauge_sites_id, start_time, end_time, time_step_type, time_step_length)
     # read rain_gauge_site_num_in_radar_grid
     x_in_radar_grid, y_in_radar_grid = rain_gauge_site_num_in_radar_grid(rain_gauge_sites_id)
-    '''get volume-integrated grid data by radar. We have many radar graphs, but we can't read them one-time, because the
-    memory needed to load data is too big to be satisfied. For that reason, we need a loop and divide-and-conquer them
-    one by one '''
+    periods_num = project_util.time_period_num(start_time, end_time, time_step_type, time_step_length)
+    datelist = pd.date_range(start_time, freq='H', periods=periods_num)
+    print(datelist)
+    print(datelist[0])
     rootdir = project_util.read_radar_data_dir('config.ini', 'radar-data', 'data_directory')
     radar = project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_code')
-    files_list = os.listdir(rootdir)
-    for i in range(0, len(files_list)):
-        if files_list[i][-5:] == radar:
-            file_list = os.listdir(rootdir + '/' + files_list[i])
-            for j in range(len(file_list)):
-                path = os.path.join(rootdir + '/' + files_list[i] + '/', file_list[i])
-                radar_data = data_preprocess.read_radar_graph_data(path)
-                '''krige radar data at the rain gauge locations'''
-                # read radar data at the rain gauge locations
-                radar_data_in_rain_gauge_sites = read_radar_data_in_positions(radar_data, x_in_radar_grid,
-                                                                              y_in_radar_grid)
-                # krige
-                radar_center_x = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_x'))
-                radar_center_y = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_y'))
-                # TODO: dataframe should be converted to numpy
-                z_radar, ss_radar = rain_ordinary_kriging(radar_center_x, radar_center_y, x_in_radar_grid,
-                                                          y_in_radar_grid, radar_data_in_rain_gauge_sites)
-                '''compute the deviation between the radar-observation and kriging-radar'''
-                deviation = radar_data - z_radar
-                '''apply deviation to kriging-rain-gauge'''
-                # TODO: dataframe should be converted to numpy
-                z_rain_gauge, ss_rain_gauge = rain_ordinary_kriging(radar_center_x, radar_center_y, x_in_radar_grid,
-                                                                    y_in_radar_grid, zs_rain_gauge.values)
-                merge_data = deviation + z_rain_gauge
-                '''write data to database'''
-                rain_graph_time = path[:-4][-14:]
-                rain_date = rain_graph_time[:8]
-                rain_time = rain_graph_time[8:10] + ':' + rain_graph_time[10:12] + ':' + rain_graph_time[12:14]
-                rain_date_time = pytime.parse(rain_date + ' ' + rain_time)
-                write_radar_merge_data(merge_data, rain_date_time)
+    for i in range(len(datelist)):
+        radar_map_path = radar_map_at_time(rootdir, radar, datelist[i])
+        '''get volume-integrated grid data by radar. We have many radar graphs, but we can't read them one-time, because the
+            memory needed to load data is too big to be satisfied. For that reason, we need a loop and divide-and-conquer them
+            one by one '''
+
+        #
+        radar_data = data_preprocess.read_radar_graph_data(radar_map_path)
+        '''krige radar data at the rain gauge locations'''
+        # read radar data at the rain gauge locations
+        radar_data_in_rain_gauge_sites = read_radar_data_in_positions(radar_data, x_in_radar_grid,
+                                                                      y_in_radar_grid)
+        # krige
+        radar_center_x = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_x'))
+        radar_center_y = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_y'))
+        z_radar, ss_radar = rain_ordinary_kriging(radar_center_x, radar_center_y, x_in_radar_grid,
+                                                  y_in_radar_grid, radar_data_in_rain_gauge_sites.values)
+        '''compute the deviation between the radar-observation and kriging-radar'''
+        deviation = radar_data - z_radar
+        '''apply deviation to kriging-rain-gauge'''
+        z_rain_gauge, ss_rain_gauge = rain_ordinary_kriging(radar_center_x, radar_center_y, x_in_radar_grid,
+                                                            y_in_radar_grid, zs_rain_gauge.values)
+        merge_data = deviation + z_rain_gauge
+        '''write data to database'''
+        rain_graph_time = radar_map_path[:-4][-14:]
+        rain_date = rain_graph_time[:8]
+        rain_time = rain_graph_time[8:10] + ':' + rain_graph_time[10:12] + ':' + rain_graph_time[12:14]
+        rain_date_time = pytime.parse(rain_date + ' ' + rain_time)
+        write_radar_merge_data(merge_data, rain_date_time)
+
+
+if __name__ == "__main__":
+    radar_rain_gauge_merge()

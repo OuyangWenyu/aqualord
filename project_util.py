@@ -7,7 +7,7 @@ from enum import unique, Enum
 
 import cx_Oracle
 import pymysql
-
+import pandas as pd
 from dateutil import rrule
 from dateutil.parser import parse
 from dateutil.relativedelta import relativedelta
@@ -23,13 +23,27 @@ import logging
 logger = logging.getLogger(__name__)  # __name__=projectA.moduleB
 
 
+def time_sequence_table():
+    url = read_radar_data_dir('config.ini', 'data-db', 'url')
+    username = read_radar_data_dir('config.ini', 'data-db', 'username')
+    password = read_radar_data_dir('config.ini', 'data-db', 'password')
+    database = read_radar_data_dir('config.ini', 'data-db', 'database')
+    return url, username, password, database
+
+
 def db_timesequence_by_attribute_time(entity_attribute_id, time_unit_type, time_unit_num,
                                       start_time, end_time):
     """从数据库读取all entities' 历史时间序列数据.
+    Parameters
+    -----------
     entity_attribute_id表示实体的数据类型id
     time_unit_type表示时段类型
     time_unit_num表示单位时段的时段个数
-    start_time和end_time是开始和结束时间"""
+    start_time和end_time是开始和结束时间
+    Returns
+    --------
+    a list with tuple as its element
+    """
     url = read_radar_data_dir('config.ini', 'data-db', 'url')
     username = read_radar_data_dir('config.ini', 'data-db', 'username')
     password = read_radar_data_dir('config.ini', 'data-db', 'password')
@@ -64,7 +78,7 @@ def db_timesequence_by_attribute_time(entity_attribute_id, time_unit_type, time_
             "time_step_length=:time_step_length and time>=:start_time and time<:end_time")).params(
         attribute_id=entity_attribute_id, time_step_unit=time_unit_type,
         time_step_length=time_unit_num, start_time=start_time, end_time=end_time).order_by(
-        TimeSequence.time).all()
+        TimeSequence.ent_id, TimeSequence.time).all()
     logger.debug("获取到的符合条件的记录个数是 '%s'", len(results))
     return results
 
@@ -177,21 +191,16 @@ def oracle_select():
 
 
 def mysql_select(url, username, password, database, sql):
-    """connect to mysql database, and execute 'select'"""
-    db = pymysql.connect(url, username, password, database)
-    # 使用cursor()方法获取操作游标
-    cursor = db.cursor()
-    # 使用execute方法执行SQL语句
-    cursor.execute(sql)
-    # 使用fetchone()方法获取一条数据
-    # data=cursor.fetchone()
-    # 获取所有数据
-    all_data = cursor.fetchall()
-    # 获取部分数据，8条
-    # many_data=cursor.fetchmany(8)
-    # write in another db in your-data-db
-    db.close()
-    return all_data
+    """connect to mysql database, and execute 'select, using pandas and sqlalchemy
+    Returns
+    -------
+    the result's form is pandas' DataFrame
+    '"""
+    engine = create_engine("mysql+pymysql://" + username + ":" + password + "@" + url + ":3306/" + database,
+                           encoding="utf-8",
+                           echo=True)  # 连接数据库，echo=True =>把所有的信息都打印出来
+    df = pd.read_sql_query(sql, engine)
+    return df
 
 
 def mysql_insert_batch(url, username, password, database, table, params):
