@@ -188,17 +188,21 @@ def radar_map_at_time(rootdir, radar, time):
     """
     files_list = os.listdir(rootdir)
     for i in range(0, len(files_list)):
-        print(files_list[i][-14:-5])
+        print(files_list[i][-14:-6])
         date_time_right = pytime.parse(time)
+        print(date_time_right)
+        print(files_list[i][-5:])
         if files_list[i][-5:] == radar:
-            date_temp = pytime.parse(files_list[i][-14:-5])
-            if date_temp == date_time_right:
+            date_temp = pytime.parse(files_list[i][-14:-6])
+            if date_temp == date_time_right.date():
                 file_list = os.listdir(rootdir + '/' + files_list[i])
                 for j in range(len(file_list)):
-                    date_time_temp = pytime.parse(file_list[-18:-5])
+                    print(file_list[j][-18:-4])
+                    date_time_temp = project_util.parse_datetime(file_list[j][-18:-4])
                     if date_time_right == date_time_temp:
-                        path = os.path.join(rootdir + '/' + files_list[i] + '/', file_list[i])
+                        path = os.path.join(rootdir + '/' + files_list[i] + '/', file_list[j])
                         break
+                break
     return path
 
 
@@ -215,18 +219,15 @@ def radar_rain_gauge_merge():
     x_in_radar_grid, y_in_radar_grid = rain_gauge_site_num_in_radar_grid(rain_gauge_sites_id)
     periods_num = project_util.time_period_num(start_time, end_time, time_step_type, time_step_length)
     datelist = pd.date_range(start_time, freq='H', periods=periods_num)
-    print(datelist)
-    print(datelist[0])
     rootdir = project_util.read_radar_data_dir('config.ini', 'radar-data', 'data_directory')
     radar = project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_code')
+    print(len(datelist))
     for i in range(len(datelist)):
         radar_map_path = radar_map_at_time(rootdir, radar, datelist[i])
         '''get volume-integrated grid data by radar. We have many radar graphs, but we can't read them one-time, because the
             memory needed to load data is too big to be satisfied. For that reason, we need a loop and divide-and-conquer them
             one by one '''
-
-        #
-        radar_data = data_preprocess.read_radar_graph_data(radar_map_path)
+        radar_data = data_preprocess.read_precipitation_from_image(radar_map_path)
         '''krige radar data at the rain gauge locations'''
         # read radar data at the rain gauge locations
         radar_data_in_rain_gauge_sites = read_radar_data_in_positions(radar_data, x_in_radar_grid,
@@ -251,7 +252,4 @@ def radar_rain_gauge_merge():
 
 
 if __name__ == "__main__":
-    rain_gauge_sites_id = [15, 19, 23, 82, 181, 182, 183, 251, 252, 254, 255, 256, 257, 258, 260, 261, 262, 263, 267,
-                           268, 269, 270, 271, 272, 274, 322, 341, 361, 362]
-    rain_gauge_site_num_in_radar_grid(rain_gauge_sites_id)
-    # radar_rain_gauge_merge()
+    radar_rain_gauge_merge()

@@ -111,10 +111,12 @@ def precipitation_from_pixel(pixel_rgb_array):
     return array
 
 
-def read_precipitation_from_image(raw_image, radar_date_time):
+def read_precipitation_from_image(raw_image):
     """The integrated process in which we read precipitation value from images downloaded consists of read_rgb,
     precipitation _from_pixel and pixel_number_position, and then we can get a map with pixel's num from Guodian
     database serving as key, and precipitation value serving as value """
+    if not os.path.isfile(raw_image):
+        raise RuntimeError("該路徑下沒有雷達圖！请检查！")
     '''if the image's format is .GIF, then it can be recoginized by its grey value only. However, if the format id 
     PNG, wo have to utilize RGB value '''
     precipitation_raw = []
@@ -174,19 +176,3 @@ def prepare_radar_grid(precipitation_raw):
                 params.append(temp)
                 count = count + 1
     project_util.mysql_insert_batch(url, username, password, database, table, params)
-
-
-def read_radar_graph_data(file_route):
-    """get the precipitation interval from radar graph. Because the directory has two layers, a circle is a need.
-    However, the radar precipitation data is big, if we read them only in one-time, it maybe happens that the memory
-    will leaky. So the better way is reading a graph once a time """
-    # rootdir = read_config.read_radar_data_dir('config.ini', 'radar-data', 'data_directory')
-    if not os.path.isfile(file_route):
-        raise RuntimeError("該路徑下沒有雷達圖！请检查！")
-    else:
-        radar_graph_time = file_route[:-4][-14:]
-        radar_date = radar_graph_time[:8]
-        radar_time = radar_graph_time[8:10] + ':' + radar_graph_time[10:12] + ':' + radar_graph_time[12:14]
-        radar_date_time = pytime.parse(radar_date + ' ' + radar_time)
-        radar_precipitation = read_precipitation_from_image(file_route, radar_date_time)
-    return radar_precipitation

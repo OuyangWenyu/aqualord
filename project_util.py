@@ -13,6 +13,7 @@ from dateutil.parser import parse
 from dateutil.relativedelta import relativedelta
 
 import numpy as np
+from pytime import pytime
 from sqlalchemy import create_engine, text, Column, BigInteger, DateTime, Numeric, String, Float, Integer, BIGINT, \
     INTEGER
 from sqlalchemy.ext.declarative import declarative_base
@@ -23,6 +24,7 @@ import logging
 logger = logging.getLogger(__name__)  # __name__=projectA.moduleB
 
 
+# -------------------------------------config file--------------------------------------------
 def time_sequence_table():
     url = read_radar_data_dir('config.ini', 'data-db', 'url')
     username = read_radar_data_dir('config.ini', 'data-db', 'username')
@@ -31,6 +33,28 @@ def time_sequence_table():
     return url, username, password, database
 
 
+def read_radar_data_dir(config_file_name, config_section_name, config_option_name):
+    """根据配置文件的名称，配置section的名称和配置option的名称获取目标文件夹"""
+    global target_directory
+    cf = configparser.ConfigParser()
+    # 读配置文件（ini、conf）返回结果是列表
+    config_file = cf.read(config_file_name, encoding="utf-8")
+    # 获取读到的所有sections(域)，返回列表类型
+    config_sections = cf.sections()
+    for config_section in config_sections:
+        if config_section == config_section_name:
+            # 某个域下的所有key，返回列表类型
+            config_options = cf.options(config_section)
+            for config_option in config_options:
+                if config_option == config_option_name:
+                    # 获取某个域下的key对应的value值
+                    target_directory = cf.get(config_section, config_option)
+                    break
+            break
+    return target_directory
+
+
+# -------------------------------------database--------------------------------------------
 def db_timesequence_by_attribute_time(entity_attribute_id, time_unit_type, time_unit_num,
                                       start_time, end_time):
     """从数据库读取all entities' 历史时间序列数据.
@@ -111,59 +135,6 @@ def read_data_from_db_entity(entity_ids):
     results = session.query(Entity).filter(Entity.id.in_(tuple(entity_ids))).all()
     logger.debug("获取到的符合条件的记录个数是 '%s'", len(results))
     return results
-
-
-# 根据开始时间，结束时间和时段类型以及单位时段长，判断时段个数，字符串类型的日期
-def time_period_num(start_time, end_time, time_unit_type, time_unit_num):
-    a = parse(start_time)
-    b = parse(end_time)
-    if time_unit_type == TimeUnitType.Year.value:
-        return (rrule.rrule(rrule.YEARLY, dtstart=a, until=b).count() - 1) / time_unit_num
-    elif time_unit_type == TimeUnitType.Month.value:
-        return (rrule.rrule(rrule.MONTHLY, dtstart=a, until=b).count() - 1) / time_unit_num
-    elif time_unit_type == TimeUnitType.Decad.value:
-        return (rrule.rrule(rrule.DAILY, dtstart=a, until=b).count() - 1) / time_unit_num / 10
-    elif time_unit_type == TimeUnitType.Week.value:
-        return (rrule.rrule(rrule.WEEKLY, dtstart=a, until=b).count() - 1) / time_unit_num
-    elif time_unit_type == TimeUnitType.Day.value:
-        return (rrule.rrule(rrule.DAILY, dtstart=a, until=b).count() - 1) / time_unit_num
-    elif time_unit_type == TimeUnitType.Hour.value:
-        return (rrule.rrule(rrule.HOURLY, dtstart=a, until=b).count() - 1) / time_unit_num
-    elif time_unit_type == TimeUnitType.Minute.value:
-        return (rrule.rrule(rrule.MINUTELY, dtstart=a, until=b).count() - 1) / time_unit_num
-    else:
-        return (rrule.rrule(rrule.SECONDLY, dtstart=a, until=b).count() - 1) / time_unit_num
-
-
-# 已知起始时间和时段长（时段类型和时段个数）求末时刻时间
-def cal_end_time(start_time, time_unit_type, time_unit_num):
-    a = parse(start_time)
-    if time_unit_type == TimeUnitType.Year.value:
-        return a + relativedelta(years=+time_unit_num)
-    elif time_unit_type == TimeUnitType.Month.value:
-        return a + relativedelta(months=+time_unit_num)
-    elif time_unit_type == TimeUnitType.Decad.value:
-        # TODO(owenyy): 旬的计算加10天不行,暂时这样.用到再补充
-        return a + relativedelta(days=+10 * time_unit_num)
-    elif time_unit_type == TimeUnitType.Week.value:
-        return a + relativedelta(weeks=+time_unit_num)
-    elif time_unit_type == TimeUnitType.Day.value:
-        return a + relativedelta(days=+time_unit_num)
-    elif time_unit_type == TimeUnitType.Hour.value:
-        return a + relativedelta(hours=+time_unit_num)
-    elif time_unit_type == TimeUnitType.Minute.value:
-        return a + relativedelta(minutes=+time_unit_num)
-    else:
-        return a + relativedelta(seconds=+time_unit_num)
-
-
-# 离散一个区间
-def discrete_interval(min, max, precision):
-    discrete_num = (max - min) / precision + 1
-    discrete_values = np.zeros(discrete_num)
-    for i in range(0, discrete_num):
-        discrete_values[i] = min + precision * i
-    return discrete_values
 
 
 def oracle_select():
@@ -266,27 +237,7 @@ def mysql_insert_fields_batch(url, username, password, database, table, fields, 
     conn.close()
 
 
-def read_radar_data_dir(config_file_name, config_section_name, config_option_name):
-    """根据配置文件的名称，配置section的名称和配置option的名称获取目标文件夹"""
-    global target_directory
-    cf = configparser.ConfigParser()
-    # 读配置文件（ini、conf）返回结果是列表
-    config_file = cf.read(config_file_name, encoding="utf-8")
-    # 获取读到的所有sections(域)，返回列表类型
-    config_sections = cf.sections()
-    for config_section in config_sections:
-        if config_section == config_section_name:
-            # 某个域下的所有key，返回列表类型
-            config_options = cf.options(config_section)
-            for config_option in config_options:
-                if config_option == config_option_name:
-                    # 获取某个域下的key对应的value值
-                    target_directory = cf.get(config_section, config_option)
-                    break
-            break
-    return target_directory
-
-
+# -------------------------------------date and time--------------------------------------------
 @unique
 class TimeUnitType(Enum):
     Year = 'Y'  # Year的value被设定为0
@@ -297,3 +248,65 @@ class TimeUnitType(Enum):
     Hour = 'h'
     Minute = 'm'
     Second = 's'
+
+
+# 根据开始时间，结束时间和时段类型以及单位时段长，判断时段个数，字符串类型的日期
+def time_period_num(start_time, end_time, time_unit_type, time_unit_num):
+    a = parse(start_time)
+    b = parse(end_time)
+    if time_unit_type == TimeUnitType.Year.value:
+        return (rrule.rrule(rrule.YEARLY, dtstart=a, until=b).count() - 1) / time_unit_num
+    elif time_unit_type == TimeUnitType.Month.value:
+        return (rrule.rrule(rrule.MONTHLY, dtstart=a, until=b).count() - 1) / time_unit_num
+    elif time_unit_type == TimeUnitType.Decad.value:
+        return (rrule.rrule(rrule.DAILY, dtstart=a, until=b).count() - 1) / time_unit_num / 10
+    elif time_unit_type == TimeUnitType.Week.value:
+        return (rrule.rrule(rrule.WEEKLY, dtstart=a, until=b).count() - 1) / time_unit_num
+    elif time_unit_type == TimeUnitType.Day.value:
+        return (rrule.rrule(rrule.DAILY, dtstart=a, until=b).count() - 1) / time_unit_num
+    elif time_unit_type == TimeUnitType.Hour.value:
+        return (rrule.rrule(rrule.HOURLY, dtstart=a, until=b).count() - 1) / time_unit_num
+    elif time_unit_type == TimeUnitType.Minute.value:
+        return (rrule.rrule(rrule.MINUTELY, dtstart=a, until=b).count() - 1) / time_unit_num
+    else:
+        return (rrule.rrule(rrule.SECONDLY, dtstart=a, until=b).count() - 1) / time_unit_num
+
+
+# 已知起始时间和时段长（时段类型和时段个数）求末时刻时间
+def cal_end_time(start_time, time_unit_type, time_unit_num):
+    a = parse(start_time)
+    if time_unit_type == TimeUnitType.Year.value:
+        return a + relativedelta(years=+time_unit_num)
+    elif time_unit_type == TimeUnitType.Month.value:
+        return a + relativedelta(months=+time_unit_num)
+    elif time_unit_type == TimeUnitType.Decad.value:
+        # TODO(owenyy): 旬的计算加10天不行,暂时这样.用到再补充
+        return a + relativedelta(days=+10 * time_unit_num)
+    elif time_unit_type == TimeUnitType.Week.value:
+        return a + relativedelta(weeks=+time_unit_num)
+    elif time_unit_type == TimeUnitType.Day.value:
+        return a + relativedelta(days=+time_unit_num)
+    elif time_unit_type == TimeUnitType.Hour.value:
+        return a + relativedelta(hours=+time_unit_num)
+    elif time_unit_type == TimeUnitType.Minute.value:
+        return a + relativedelta(minutes=+time_unit_num)
+    else:
+        return a + relativedelta(seconds=+time_unit_num)
+
+
+def parse_datetime(str_datetime):
+    """for example:'20150801000000' -> '2015-08-02 00:00:00' -> 2015-08-02 00:00:00"""
+    str_date = str_datetime[:8]
+    str_time = str_datetime[8:10] + ':' + str_datetime[10:12] + ':' + str_datetime[12:14]
+    rain_date_time = pytime.parse(str_date + ' ' + str_time)
+    return rain_date_time
+
+
+# -------------------------------------math--------------------------------------------
+# 离散一个区间
+def discrete_interval(min, max, precision):
+    discrete_num = (max - min) / precision + 1
+    discrete_values = np.zeros(discrete_num)
+    for i in range(0, discrete_num):
+        discrete_values[i] = min + precision * i
+    return discrete_values
