@@ -65,21 +65,26 @@ def read_rain_gauge_data(rain_gauge_sites_id, start_time, end_time, time_step_ty
 def rain_gauge_site_num_in_radar_grid(rain_gauge_sites_id):
     '''After getting rain gauges' rainfall data(2 dimensional data), calculate the grid number in radar graph of rain gauge
      by its geological coordination Firstly, give out a virtual position. the center of radar station is (126.12, 41.59)'''
-    coordinates = pd.DataFrame(project_util.read_data_from_db_entity(rain_gauge_sites_id))
-    lat_long_itudes = coordinates.iloc[:, [7, 6]]
+    url, username, password, database = project_util.time_sequence_table()
+    sql = "select * from t_be_entity where id in (" + str(rain_gauge_sites_id)[1:-1] + ") order by id; "
+    coordinates = project_util.mysql_select(url, username, password, database, sql)
+    lat_long_itudes = coordinates.iloc[:, [6, 5]].values
+    print(lat_long_itudes)
     # Note: 函数参数都是纬度latitude在前，经度longitude在后。
-    radar_center_coordinate_x = project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_longitude')
-    radar_center_coordinate_y = project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_latitude')
-    radar_resolution_x = project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_resolution_x')
-    radar_resolution_y = project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_resolution_y')
+    radar_center_coordinate_x = float(
+        project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_longitude'))
+    radar_center_coordinate_y = float(
+        project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_latitude'))
+    radar_resolution_x = float(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_resolution_x'))
+    radar_resolution_y = float(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_resolution_y'))
     radar_center_coordinate = (radar_center_coordinate_y, radar_center_coordinate_x)
     x_in_radar_grid = []
     y_in_radar_grid = []
     for i in range(len(lat_long_itudes)):
         radar_center_coordinate_temp_x = (radar_center_coordinate[0], lat_long_itudes[i][1])
         radar_center_coordinate_temp_y = (lat_long_itudes[i][0], radar_center_coordinate[1])
-        distance_x_temp = vincenty(radar_center_coordinate_temp_x, lat_long_itudes[i]).miles
-        distance_y_temp = vincenty(radar_center_coordinate_temp_y, lat_long_itudes[i]).miles
+        distance_x_temp = vincenty(radar_center_coordinate_temp_x, lat_long_itudes[i]).km
+        distance_y_temp = vincenty(radar_center_coordinate_temp_y, lat_long_itudes[i]).km
         x_in_radar_grid.append(distance_x_temp / radar_resolution_x)
         y_in_radar_grid.append(distance_y_temp / radar_resolution_y)
     return x_in_radar_grid, y_in_radar_grid
@@ -246,4 +251,7 @@ def radar_rain_gauge_merge():
 
 
 if __name__ == "__main__":
-    radar_rain_gauge_merge()
+    rain_gauge_sites_id = [15, 19, 23, 82, 181, 182, 183, 251, 252, 254, 255, 256, 257, 258, 260, 261, 262, 263, 267,
+                           268, 269, 270, 271, 272, 274, 322, 341, 361, 362]
+    rain_gauge_site_num_in_radar_grid(rain_gauge_sites_id)
+    # radar_rain_gauge_merge()
