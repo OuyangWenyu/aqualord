@@ -87,7 +87,7 @@ def rain_gauge_site_num_in_radar_grid(rain_gauge_sites_id):
         distance_y_temp = vincenty(radar_center_coordinate_temp_y, lat_long_itudes[i]).km
         x_in_radar_grid.append(distance_x_temp / radar_resolution_x)
         y_in_radar_grid.append(distance_y_temp / radar_resolution_y)
-    return x_in_radar_grid, y_in_radar_grid
+    return np.rint(x_in_radar_grid), np.rint(y_in_radar_grid)
 
 
 def rain_ordinary_kriging(center_grid_num_x, center_grid_num_y, x_measure, y_measure,
@@ -134,8 +134,10 @@ def rain_ordinary_kriging(center_grid_num_x, center_grid_num_y, x_measure, y_mea
 
 def read_radar_data_in_positions(radar_data, x_in_radar_grid, y_in_radar_grid):
     """read radar data in position(x_in_radar_grid,y_in_radar_grid) —— use iloc """
-    data_frame = pd.DataFrame(radar_data)
-    return data_frame.iloc[x_in_radar_grid, y_in_radar_grid]
+    print(radar_data)
+    panel = pd.Panel(radar_data)
+    print(panel)
+    return panel.iloc[x_in_radar_grid, y_in_radar_grid]
 
 
 def write_radar_merge_data(precipitation, rain_date_time):
