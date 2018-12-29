@@ -1,5 +1,4 @@
 # coding: utf-8
-
 """The conditional merging process.
 (a) The rainfall field is observed at discrete points by rain gauges.
 (b) The rainfall field is also observed by radar on a regular, volume-integrated grid.
@@ -87,7 +86,9 @@ def rain_gauge_site_num_in_radar_grid(rain_gauge_sites_id):
         distance_y_temp = vincenty(radar_center_coordinate_temp_y, lat_long_itudes[i]).km
         x_in_radar_grid.append(distance_x_temp / radar_resolution_x)
         y_in_radar_grid.append(distance_y_temp / radar_resolution_y)
-    return np.rint(x_in_radar_grid), np.rint(y_in_radar_grid)
+    x_in_radar_grid = np.rint(x_in_radar_grid)
+    y_in_radar_grid = np.rint(y_in_radar_grid)
+    return x_in_radar_grid.astype(np.int32), y_in_radar_grid.astype(np.int32)
 
 
 def rain_ordinary_kriging(center_grid_num_x, center_grid_num_y, x_measure, y_measure,
@@ -133,11 +134,30 @@ def rain_ordinary_kriging(center_grid_num_x, center_grid_num_y, x_measure, y_mea
 
 
 def read_radar_data_in_positions(radar_data, x_in_radar_grid, y_in_radar_grid):
-    """read radar data in position(x_in_radar_grid,y_in_radar_grid) —— use iloc """
-    print(radar_data)
-    panel = pd.Panel(radar_data)
-    print(panel)
-    return panel.iloc[x_in_radar_grid, y_in_radar_grid]
+    """read radar data in position(x_in_radar_grid,y_in_radar_grid)
+     the x,y axis shown as following:
+     ---------------> x
+     |
+     |
+     |
+     |
+     |
+     V
+     y
+     x means longitude, y means latitude
+
+     then, average a 2-D numpy array to a 1-D array
+     Return
+     ----------
+     z-values in (x,y) given
+     """
+    radar_array = np.zeros((len(x_in_radar_grid), 2))
+    for i in range(len(x_in_radar_grid)):
+        radar_array[i] = radar_data[x_in_radar_grid[i], y_in_radar_grid[i]]
+    print(radar_array)
+    radar_data_in_rain_gauge_sites = radar_array.sum(1) / 2
+    print(radar_data_in_rain_gauge_sites)
+    return radar_data_in_rain_gauge_sites
 
 
 def write_radar_merge_data(precipitation, rain_date_time):
@@ -223,7 +243,6 @@ def radar_rain_gauge_merge():
     datelist = pd.date_range(start_time, freq='H', periods=periods_num)
     rootdir = project_util.read_radar_data_dir('config.ini', 'radar-data', 'data_directory')
     radar = project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_code')
-    print(len(datelist))
     for i in range(len(datelist)):
         radar_map_path = radar_map_at_time(rootdir, radar, datelist[i])
         '''get volume-integrated grid data by radar. We have many radar graphs, but we can't read them one-time, because the
@@ -231,14 +250,14 @@ def radar_rain_gauge_merge():
             one by one '''
         radar_data = data_preprocess.read_precipitation_from_image(radar_map_path)
         '''krige radar data at the rain gauge locations'''
-        # read radar data at the rain gauge locations
-        radar_data_in_rain_gauge_sites = read_radar_data_in_positions(radar_data, x_in_radar_grid,
-                                                                      y_in_radar_grid)
+        # read radar data at the rain gauge locations. Because the data of radar has the form of interval, we name it "range"
+        radar_data_in_rain_gauge_sites = read_radar_data_in_positions(radar_data, x_in_radar_grid, y_in_radar_grid)
         # krige
         radar_center_x = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_x'))
         radar_center_y = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_y'))
-        z_radar, ss_radar = rain_ordinary_kriging(radar_center_x, radar_center_y, x_in_radar_grid,
-                                                  y_in_radar_grid, radar_data_in_rain_gauge_sites.values)
+        # To krige, we have to convert the range to a number. Here, I choose the way to average the range
+        z_radar, ss_radar = rain_ordinary_kriging(radar_center_x, radar_center_y, x_in_radar_grid, y_in_radar_grid,
+                                                  radar_data_in_rain_gauge_sites)
         '''compute the deviation between the radar-observation and kriging-radar'''
         deviation = radar_data - z_radar
         '''apply deviation to kriging-rain-gauge'''
