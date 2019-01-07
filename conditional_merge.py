@@ -184,13 +184,10 @@ def read_radar_data_in_positions(radar_data, x_in_radar_grid, y_in_radar_grid):
 
 
 def write_radar_merge_data(precipitation, rain_date_time):
-    """construct all datas and store in the table "t_bd_radar_precipitation". It would be better that zero values are
+    """construct all datas and store in the table "t_bd_condition_merge". It would be better that zero values are
     not stored """
-    url = project_util.read_radar_data_dir('config.ini', 'data-db', 'url')
-    username = project_util.read_radar_data_dir('config.ini', 'data-db', 'username')
-    password = project_util.read_radar_data_dir('config.ini', 'data-db', 'password')
-    database = project_util.read_radar_data_dir('config.ini', 'data-db', 'database')
-    table = "t_bd_radar_precipitation"
+    url, username, password, database = project_util.time_sequence_table()
+    table = "t_bd_condition_merge"
     params = []
     radar_center_x = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_x'))
     radar_center_y = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_y'))
@@ -210,17 +207,15 @@ def write_radar_merge_data(precipitation, rain_date_time):
                 time = rain_date_time
                 time_unit_type = 'h'
                 time_unit_length = 1
-                precipitation_value_min = str(precipitation[i][j][0])
-                precipitation_value_max = str(precipitation[i][j][1])
+                precipitation_value = str(precipitation[i][j])
                 temp = (
-                    grid_id, x_in_graph, y_in_graph, time, time_unit_type, time_unit_length, precipitation_value_min,
-                    precipitation_value_max)
+                    grid_id, x_in_graph, y_in_graph, time, time_unit_type, time_unit_length, precipitation_value)
                 count = count + 1
-                if precipitation[i][j][1] > 0:
+                if precipitation[i][j] > 0:
                     # we won't store 0, or the data in db will be too big.
                     params.append(temp)
     fields = ['grid_id', 'x_in_graph', 'y_in_graph', 'time', 'time_unit_type', 'time_unit_length',
-              'precipitation_value_min', 'precipitation_value_max']
+              'precipitation_value']
     project_util.mysql_insert_fields_batch(url, username, password, database, table, fields, params)
 
 
@@ -260,6 +255,8 @@ def radar_rain_gauge_merge():
     rain_gauge_sites_id = [15, 19, 23, 82, 181, 182, 183, 251, 252, 254, 255, 256, 257, 258, 260, 261, 262, 263, 267,
                            268, 269, 270, 271, 272, 274, 322, 341, 361, 362]
     zs_rain_gauge = read_rain_gauge_data(rain_gauge_sites_id, start_time, end_time, time_step_type, time_step_length)
+    print(zs_rain_gauge.values)
+    print(zs_rain_gauge.values[0])
     # read rain_gauge_site_num_in_radar_grid
     radar_center_x = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_x'))
     radar_center_y = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_y'))
@@ -286,16 +283,20 @@ def radar_rain_gauge_merge():
         radar_radius_in_graph = int(
             project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_radius_in_graph'))
         z_radar, ss_radar = rain_ordinary_kriging(radar_center_x, radar_center_y, radar_radius_in_graph,
-                                                  x_in_radar_grid, y_in_radar_grid, radar_resolution_x,
-                                                  radar_resolution_y, radar_data_in_rain_gauge_sites)
+                                                  radar_resolution_x, radar_resolution_y, x_in_radar_grid,
+                                                  y_in_radar_grid, radar_data_in_rain_gauge_sites)
         '''compute the deviation between the radar-observation and kriging-radar'''
         # radar_data have to be sliced to adapt the size of kriging's range
-        radar_data = radar_data_interval.sum(1) / 2
-        deviation = radar_data - z_radar
+        radar_data = radar_data_interval.sum(2) / 2
+        x_start_index = radar_center_x - radar_radius_in_graph
+        y_start_index = radar_center_y - radar_radius_in_graph
+        x_end_index = int((radar_center_x - radar_radius_in_graph + radar_radius_in_graph * 2) / radar_resolution_x + 1)
+        y_end_index = int((radar_center_y - radar_radius_in_graph + radar_radius_in_graph * 2) / radar_resolution_y + 1)
+        deviation = radar_data[x_start_index:x_end_index, y_start_index:y_end_index] - z_radar
         '''apply deviation to kriging-rain-gauge'''
         z_rain_gauge, ss_rain_gauge = rain_ordinary_kriging(radar_center_x, radar_center_y, radar_radius_in_graph,
-                                                            x_in_radar_grid, y_in_radar_grid, radar_resolution_x,
-                                                            radar_resolution_y, zs_rain_gauge.values)
+                                                            radar_resolution_x, radar_resolution_y, x_in_radar_grid,
+                                                            y_in_radar_grid, zs_rain_gauge.values[i])
         merge_data = deviation + z_rain_gauge
         '''write data to database'''
         rain_graph_time = radar_map_path[:-4][-14:]
