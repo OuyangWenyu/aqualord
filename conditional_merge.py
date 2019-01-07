@@ -61,9 +61,16 @@ def read_rain_gauge_data(rain_gauge_sites_id, start_time, end_time, time_step_ty
     return rain_gauges_data
 
 
-def rain_gauge_site_num_in_radar_grid(rain_gauge_sites_id):
+def rain_gauge_site_num_in_radar_grid(rain_gauge_sites_id, radar_center_x, radar_center_y, radar_resolution_x,
+                                      radar_resolution_y):
     '''After getting rain gauges' rainfall data(2 dimensional data), calculate the grid number in radar graph of rain gauge
-     by its geological coordination Firstly, give out a virtual position. the center of radar station is (126.12, 41.59)'''
+     by its geological coordination Firstly, give out a virtual position. the center of radar station is (126.12, 41.59)
+     # Parameters:
+     ---------------
+     rain_gauge_sites_id: all pluviometers' coordinations
+     radar_center_x: radar-center's x number not coordination
+     radar_center_y: radar-center's y number not coordination
+     '''
     url, username, password, database = project_util.time_sequence_table()
     sql = "select * from t_be_entity where id in (" + str(rain_gauge_sites_id)[1:-1] + ") order by id; "
     coordinates = project_util.mysql_select(url, username, password, database, sql)
@@ -74,25 +81,34 @@ def rain_gauge_site_num_in_radar_grid(rain_gauge_sites_id):
         project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_longitude'))
     radar_center_coordinate_y = float(
         project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_latitude'))
-    radar_resolution_x = float(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_resolution_x'))
-    radar_resolution_y = float(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_resolution_y'))
     radar_center_coordinate = (radar_center_coordinate_y, radar_center_coordinate_x)
-    x_in_radar_grid = []
-    y_in_radar_grid = []
+    x_distance_in_radar_grid = []
+    y_distance_in_radar_grid = []
     for i in range(len(lat_long_itudes)):
         radar_center_coordinate_temp_x = (radar_center_coordinate[0], lat_long_itudes[i][1])
         radar_center_coordinate_temp_y = (lat_long_itudes[i][0], radar_center_coordinate[1])
         distance_x_temp = vincenty(radar_center_coordinate_temp_x, lat_long_itudes[i]).km
         distance_y_temp = vincenty(radar_center_coordinate_temp_y, lat_long_itudes[i]).km
-        x_in_radar_grid.append(distance_x_temp / radar_resolution_x)
-        y_in_radar_grid.append(distance_y_temp / radar_resolution_y)
+        '''Radars in our country are all located in north and east of the earth,
+        So it means that bigger y, smaller latitude; bigger x, bigger longitude'''
+        if lat_long_itudes[i][0] < radar_center_coordinate_y:
+            y_distance_in_radar_grid.append(distance_y_temp / radar_resolution_y)
+        else:
+            y_distance_in_radar_grid.append(-distance_y_temp / radar_resolution_y)
+        if lat_long_itudes[i][1] < radar_center_coordinate_x:
+            x_distance_in_radar_grid.append(-distance_x_temp / radar_resolution_x)
+        else:
+            x_distance_in_radar_grid.append(distance_x_temp / radar_resolution_x)
+    x_in_radar_grid = radar_center_x + np.array(x_distance_in_radar_grid)
+    y_in_radar_grid = radar_center_y + np.array(y_distance_in_radar_grid)
     x_in_radar_grid = np.rint(x_in_radar_grid)
     y_in_radar_grid = np.rint(y_in_radar_grid)
     return x_in_radar_grid.astype(np.int32), y_in_radar_grid.astype(np.int32)
 
 
-def rain_ordinary_kriging(center_grid_num_x, center_grid_num_y, x_measure, y_measure,
-                          z_measure_data):
+def rain_ordinary_kriging(radar_center_x, radar_center_y, radar_radius_in_graph,
+                          radar_resolution_x, radar_resolution_y,
+                          x_measure, y_measure, z_measure_data):
     """rainfall ordinary kriging.
     Parameters
     ----------
@@ -107,45 +123,52 @@ def rain_ordinary_kriging(center_grid_num_x, center_grid_num_y, x_measure, y_mea
     ss_krige: ndarray,  Variance at specified grid points or at the specified set of points
     """
     # show the range of interpolation
-    gridx = np.arange(0, center_grid_num_x * 2, 1)
-    gridy = np.arange(0, center_grid_num_y * 2, 1)
+    # plus '1' for the open interval
+    gridx = np.arange(radar_center_x - radar_radius_in_graph,
+                      radar_center_x - radar_radius_in_graph + radar_radius_in_graph * 2 + 1, radar_resolution_x)
+    gridy = np.arange(radar_center_y - radar_radius_in_graph,
+                      radar_center_y - radar_radius_in_graph + radar_radius_in_graph * 2 + 1, radar_resolution_y)
     '''krige the rain gauge observations. Create the ordinary kriging object. Required inputs are the X-coordinates 
     of the data points, the Y-coordinates of the data points, and the Z-values of the data points. If no variogram 
     model is specified, defaults to a linear variogram model. If no variogram model parameters are specified, 
     then the code automatically calculates the parameters by fitting the variogram model to the binned experimental 
     semivariogram. The verbose kwarg controls code talk-back, and the enable_plotting kwarg controls the display of 
     the semivariogram. '''
-    OK = OrdinaryKriging(x_measure, y_measure, z_measure_data, variogram_model='linear',
-                         verbose=False, enable_plotting=True)
-    '''the enable-plotting controls the display of semivariogram, so we can check it to choose the best r(d) fitting 
-    curve '''
-    # Creates the kriged grid and the variance grid. Allows for kriging on a rectangular
-    # grid of points, on a masked rectangular grid of points, or with arbitrary points.
-    # (See OrdinaryKriging.__doc__ for more information.)
-    z_krige, ss_krige = OK.execute('grid', gridx, gridy)
-    '''z_keige is the result, and ss_krige is the variance. So, next ,we can visualize the interpolation data'''
-    kt.write_asc_grid(gridx, gridy, z_krige, filename="output.asc")
-    X, Y = np.meshgrid(gridx, gridy)
-    C = plt.contour(X, Y, z_krige, 8, colors='black')  # 生成等值线图
-    plt.contourf(X, Y, z_krige, 8)
-    plt.clabel(C, inline=1, fontsize=10)
-    plt.show()
+    temp_zero = np.zeros(1)
+    if (z_measure_data <= temp_zero).all():
+        z_krige = np.zeros((len(gridx), len(gridy)))
+        ss_krige = np.zeros((len(gridx), len(gridy)))
+    else:
+        OK = OrdinaryKriging(x_measure, y_measure, z_measure_data, variogram_model='linear',
+                             verbose=False, enable_plotting=True)
+        '''the enable-plotting controls the display of semivariogram, so we can check it to choose the best r(d) fitting 
+            curve '''
+        # Creates the kriged grid and the variance grid. Allows for kriging on a rectangular
+        # grid of points, on a masked rectangular grid of points, or with arbitrary points.
+        # (See OrdinaryKriging.__doc__ for more information.)
+        z_krige, ss_krige = OK.execute('grid', gridx, gridy)
+        '''z_keige is the result, and ss_krige is the variance. So, next ,we can visualize the interpolation data'''
+        kt.write_asc_grid(gridx, gridy, z_krige, filename="output.asc")
+        X, Y = np.meshgrid(gridx, gridy)
+        C = plt.contour(X, Y, z_krige, 8, colors='black')  # 生成等值线图
+        plt.contourf(X, Y, z_krige, 8)
+        plt.clabel(C, inline=1, fontsize=10)
+        plt.show()
     return z_krige, ss_krige
 
 
 def read_radar_data_in_positions(radar_data, x_in_radar_grid, y_in_radar_grid):
     """read radar data in position(x_in_radar_grid,y_in_radar_grid)
      the x,y axis shown as following:
-     ---------------> x
+     ---------------> x  (East)
      |
      |
      |
      |
      |
      V
-     y
+     y (South)
      x means longitude, y means latitude
-
      then, average a 2-D numpy array to a 1-D array
      Return
      ----------
@@ -238,7 +261,13 @@ def radar_rain_gauge_merge():
                            268, 269, 270, 271, 272, 274, 322, 341, 361, 362]
     zs_rain_gauge = read_rain_gauge_data(rain_gauge_sites_id, start_time, end_time, time_step_type, time_step_length)
     # read rain_gauge_site_num_in_radar_grid
-    x_in_radar_grid, y_in_radar_grid = rain_gauge_site_num_in_radar_grid(rain_gauge_sites_id)
+    radar_center_x = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_x'))
+    radar_center_y = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_y'))
+    radar_resolution_x = float(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_resolution_x'))
+    radar_resolution_y = float(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_resolution_y'))
+    x_in_radar_grid, y_in_radar_grid = rain_gauge_site_num_in_radar_grid(rain_gauge_sites_id, radar_center_x,
+                                                                         radar_center_y, radar_resolution_x,
+                                                                         radar_resolution_y)
     periods_num = project_util.time_period_num(start_time, end_time, time_step_type, time_step_length)
     datelist = pd.date_range(start_time, freq='H', periods=periods_num)
     rootdir = project_util.read_radar_data_dir('config.ini', 'radar-data', 'data_directory')
@@ -248,21 +277,25 @@ def radar_rain_gauge_merge():
         '''get volume-integrated grid data by radar. We have many radar graphs, but we can't read them one-time, because the
             memory needed to load data is too big to be satisfied. For that reason, we need a loop and divide-and-conquer them
             one by one '''
-        radar_data = data_preprocess.read_precipitation_from_image(radar_map_path)
+        radar_data_interval = data_preprocess.read_precipitation_from_image(radar_map_path)
         '''krige radar data at the rain gauge locations'''
         # read radar data at the rain gauge locations. Because the data of radar has the form of interval, we name it "range"
-        radar_data_in_rain_gauge_sites = read_radar_data_in_positions(radar_data, x_in_radar_grid, y_in_radar_grid)
-        # krige
-        radar_center_x = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_x'))
-        radar_center_y = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_y'))
+        radar_data_in_rain_gauge_sites = read_radar_data_in_positions(radar_data_interval, x_in_radar_grid,
+                                                                      y_in_radar_grid)
         # To krige, we have to convert the range to a number. Here, I choose the way to average the range
-        z_radar, ss_radar = rain_ordinary_kriging(radar_center_x, radar_center_y, x_in_radar_grid, y_in_radar_grid,
-                                                  radar_data_in_rain_gauge_sites)
+        radar_radius_in_graph = int(
+            project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_radius_in_graph'))
+        z_radar, ss_radar = rain_ordinary_kriging(radar_center_x, radar_center_y, radar_radius_in_graph,
+                                                  x_in_radar_grid, y_in_radar_grid, radar_resolution_x,
+                                                  radar_resolution_y, radar_data_in_rain_gauge_sites)
         '''compute the deviation between the radar-observation and kriging-radar'''
+        # radar_data have to be sliced to adapt the size of kriging's range
+        radar_data = radar_data_interval.sum(1) / 2
         deviation = radar_data - z_radar
         '''apply deviation to kriging-rain-gauge'''
-        z_rain_gauge, ss_rain_gauge = rain_ordinary_kriging(radar_center_x, radar_center_y, x_in_radar_grid,
-                                                            y_in_radar_grid, zs_rain_gauge.values)
+        z_rain_gauge, ss_rain_gauge = rain_ordinary_kriging(radar_center_x, radar_center_y, radar_radius_in_graph,
+                                                            x_in_radar_grid, y_in_radar_grid, radar_resolution_x,
+                                                            radar_resolution_y, zs_rain_gauge.values)
         merge_data = deviation + z_rain_gauge
         '''write data to database'''
         rain_graph_time = radar_map_path[:-4][-14:]
