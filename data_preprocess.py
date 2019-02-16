@@ -1,6 +1,7 @@
 # coding:utf-8
 """从下载的雷达图中读取像素,根据最左上角的像素的地理位置,雷达图的分辨率,计算使用的投影坐标系下的所有像素的地理位置,并且与已有的桓仁数据库中的编号对应上"""
-
+import geopy
+import geopy.distance
 import numpy as np
 import os
 
@@ -134,6 +135,44 @@ def read_precipitation_from_image(raw_image):
     return precipitation_raw
 
 
+def calc_angle(x_point_s, y_point_s, x_point_e, y_point_e):
+    """计算两点之间连线与正北方向之间的夹角"""
+    angle = 0
+    y_se = y_point_e - y_point_s
+    x_se = x_point_e - x_point_s
+    if x_se == 0 and y_se > 0:
+        angle = 360
+    if x_se == 0 and y_se < 0:
+        angle = 180
+    if y_se == 0 and x_se > 0:
+        angle = 90
+    if y_se == 0 and x_se < 0:
+        angle = 270
+    if x_se > 0 and y_se > 0:
+        angle = np.math.atan(x_se / y_se) * 180 / np.pi
+    elif x_se < 0 and y_se > 0:
+        angle = 360 + np.math.atan(x_se / y_se) * 180 / np.pi
+    elif x_se < 0 and y_se < 0:
+        angle = 180 + np.math.atan(x_se / y_se) * 180 / np.pi
+    elif x_se > 0 and y_se < 0:
+        angle = 180 + np.math.atan(x_se / y_se) * 180 / np.pi
+    return angle
+
+
+def get_distance_point(lat, lon, distance, direction):
+    """
+    根据经纬度，距离，方向获得一个地点
+    :param lat: 纬度
+    :param lon: 经度
+    :param distance: 距离（千米）
+    :param direction: 方向（北：0，东：90，南：180，西：270）
+    :return:
+    """
+    start = geopy.Point(lat, lon)
+    d = geopy.distance.VincentyDistance(kilometers=distance)
+    return d.destination(point=start, bearing=direction)
+
+
 def prepare_radar_grid(precipitation_raw):
     """construct all grids and store in the table "t_be_radar_gird"
     1小时累计降水产品采用的是每个 体扫描结束后的小时累计方式，即对对每一个2公里*1度的样本库降水率在每个体扫描结束后进行时间累计，
@@ -144,11 +183,16 @@ def prepare_radar_grid(precipitation_raw):
     database = project_util.read_radar_data_dir('config.ini', 'data-db', 'database')
     table = "t_be_radar_grid"
     params = []
-    '''use polar coordinate system, the geological position of the center of radar station is (126.12, 41.59) and the
-    resolution is 1 km * 1 degree. The range of radar is the area where the distance is shorter than the radius(250 grids)'''
+    '''use polar coordinate system, the geological position of the center of radar station is (126.203844,41.973752) and the
+    resolution is 0.6 km. The range of radar is the area where the distance is shorter than the radius(250 grids)'''
     radar_center_x = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_x'))
     radar_center_y = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_y'))
+    radar_center_longitude = float(
+        project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_longitude'))
+    radar_center_latitude = float(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_center_latitude'))
     radar_radius_in_graph = int(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_radius_in_graph'))
+    radar_resolution_x = float(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_resolution_x'))
+    radar_resolution_y = float(project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_resolution_y'))
     radar_center = np.array([radar_center_x, radar_center_y])
     count = 0
     for i in range(len(precipitation_raw)):
@@ -157,8 +201,19 @@ def prepare_radar_grid(precipitation_raw):
             radar_name = project_util.read_radar_data_dir('config.ini', 'radar-data', 'radar_name')
             x_in_graph = i
             y_in_graph = j
-            center_longitude = 0
-            center_latitude = 0
+            '''计算该坐标标号下的WGS1984经纬度，因为图片上xy是左手坐标系的，x向右（东），y向下（南）先把x，y转为右手系坐标下的xy值，
+            直接将y坐标取相反数即可，然后计算可以得到以正北为0度的角'''
+            x_point_s = radar_center_x
+            y_point_s = -radar_center_y
+            x_point_e = x_in_graph
+            y_point_e = -y_in_graph
+            angle = calc_angle(x_point_s, y_point_s, x_point_e, y_point_e)
+            vec1 = np.array([radar_center_x * radar_resolution_x, radar_center_y * radar_resolution_y])
+            vec2 = np.array([x_in_graph * radar_resolution_x, y_in_graph * radar_resolution_y])
+            distance = np.linalg.norm(vec1 - vec2)
+            lon_lat = get_distance_point(radar_center_latitude, radar_center_longitude, distance, angle)
+            center_longitude = lon_lat.longitude
+            center_latitude = lon_lat.latitude
             height = 0
             width = 0
             project_coordinate_system = 'unknown'
@@ -176,3 +231,10 @@ def prepare_radar_grid(precipitation_raw):
                 params.append(temp)
                 count = count + 1
     project_util.mysql_insert_batch(url, username, password, database, table, params)
+
+
+if __name__ == "__main__":
+    """准备雷达各个点的坐标数据"""
+    radar_map_path = "data/RADA_CHN_DOR_L3_ST_NOC-OHP-Z9439-20170810124200.PNG"
+    raw_data = read_precipitation_from_image(radar_map_path)
+    prepare_radar_grid(raw_data)

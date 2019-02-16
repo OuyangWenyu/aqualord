@@ -124,10 +124,11 @@ def rain_ordinary_kriging(radar_center_x, radar_center_y, radar_radius_in_graph,
     """
     # show the range of interpolation
     # plus '1' for the open interval
+    # the last parameter "1.0" means one grid is "1", the type has to be float, or it will cast error
     gridx = np.arange(radar_center_x - radar_radius_in_graph,
-                      radar_center_x - radar_radius_in_graph + radar_radius_in_graph * 2 + 1, radar_resolution_x)
+                      radar_center_x - radar_radius_in_graph + radar_radius_in_graph * 2 + 1, 1.0)
     gridy = np.arange(radar_center_y - radar_radius_in_graph,
-                      radar_center_y - radar_radius_in_graph + radar_radius_in_graph * 2 + 1, radar_resolution_y)
+                      radar_center_y - radar_radius_in_graph + radar_radius_in_graph * 2 + 1, 1.0)
     '''krige the rain gauge observations. Create the ordinary kriging object. Required inputs are the X-coordinates 
     of the data points, the Y-coordinates of the data points, and the Z-values of the data points. If no variogram 
     model is specified, defaults to a linear variogram model. If no variogram model parameters are specified, 
@@ -220,7 +221,7 @@ def write_radar_merge_data(precipitation, rain_date_time):
 
 
 def radar_map_at_time(rootdir, radar, time):
-    """read a radar map of the 'radar' at the 'time' from the director 'rootdir'.
+    """read a radar map of the 'radar' at the 'time' from the director 'rootdir'. 6分钟一个，但是不是都从00点开始，会有漏掉的数据，所以循环需要注意，目前采用按小时的方式
     TODO: the radar time is UTC time, so we have to convert it to the Beijing time
     Return
     -------
@@ -239,17 +240,18 @@ def radar_map_at_time(rootdir, radar, time):
                 for j in range(len(file_list)):
                     print(file_list[j][-18:-4])
                     date_time_temp = project_util.parse_datetime(file_list[j][-18:-4])
-                    if date_time_right == date_time_temp:
+                    print(date_time_temp.hour)
+                    if date_time_right.hour == date_time_temp.hour:
                         path = os.path.join(rootdir + '/' + files_list[i] + '/', file_list[j])
+                        print(path)
                         break
                 break
     return path
 
 
-def radar_rain_gauge_merge():
+def radar_rain_gauge_merge(start_time, end_time):
     """merge radar data with rain gauge"""
-    start_time = '2017-08-05 00:00:00'
-    end_time = '2017-08-10 00:00:00'
+
     time_step_type = str(project_util.TimeUnitType.Hour.value)
     time_step_length = 1
     rain_gauge_sites_id = [15, 19, 23, 82, 181, 182, 183, 251, 252, 254, 255, 256, 257, 258, 260, 261, 262, 263, 267,
@@ -290,8 +292,8 @@ def radar_rain_gauge_merge():
         radar_data = radar_data_interval.sum(2) / 2
         x_start_index = radar_center_x - radar_radius_in_graph
         y_start_index = radar_center_y - radar_radius_in_graph
-        x_end_index = int((radar_center_x - radar_radius_in_graph + radar_radius_in_graph * 2) / radar_resolution_x + 1)
-        y_end_index = int((radar_center_y - radar_radius_in_graph + radar_radius_in_graph * 2) / radar_resolution_y + 1)
+        x_end_index = int((radar_center_x - radar_radius_in_graph + radar_radius_in_graph * 2) + 1)
+        y_end_index = int((radar_center_y - radar_radius_in_graph + radar_radius_in_graph * 2) + 1)
         deviation = radar_data[x_start_index:x_end_index, y_start_index:y_end_index] - z_radar
         '''apply deviation to kriging-rain-gauge'''
         z_rain_gauge, ss_rain_gauge = rain_ordinary_kriging(radar_center_x, radar_center_y, radar_radius_in_graph,
@@ -303,8 +305,11 @@ def radar_rain_gauge_merge():
         rain_date = rain_graph_time[:8]
         rain_time = rain_graph_time[8:10] + ':' + rain_graph_time[10:12] + ':' + rain_graph_time[12:14]
         rain_date_time = pytime.parse(rain_date + ' ' + rain_time)
-        write_radar_merge_data(merge_data, rain_date_time)
+        # write_radar_merge_data(merge_data, rain_date_time)
+        return merge_data, x_start_index, y_start_index, x_end_index, y_end_index
 
 
 if __name__ == "__main__":
-    radar_rain_gauge_merge()
+    start_time = '2016-08-30 00:00:00'
+    end_time = '2016-09-09 00:00:00'
+    radar_rain_gauge_merge(start_time, end_time)
