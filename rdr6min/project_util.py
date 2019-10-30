@@ -54,6 +54,21 @@ def read_radar_data_dir(config_file_name, config_section_name, config_option_nam
     return target_directory
 
 
+def write_2d_array_to_txt(arrs, txt_file):
+    """把二维数组写入到txt文本中,txt_file为txt文件文件名字符串，比如'test.txt'"""
+    arr_str = []
+    f = open(txt_file, 'w+')
+    for i in range(len(arrs)):
+        joints_frame = arrs[i]  # 每行
+        arr_str.append(joints_frame)
+        for j in range(len(joints_frame)):
+            strNum = str(joints_frame[j])
+            f.write(strNum)
+            f.write(' ')
+        f.write('\n')
+    f.close()
+
+
 # -------------------------------------database--------------------------------------------
 def db_timesequence_by_attribute_time(entity_attribute_id, time_unit_type, time_unit_num,
                                       start_time, end_time):
@@ -161,7 +176,7 @@ def oracle_select():
     conn.close()
 
 
-def mysql_select(url, username, password, database, sql):
+def mysql_sql(url, username, password, database, sql):
     """connect to mysql database, and execute 'select, using pandas and sqlalchemy
     Returns
     -------

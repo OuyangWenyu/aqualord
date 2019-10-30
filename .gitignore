@@ -170,11 +170,7 @@ venv.bak/
 .mypy_cache/
 
 
-
-
-
 # project ignore
-/*.asc
-/config.ini
 /data/
 /tests/
+/rdr6min/config.ini

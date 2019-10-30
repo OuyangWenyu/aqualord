@@ -24,26 +24,31 @@ def points_of_radar_map_in_basin(geojson_file):
     """判断雷达图内哪些点在流域内，返回在流域内的像素格点的x_in_graph和y_in_graph"""
     sql = "select * from t_be_radar_grid"
     url, username, password, database = project_util.time_sequence_table()
-    radar_grids = project_util.mysql_select(url, username, password, database, sql)
+    radar_grids = project_util.mysql_sql(url, username, password, database, sql)
     print(radar_grids)
     radar_grid_in_basin = []
+    json_file = open(geojson_file, encoding='utf-8')
+    geojson_setting = json.load(json_file)
+    multipoly = geojson_setting['features'][1]['geometry']
+    print(geojson_setting)
     for i in range(0, len(radar_grids)):
-        center_longitude = radar_grids[i]['center_longitude']
-        center_latitude = radar_grids[i]['center_latitude']
-        if is_point_in_boundary(center_longitude, center_latitude, geojson_file):
-            radar_grid_in_basin.append([radar_grids[i]['x_in_graph'], radar_grids[i]['y_in_graph']])
+        center_longitude = radar_grids.loc[i, 'center_longitude']
+        center_latitude = radar_grids.loc[i, 'center_latitude']
+        if is_point_in_boundary(center_longitude, center_latitude, multipoly):
+            radar_grid_in_basin.append([radar_grids.loc[i, 'x_in_graph'], radar_grids.loc[i, 'y_in_graph']])
+    print(radar_grid_in_basin)
+    project_util.write_2d_array_to_txt(radar_grid_in_basin, 'radar_grid_in_basin.txt')
     return radar_grid_in_basin
 
 
-def is_point_in_boundary(px, py, geojson_file):
+def is_point_in_boundary(px, py, multipoly):
     """给定一个点的经纬度坐标，判断是否在多多边形边界内"""
-    json_file = open(geojson_file, encoding='utf-8')
-    geojson_setting = json.load(json_file)
-    print(geojson_setting)
+    # json_file = open(geojson_file, encoding='utf-8')
+    # geojson_setting = json.load(json_file)
     point_str = '{"type": "Point", "coordinates": [' + str(px) + ', ' + str(py) + ']}'
     print(point_str)
     # multipoly_str = '{"type":"MultiPolygon","coordinates":[[[[0,0],[0,10],[10,10],[10,0],[0,0]]],[[[10,10],[10,20],[20,20],[20,10],[10,10]]]]}'
-    multipoly = geojson_setting['features'][1]['geometry']
+    # multipoly = geojson_setting['features'][1]['geometry']
     point = json.loads(point_str)
 
     return point_in_multipolygon(point, multipoly)

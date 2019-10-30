@@ -42,7 +42,7 @@ def read_rain_gauge_data(rain_gauge_sites_id, start_time, end_time, time_step_ty
     url, username, password, database = project_util.time_sequence_table()
     sql = "select * from t_bd_time_sequence where attribute_id=114 and time_step_unit=\"" + time_step_type + "\" and time_step_length=" + str(
         time_step_length) + " and time >= \"" + start_time + "\" and time<\"" + end_time + "\" order by ent_id, time; "
-    select_data_temp = project_util.mysql_select(url, username, password, database, sql)
+    select_data_temp = project_util.mysql_sql(url, username, password, database, sql)
     print(select_data_temp)
     z_rain_gauge_data = select_data_temp.loc[select_data_temp['ent_id'].isin(rain_gauge_sites_id)]
     print(z_rain_gauge_data)
@@ -73,7 +73,7 @@ def rain_gauge_site_num_in_radar_grid(rain_gauge_sites_id, radar_center_x, radar
      '''
     url, username, password, database = project_util.time_sequence_table()
     sql = "select * from t_be_entity where id in (" + str(rain_gauge_sites_id)[1:-1] + ") order by id; "
-    coordinates = project_util.mysql_select(url, username, password, database, sql)
+    coordinates = project_util.mysql_sql(url, username, password, database, sql)
     lat_long_itudes = coordinates.iloc[:, [6, 5]].values
     print(lat_long_itudes)
     # Note: 函数参数都是纬度latitude在前，经度longitude在后。

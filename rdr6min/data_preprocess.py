@@ -113,7 +113,7 @@ def precipitation_from_pixel(pixel_rgb_array):
 
 
 def read_precipitation_from_image(raw_image):
-    """The integrated process in which we read precipitation value from images downloaded consists of read_rgb,
+    """The integrated process in which we read precipitation, value from images downloaded consists of read_rgb,
     precipitation _from_pixel and pixel_number_position, and then we can get a map with pixel's num from Guodian
     database serving as key, and precipitation value serving as value """
     if not os.path.isfile(raw_image):
@@ -231,6 +231,7 @@ def prepare_radar_grid(precipitation_raw):
                 params.append(temp)
                 count = count + 1
     project_util.mysql_insert_batch(url, username, password, database, table, params)
+
 
 
 if __name__ == "__main__":
