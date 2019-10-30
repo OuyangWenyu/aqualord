@@ -171,6 +171,5 @@ venv.bak/
 
 
 # project ignore
-/data/
 /tests/
 /rdr6min/config.ini
