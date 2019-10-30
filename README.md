@@ -23,7 +23,7 @@
 - 图片工具条用的`matplotlib`自带的，方便但可能不好看、不好用
 - 想尝试类似`jupyter notebook`那种和浏览器结合起来的交互界面
 
-![FY-4A](data\fy4a\截图.png)
+![FY-4A](data/fy4a/截图.png)
 
 2018-11-20：
 
@@ -45,6 +45,9 @@
 
 获取雷达测雨图并解码数据，获取雷达降雨数据的目的是想看看能否利用其空间信息获取全面的特点，提高降雨观测精度，以使流域径流预报有更准确的输入，为此，项目还提供了降雨观测融合算法。
 
+本项目[wiki](https://github.com/OuyangWenyu/hydro-radar-precipitation/wiki)中有关于雷达测雨的相关基本知识介绍。
+
+2019-02-01:
 After downloading radar precipitation data from cma(China meteorological data website)，we can process the radar graph , and merge the data with that from rainfall station.
 
 ### 中国自动站与CMORPH降水产品融合的逐时降水量网格数据集（1.0版）数据
