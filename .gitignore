@@ -168,8 +168,3 @@ venv.bak/
 
 # mypy
 .mypy_cache/
-
-
-# project ignore
-/tests/
-/rdr6min/config.ini
