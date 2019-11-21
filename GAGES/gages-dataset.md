@@ -404,14 +404,22 @@ BOUND_SOURCE是指流域边界的来源，比如1代表 Wieczorek delineations�
 - Geology：GEOL_REEDBUSH_DOM/GEOL_REEDBUSH_DOM_PCT/GEOL_REEDBUSH_SITE/GEOL_HUNT_DOM_CODE/GEOL_HUNT_DOM_PCT/GEOL_HUNT_DOM_DESC/GEOL_HUNT_SITE_CODE
   GEOL_REEDBUSH_DOM：根据Reed的文献得到的主要地质类型；
   GEOL_HUNT_DOM_CODE：根据Hunt的文献得到的主要地质类型编码。
-- Hydro：径流密度等各类水文属性，很多，这里列出几个感兴趣的属性。
-  MAINSTEM_SINUOUSITY：mainstem stream的河流曲直比；
-  **HIRES_LENTIC_PCT**：被水库+湖泊/ponds占的流域面积比；
-  BFI_AVE：基流系数；
-  PERDUN：邓恩产流，即蓄满产流，临时饱和带产流占总径流的比例；
-  PERHOR：霍顿产流，即超渗产流占总径流的比例；
-  TOPWET：Topographic wetness index地形湿度指数；
-  CONTACT:地下径流contact时间指数估计了下渗水在流入河流之前停留在流域饱和带的天数。
+- **Hydro**：各类水文属性
+  - MAINSTEM_SINUOUSITY：mainstem stream的河流曲直比；
+  - STRAHLER_MAX: 流域最大的STRAHLER分级级数；
+  - HIRES_LENTIC_PCT：被水库+湖泊/ponds占的流域面积比；
+  - REACHCODE: 站点所在河段的国家水文数据集（National Hydrography Dataset）的河段编码；
+  - ARTIFPATH_PCT: 人工河道的比例，注意，这并不一定意味着改变了径流，只是它足够宽，可以表示为多边形而不是直线，在某些情况下，这意味着筑坝；
+  - ARTIFPATH_MAINSTEM_PCT: mainstream上的人工河道比例；
+  - HIRES_LENTIC_PCT: 流域被Lakes/Ponds+Reseervoirs占的比例；
+  - BFI_AVE：基流系数；
+  - PERDUN：邓恩产流，即蓄满产流，临时饱和带产流占总径流的比例；
+  - PERHOR：霍顿产流，即超渗产流占总径流的比例；
+  - TOPWET：Topographic wetness index地形湿度指数；
+  - CONTACT:地下径流contact时间指数估计了下渗水在流入河流之前停留在流域饱和带的天数；
+  - RUNAVE7100: 1971－2000年年均径流，整合气候，land use，water use和regulation考虑的结果；
+  - WB5100_JAN/.../DEC/ANN_MM: 1951－2000年流域各月平均径流和年平均径流，用的是一篇文章中的水量平衡模型，考虑了降水和温度，但是没有考虑land use，water use，regulation等；
+  - PCT_1ST/.../6TH/NO_ORDER: strahler分级级数河流长度占总河流长度比例。
 - **HydroMod_Dams**：NDAMS_2009/DDENS_2009/STOR_NID_2009/STOR_NOR_2009/MAJ_NDAMS_2009/MAJ_DDENS_2009/pre19xx_NDAMS/pre19xx_DDENS/pre19xx_STOR/RAW_DIS_NEAREST_DAM/RAW_AVG_DIS_ALLDAMS/RAW_DIS_NEAREST_MAJ_DAM/RAW_AVG_DIS_ALL_MAJ_DAMS
 STOR_NID_2009：总库容；
 RAW_DIS_NEAREST_DAM：离站site最近的大坝到site的直线距离。
@@ -431,7 +439,7 @@ RAW_DIS_NEAREST_DAM：离站site最近的大坝到site的直线距离。
   PDEN_DAY_LANDSCAN_2007：白天通过LandScan看到的人口密度；
   RD_STR_INTERS：河流和道路交汇的数目；
   IMPNLCD06：不透水面积占流域比例。
-- Prot_Areas：PADCAT1_PCT_BASIN/PADCAT2_PCT_BASIN/PADCAT3_PCT_BASIN，三个不同保护级别区域占流域的比例。
+- **Prot_Areas**：PADCAT1_PCT_BASIN/PADCAT2_PCT_BASIN/PADCAT3_PCT_BASIN，三个不同保护级别区域占流域的比例。
 - Regions：ECO3_SITE/HLR100M_SITE/HUC8_SITE/USDA_LRR_SITE/NUTR_ECO_SITE/ECO2_BAS_DOM/ECO3_BAS_DOM/ECO3_BAS_PCT/NUTR_BAS_DOM/NUTR_BAS_PCT/HLR_BAS_DOM_100M/HLR_BAS_PCT_100M/PNV_BAS_DOM/PNV_BAS_PCT。都是表述的站点所处的region是什么。
   ECO3_SITE：site所处的Level III的ecoregion；
   HLR100M_SITE：site所处的Hydrologic Landscape Region；
