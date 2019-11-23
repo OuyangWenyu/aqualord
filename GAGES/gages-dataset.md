@@ -386,19 +386,43 @@ A number of data fields are not the result of GIS calculations, but rather the r
 
 接下来，简单看一看这27大类里面都有什么样的变量，容易了解的或之前已经提及的变量就简单带过。
 
-- BasinID：STAID/STANAME/DRAIN_SQKM/HUC02/LAT_GAGE/LNG_GAGE/STATE/BOUND_SOURCE/HCDN-2009/HBN36/OLD_HCDN/NSIP_SENTINEL/FIPS_SITE/COUNTYNAME_SITE/NAWQA_SUID
-HUC02:HUC是NHDPlus Water Resources Region大区域，由两位数字表示。比如01是New England等；
-BOUND_SOURCE是指流域边界的来源，比如1代表 Wieczorek delineations；
-接下来几个都是判断测站是否属某个观测network.
-- Bas_Classif: CLASS/AGGECOREGION/HYDRO_DISTURB_INDX/WR_REPORT_REMARKS/ADR_CITATION/SCREENING_COMMENTS/WSC_CLASS (AK-HI-PR only)
-  AGGECOREGION是level II的ecoregion。
-- Bas_Morph：BAS_COMPACTNESS/LAT_CENT/LONG_CENT
-- Bound_QA:BASIN_BOUNDARY_CONFIDENCE/DRAIN_SQKM/NWIS_DRAIN_SQKM/PCT_DIFF_NWIS/HUC10_CHECK
-  PCT_DIFF_NWIS:这里的流域面积和NWIS数据的差别百分比。
-  HUC10_CHECK：和WBD HUC10边界的对比检查。
+- BasinID：
+    - STAID
+    - STANAME
+    - DRAIN_SQKM
+    - HUC02: HUC是NHDPlus Water Resources Region大区域，由两位数字表示。比如01是New England等；
+    - LAT_GAGE
+    - LNG_GAGE
+    - STATE
+    - BOUND_SOURCE: 是指流域边界的来源，比如1代表 Wieczorek delineations，2是Water science center定义的等；
+    - HCDN-2009: 接下来几个都是判断测站是否属某个观测network的.
+    - HBN36：HBN是Hydrologic Benchmark Network
+    - OLD_HCDN：第一版的HCDN
+    - NSIP_SENTINEL：USGS的NSIP_Sentinel network
+    - FIPS_SITE：gage位置的county的FIPS code
+    - COUNTYNAME_SITE：gage位置的county名
+    - NAWQA_SUID：如果流域边界用的是NAWQA（National Water-Quality Assessment ）的存档，这就有NAWQA study unit id  
+- Bas_Classif: 
+    - CLASS: 是reference还是non-ref
+    - AGGECOREGION: AGGECOREGION是level II的ecoregion。
+    - HYDRO_DISTURB_INDX：HDI值
+    - WR_REPORT_REMARKS: 报告里关于水文modification的remarks
+    - ADR_CITATION：年度水报告引用
+    - SCREENING_COMMENTS：National Water-Quality Assessment 的关于人类改变flow证据的评论
+    - WSC_CLASS (AK-HI-PR only)：CONUS之外的地区的
+- Bas_Morph：
+    - BAS_COMPACTNESS: Watershed compactness ratio, = area/perimeter^2 * 100; higher number = more compact shape.  
+    - LAT_CENT: 流域中心纬度
+    - LONG_CENT: 流域中心经度
+- Bound_QA:
+    - BASIN_BOUNDARY_CONFIDENCE: 流域边界和实际边界匹配的置信度
+    - DRAIN_SQKM
+    - NWIS_DRAIN_SQKM
+    - PCT_DIFF_NWIS: 这里的流域面积和NWIS(National Water Information System)数据的差别百分比。
+    - HUC10_CHECK：和WBD HUC10边界的对比检查。
 - Climate：较多变量，不一一给出。包括降雨、气温、湿度多个角度的数据。
 - Climate_Ppt_Annual：PPT1950_AVG thru PPT2009_avg (60 values)
-- Climate_Tmp_Annual:TMP1950_AVG thru TMP2009_avg (60 values)
+- Climate_Tmp_Annual: TMP1950_AVG thru TMP2009_avg (60 values)
 - Flow_Record:FLOW_PCT_EST_VALUES/ACTIVE09/FLOWYRS_1900_2009/FLOWYRS_1950_2009/FLOWYRS_1990_2009/wy1900 through wy2009 (110 values)
   FLOW_PCT_EST_VALUES：径流估计值占的比例；
 - Geology：GEOL_REEDBUSH_DOM/GEOL_REEDBUSH_DOM_PCT/GEOL_REEDBUSH_SITE/GEOL_HUNT_DOM_CODE/GEOL_HUNT_DOM_PCT/GEOL_HUNT_DOM_DESC/GEOL_HUNT_SITE_CODE
@@ -417,35 +441,100 @@ BOUND_SOURCE是指流域边界的来源，比如1代表 Wieczorek delineations�
   - PERHOR：霍顿产流，即超渗产流占总径流的比例；
   - TOPWET：Topographic wetness index地形湿度指数；
   - CONTACT:地下径流contact时间指数估计了下渗水在流入河流之前停留在流域饱和带的天数；
-  - RUNAVE7100: 1971－2000年年均径流，整合气候，land use，water use和regulation考虑的结果；
-  - WB5100_JAN/.../DEC/ANN_MM: 1951－2000年流域各月平均径流和年平均径流，用的是一篇文章中的水量平衡模型，考虑了降水和温度，但是没有考虑land use，water use，regulation等；
+  - RUNAVE7100: **1971－2000年**年均径流，整合气候，land use，water use和regulation考虑的结果；
+  - WB5100_JAN/.../DEC/ANN_MM: **1951－2000年**流域各月平均径流和年平均径流，用的是一篇文章中的水量平衡模型，考虑了降水和温度，但是没有考虑land use，water use，regulation等；
   - PCT_1ST/.../6TH/NO_ORDER: strahler分级级数河流长度占总河流长度比例。
-- **HydroMod_Dams**：NDAMS_2009/DDENS_2009/STOR_NID_2009/STOR_NOR_2009/MAJ_NDAMS_2009/MAJ_DDENS_2009/pre19xx_NDAMS/pre19xx_DDENS/pre19xx_STOR/RAW_DIS_NEAREST_DAM/RAW_AVG_DIS_ALLDAMS/RAW_DIS_NEAREST_MAJ_DAM/RAW_AVG_DIS_ALL_MAJ_DAMS
-STOR_NID_2009：总库容；
-RAW_DIS_NEAREST_DAM：离站site最近的大坝到site的直线距离。
-- **HydroMod_Other**：CANALS_PCT/RAW_DIS_NEAREST_CANAL/RAW_AVG_DIS_ALLCANALS/CANALS_MAINSTEM_PCT/NPDES_MAJ_DENS/RAW_DIS_NEAREST_MAJ_NPDES/RAW_AVG_DIS_ALL_MAJ_NPDES/FRESHW_WITHDRAWAL/MINING92_PCT/PCT_IRRIG_AG/POWER_NUM_PTS/POWER_SUM_MW
-  NPDES_MAJ_DENS：NPDES是National Pollutant Discharge Elimination System，因此此变量是说NPDES主要（由EPA定义）点的密度；
-  FRESHW_WITHDRAWAL：每平方公里freshwater的抽取量；
-  MINING92_PCT：采石场-露天矿坑-砾石坑流域土地覆盖百分比；
-  PCT_IRRIG_AG：灌溉农业流域的百分比，来自USGS 2002年250-m MODIS数据；
-- **Landscape_Pat**：FRAGUN_BASIN/HIRES_LENTIC_NUM/HIRES_LENTIC_DENS/HIRES_LENTIC_MEANSIZ。
-  FRAGUN_BASIN：流域“未开发”土地破碎化指数，越大代表被人类活动影响越大；
-  HIRES_LENTIC_NUM：从高分辨率数据获取的Lakes/Ponds和水库水体的个数。
-- **LC06_Basin/LC06_Mains100/LC06_Mains800/LC06_Rip100/LC06_Rip800**：各类型土地利用的比例，不一一阐述了，主要有城市、森林、农业等；
-- **LC_Crops**:各类作物的面积占流域的比例，比如谷物、棉花、大米等
-- Nutrient_App：NITR_APP_KG_SQKM/PHOS_APP_KG_SQKM
-- Pest_App：PESTAPP_KG_SQKM
-- **Pop_Infrastr**：PDEN_2000_BLOCK/PDEN_DAY_LANDSCAN_2007/PDEN_NIGHT_LANDSCAN_2007/ROADS_KM_SQ_KM/RD_STR_INTERS/IMPNLCD06/NLCD01_06_DEV
-  PDEN_DAY_LANDSCAN_2007：白天通过LandScan看到的人口密度；
-  RD_STR_INTERS：河流和道路交汇的数目；
-  IMPNLCD06：不透水面积占流域比例。
-- **Prot_Areas**：PADCAT1_PCT_BASIN/PADCAT2_PCT_BASIN/PADCAT3_PCT_BASIN，三个不同保护级别区域占流域的比例。
-- Regions：ECO3_SITE/HLR100M_SITE/HUC8_SITE/USDA_LRR_SITE/NUTR_ECO_SITE/ECO2_BAS_DOM/ECO3_BAS_DOM/ECO3_BAS_PCT/NUTR_BAS_DOM/NUTR_BAS_PCT/HLR_BAS_DOM_100M/HLR_BAS_PCT_100M/PNV_BAS_DOM/PNV_BAS_PCT。都是表述的站点所处的region是什么。
-  ECO3_SITE：site所处的Level III的ecoregion；
-  HLR100M_SITE：site所处的Hydrologic Landscape Region；
-  USDA_LRR_SITE：USDA（Department of Agriculture） Land Resource Region (LRR) code
-  NUTR_ECO_SITE：Nutrient ecoregion at the gage location；
-  PNV_BAS_DOM：Dominant (highest % of area) Potential Natural Vegetation (PNV) within the watershed.
+- **HydroMod_Dams**：
+     - NDAMS_2009: **2009年**统计数据，National Inventory of Dams的数据，流域内dam的个数；
+     - DDENS_2009：**2009年**统计数据，大坝密度，每100km sq的个数；
+     - STOR_NID_2009：**2009年**统计数据，流域内dam的storage，每sq km的megaliters total storage；最大库容
+     - STOR_NOR_2009:**2009年**统计数据，正常库容；
+     - MAJ_NDAMS_2009：**2009年**统计数据，major大坝的数量；
+     - MAJ_DDENS_2009：**2009年**统计数据，majar大坝的密度；
+     - pre19xx_NDAMS：**1940/50/.../90**的流域内dam个数，计算的时候需要处理到对应时间
+     - pre19xx_DDENS：**1940/50/.../90**的流域内dam密度
+     - pre19xx_STOR：**1940/50/.../90**的流域内dam storage
+     - RAW_DIS_NEAREST_DAM：**2009年**统计数据，离站site最近的大坝到site的直线距离;
+     - RAW_AVG_DIS_ALLDAMS：**2009年**统计数据，各大坝到site的直线距离平均值;
+     - RAW_DIS_NEAREST_MAJ_DAM：**2009年**统计数据，离站site最近的major大坝到site的直线距离;
+     - RAW_AVG_DIS_ALL_MAJ_DAMS：**2009年**统计数据，各major大坝到site的直线距离平均值;
+- **HydroMod_Other**：
+    - CANALS_PCT: **2006年**统计作为 "Canal", "Ditch", or "Pipeline" in NHDPlus 的 stream kilometers 的比例；
+    - RAW_DIS_NEAREST_CANAL：**2006年**统计离站site最近的canal/ditch/pipeline到site的直线距离;
+    - RAW_AVG_DIS_ALLCANALS：**2006年**统计各canal/ditch/pipeline（作为point）到site的直线距离平均值;
+    - CANALS_MAINSTEM_PCT：**2008年**统计作为 main "Canal", "Ditch", or "Pipeline" in NHDPlus 的 stream kilometers 的比例；
+    - NPDES_MAJ_DENS：统计**2006年**数据，NPDES是National Pollutant Discharge Elimination System，因此此变量是说NPDES主要（由EPA定义）点的密度；
+    - RAW_DIS_NEAREST_MAJ_NPDES：统计**2006年**数据，离站site最近的NPDES point到site的直线距离;
+    - RAW_AVG_DIS_ALL_MAJ_NPDES：统计**2006年**数据，各NPDES point到site的直线距离平均值;
+    - FRESHW_WITHDRAWAL：统计**1995-2000年**数据，统计每平方公里freshwater的抽取量；
+    - MINING92_PCT：统计**1991-1992年**数据，采石场-露天矿坑-砾石坑流域土地覆盖百分比；
+    - PCT_IRRIG_AG：统计**2002年**数据统计灌溉农业流域的百分比，来自USGS 2002年250-m MODIS数据；
+    - POWER_NUM_PTS：统计**2010年**数据，流域电站数量，包括各个类型type "coal", "gas", "nuclear", "petro", or "water"
+    - POWER_SUM_MW：统计**2010年**数据，流域电站总发电容量
+- **Landscape_Pat**：
+    - FRAGUN_BASIN：统计的**2000-2002年**数据，流域“未开发”土地破碎化指数，越大代表被人类活动影响越大；
+    - HIRES_LENTIC_NUM：**2011年**统计从高分辨率数据获取的Lakes/Ponds和水库水体的个数。
+    - HIRES_LENTIC_DENS:**2011年**统计从高分辨率数据获取的Lakes/Ponds和水库水体的密度
+    - HIRES_LENTIC_MEANSIZ:**2011年**统计从高分辨率数据获取的Lakes/Ponds和水库水体的平均面积
+- **LC06_Basin**: 统计的**2006 (2001 for AK-HI-PR)年**数据
+    - DEVNLCD06：流域urban比例；
+    - FORESTNLCD06：forest比例
+    - PLANTNLCD06：农业比例；
+    - WATERNLCD06：open water
+    - SNOWICENLCD06：永久冰雪
+    - DEVOPENNLCD06：open space
+    - DEVLOWNLCD06：low intensity
+    - DEVMEDNLCD06：medium intensity
+    - DEVHINLCD06：high intensity
+    - BARRENNLCD06：Natural Barren
+    - DECIDNLCD06：Deciduous Forest
+    - EVERGRNLCD06：Evergreen Forest
+    - MIXEDFORNLCD06：Mixed Forest
+    - DWARFNLCD：（Alaska only）
+    - SHRUBNLCD06：Shrubland
+    - GRASSNLCD06：grassland
+    - SEDGENLCD：（Alaska only）
+    - MOSSNLCD：（Alaska only）
+    - PASTURENLCD06：Pasture
+    - CROPSNLCD06：庄稼
+    - WOODYWETNLCD06：woody wetland
+    - EMERGWETNLCD06：emergent herbaceous 湿地
+- LC06_Mains100：统计的**2006年**数据,如上各类land cover在mainstem 100m buffer区的比例；
+- LC06_Mains800：统计的**2006年**数据，如上各类land cover在mainstem 800m buffer区的比例；
+- LC06_Rip100：统计的**2006年**数据，如上各类land cover在riparian 100m buffer区的比例；
+- LC06_Rip800：统计的**2006年**数据，如上各类land cover在riparian 800m buffer区的比例；
+- **LC_Crops**:统计的**2009年**数据，各类作物的面积占流域的比例，比如谷物、棉花、大米等
+- Nutrient_App：
+    - NITR_APP_KG_SQKM：统计的**1997年**数据，Estimate of nitrogen from fertilizer and manure, from Census of Ag 1997, based on county-wide sales and percent agricultural land cover in watershed, kg/sq km
+    - PHOS_APP_KG_SQKM：统计的**1997年**数据，磷的
+- Pest_App：PESTAPP_KG_SQKM，统计的**1997年**数据，
+- **Pop_Infrastr**：
+    - PDEN_2000_BLOCK: 统计的**2000年**数据，流域人口密度, persons/sq km, from 2000 Census block data regridded to 100m.
+    - PDEN_DAY_LANDSCAN_2007：统计的**2000s前几年**数据，白天通过LandScan看到的人口密度；
+    - PDEN_NIGHT_LANDSCAN_2007:统计的**2000s前几年**数据， 夜晚流域人口密度；
+    - ROADS_KM_SQ_KM： 统计的**2000年**数据，道路密度；
+    - RD_STR_INTERS：统计的**2000年**数据，河流和道路交汇的数目；
+    - IMPNLCD06：统计的**2006年**数据，不透水面积占流域比例。
+    - NLCD01_06_DEV：统计的**2001－2006年**数据，NLCD01-06 变为城市的比例
+- **Prot_Areas**：**2006年**统计数据
+    - PADCAT1_PCT_BASIN
+    - PADCAT2_PCT_BASIN
+    - PADCAT3_PCT_BASIN，三个不同保护级别区域占流域的比例。
+- Regions：都是表述的站点所处的region是什么。
+    - ECO3_SITE：site所处的Level III的ecoregion；
+    - HLR100M_SITE：site所处的Hydrologic Landscape Region；
+    - HUC8_SITE/
+    - USDA_LRR_SITE：USDA（Department of Agriculture） Land Resource Region (LRR) code
+    - NUTR_ECO_SITE：Nutrient ecoregion at the gage location；
+    - ECO2_BAS_DOM/
+    - ECO3_BAS_DOM/
+    - ECO3_BAS_PCT/
+    - NUTR_BAS_DOM/
+    - NUTR_BAS_PCT/
+    - HLR_BAS_DOM_100M/
+    - HLR_BAS_PCT_100M/
+    - PNV_BAS_DOM：Dominant (highest % of area) Potential Natural Vegetation (PNV) within the watershed.
+    - PNV_BAS_PCT。
 - Soils：土壤特征描述的是在水文group里土壤的比例，以及各个类型土壤的各项指标数据
 - Topo：主要是高度和坡度数据
 - X_Region_Names：提供此表只是为了方便，以便将“Regions”表中的编号与它们的名称/描述交叉。上述代码和名称的参考文献和引用已在各regions给出。
