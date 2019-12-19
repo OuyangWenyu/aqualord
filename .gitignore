@@ -170,3 +170,19 @@ venv.bak/
 .mypy_cache/
 
 *.nc
+
+# 一些下载的credentials和文件
+CloudStor/HelloWorld.txt
+CloudStor/client_secrets.json
+CloudStor/daymet_CntlPlains_mean_1995.csv
+CloudStor/daymet_CntlPlains_mean_1996.csv
+CloudStor/daymet_CntlPlains_mean_1997.csv
+CloudStor/daymet_CntlPlains_mean_1998.csv
+CloudStor/daymet_CntlPlains_mean_1999.csv
+CloudStor/daymet_CntlPlains_mean_2000.csv
+CloudStor/daymet_CntlPlains_mean_2001.csv
+CloudStor/daymet_CntlPlains_mean_2002.csv
+CloudStor/daymet_CntlPlains_mean_2003.csv
+CloudStor/daymet_CntlPlains_mean_2004.csv
+CloudStor/daymet_CntlPlains_mean_2005.csv
+CloudStor/kaggle.json
