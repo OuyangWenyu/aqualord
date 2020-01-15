@@ -229,10 +229,10 @@ USGS贡献。
 
 标准处理过程：
 
-- 站点shape文件压缩，网上可下载；
+- 站点shape文件压缩，网上可下载:<https://water.usgs.gov/GIS/dsdl/gagesII_9322_point_shapefile.zip>；
 - excel、word、csv文件时流域属性和update报告，可下载<https://water.usgs.gov/GIS/dsdl/basinchar_and_report_sept_2011.zip>；
-- 流域边界shapefile
-- Coverage格式的mainstem line coverages
+- 流域边界shapefile:<https://water.usgs.gov/GIS/dsdl/boundaries_shapefiles_by_aggeco.zip>
+- Coverage格式的mainstem line coverages:<https://water.usgs.gov/GIS/dsdl/mainstem_line_covers.zip>
 
 ### 详查数据
 
