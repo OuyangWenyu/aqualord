@@ -1,6 +1,6 @@
 # GAGES(II)数据集概览
 
-GAGES全称为Geospatial Attributes of Gages for Evaluating Streamflow，是一个径流测量数据库，用以评估美国大陆自然和人工改变下的径流条件。GAGES现在已经有了第二版，这里首先根据GAGES官方说明文档，看看GAGES都有什么数据，然后再根据GAGESII对GAGES的扩展说明详解GAGESII。
+GAGES全称为Geospatial Attributes of Gages for Evaluating Streamflow，是一个径流测量数据库，用以评估美国大陆自然和人工改变下的径流条件。GAGES现在已经有了第二版，这里首先根据GAGES官方说明文档，看看GAGES都有什么数据，然后再根据GAGESII对GAGES的扩展说明详解GAGESII。最后再补充一些人类活动影响相关的数据。
 
 ## GAGES数据集
 
@@ -560,3 +560,9 @@ gagesII_sept30_2011_conterm.xlsx和gagesII_sept30_2011_AKHIPR.xlsx分别代表�
 coverage类型文件和shapefile一样也是一种GIS数据类型，但是和shapefile有很大不同，shapefile不能描述数据的拓扑结构，而coverage则是拓扑的。关于coverage数据类型的具体情况可参考[ArcGIS官方文档](http://desktop.arcgis.com/zh-cn/arcmap/10.3/manage-data/coverages/what-is-a-coverage.htm)给出的解释。
 
 这里的数据类型都是coverage的。描述non-reference和reference的站点和流域河流的拓扑关系等。
+
+## GAGES-II 人类活动影响
+
+主要参考了：[U.S. Geological Survey GAGES-II time series data from consistent sources of land use, water use, agriculture, timber activities, dam removals, and other historical anthropogenic influences](https://www.sciencebase.gov/catalog/item/59692a64e4b0d1f9f05fbd39)
+
+这部分数据集是GAGES-II CONUS 的 9067 个站点的 简单的小时间序列数据，主要包括如作物类型，灌溉，牲畜，大坝移除，不透水度，森林植被，土地利用等人类活动数据。
