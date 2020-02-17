@@ -67,7 +67,7 @@ disturb_index6785_sept3_09.xls文件提供了disturbance index scores是如何�
 
 #### Gage screening and watershed boundary delineation
 
-筛选数据。包括时间上，要有足够长；其次，流域边界要在美国境内；然后人造河流上的测点也都排除了；超大流域上的站点也排除了；最后是要能准确地划分出流域边界。
+筛选数据。包括时间上，要有足够长；其次，**流域边界要在美国境内**；然后**人造河流上的测点也都排除了**；**超大流域上的站点也排除**了；最后是要能准确地划分出流域边界。
 
 #### Calculation of watershed characteristics
 
@@ -565,4 +565,116 @@ coverage类型文件和shapefile一样也是一种GIS数据类型，但是和sha
 
 主要参考了：[U.S. Geological Survey GAGES-II time series data from consistent sources of land use, water use, agriculture, timber activities, dam removals, and other historical anthropogenic influences](https://www.sciencebase.gov/catalog/item/59692a64e4b0d1f9f05fbd39)
 
-这部分数据集是GAGES-II CONUS 的 9067 个站点的 简单的小时间序列数据，主要包括如作物类型，灌溉，牲畜，大坝移除，不透水度，森林植被，土地利用等人类活动数据。
+这部分数据集是GAGES-II CONUS 的 9067 个站点的 简单的小时间序列数据，主要包括如作物类型，灌溉，牲畜，大坝移除，不透水度，森林植被，土地利用等人类活动数据。有如下内容：
+
+- Dataset1_BasinID.zip		250.87 KB
+- Dataset2_CensusOfAgriculture.zip		1.28 MB
+- Dataset3_DamRemovals.zip		22.53 KB
+- Dataset4_Imperviousness-Canopy.zip		198.75 KB
+- Dataset5_LandUse.zip		2.29 MB
+- Dataset6_N-P_Fertilizer-Manure.zip		1.07 MB
+- Dataset7_PeakFlow_Codes-AnthroInfl.zip		57.38 KB
+- Dataset8_Population-Housing.zip		196.75 KB
+- Dataset9_Timber.zip		100.86 KB
+- Dataset10_WaterUse.zip
+
+接下来简单地介绍下关于这些数据集的基本信息。
+
+第一个basinid没什么特别的，和前面GAGES-II数据集中的是一样的。
+
+### 农业数据
+
+这个数据集包含一个来自美国农业部(USDA)农业人口普查(CoA)编制的数据表,和9067个 (GAGES-II)数据集中的站点对应上。这些数据包括对农作物、牲畜和土地使用的测量。包括1950-2012年期间**14种 农产品和土地用途**的时间序列:其中10种代表**单位面积的生产**，例如每平方公里大豆的bushels(容量单位)。这10种商品包括鸡、谷物用玉米、青贮（饲料）用玉米、棉花、牛、苜蓿干草、猪、羊、大豆和小麦；其他四个变量代表土地在土地使用中的**比例**:使用商业肥料的土地、收获的农田、灌溉和果园。这14种变量类型中的每一种都有7个时间段的数据:1950年、1964年、1974年、1982年、1992年、2002年和2012年。数据来自全国1公里分辨率的栅格。
+
+该数据集支持GAGES-II数据集(Falcone, 2011)中的研究地点，并基于该数据集发布的流域边界。代表生产价值的10种商品的计算是基于NAWQA Wall-to-wall human - genic Landuse Trends (NWALT)数据集(Falcone, 2015; 2016)。四种土地用途(肥沃的土地、收获的农田、灌溉和果园)的计算来自基于县级数据的栅格。源数据在Falcone和LaMotte(2016)中有描述。
+
+表格数据题头：chick1950inv  corng1950    corns1950   cotton1950  cows1950inv   fert1950  hayalf1950  hcrop1950   hogs1950inv  irrig1950  orch1950  sheep1950inv  soyb1950  wheat1982
+
+### 被拆除的大坝
+
+This dataset consists of a table with a list of known dam removals for the conterminous United States sites of the U.S. Geological Survey (USGS) Geospatial Attributes of Gages for Evaluating Streamflow II (GAGES-II) dataset.  The dam removal locations and information were provided by American Rivers in December of 2014, then intersected with GAGES-II watersheds.  Two records were added manually, as taken from Annual Data Report records published in GAGES-II.
+该数据集包含一个表，其中列出了美国地质调查局(USGS)用于评估流向II (Gages -II)数据集的地质空间属性的已知美国境内相邻地点的大坝拆除量。2014年12月，美国河流提供了大坝拆除位置和信息，然后与GAGES-II流域相交。两个记录是手动添加的，取自于GAGES-II上发布的年度数据报告记录。
+
+数据包括站点，其对应的大坝位置，拆除的年份等。
+
+### Canopy
+
+This dataset consists of three tables with information regarding imperviousness and forest canopy for the conterminous United States sites of the U.S. Geological Survey (USGS) Geospatial Attributes of Gages for Evaluating Streamflow II (GAGES-II) dataset.  The data include variables regarding percent imperviousness from two different data sources for imperviousness, for the periods 2001-2011 and 1974-2012, respectively, and for both watershed and mainstem riparian forest canopy for 2011.
+该数据集包含三个表， (Gages -II)数据集站点的防渗性和森林冠层信息。这些数据包括2001-2011年和1974-2012年两个不同的防渗数据来源的防渗率变量，以及2011年的流域和主要河岸森林冠层。
+
+These data are intended as support for research efforts using the USGS GAGES-II sites.
+
+This dataset is in support of study sites in the GAGES-II dataset (Falcone, 2011) and based on the watershed boundaries published there. 
+
+包括三个数据集，一个NWALT的 1974，1982，1992，2002，2012的imperv1974est数据，一个NLCD的2001，2006和2001年的imperv2011数据；一个canopy2011和canopy2011_mains100数据。
+
+### Land Use
+
+This dataset consists of eight tables with information regarding land cover/use for the conterminous United States sites of the U.S. Geological Survey (USGS) Geospatial Attributes of Gages for Evaluating Streamflow II (GAGES-II) dataset.   The data include land use variables from two different data sources: from the National Land Cover Dataset (NLCD) for 2001-2011 (every five years) and from the NAWQA Wall-to-wall Anthropogenic Landuse Trends (NWALT) dataset for 1974-2012 (every ten years).
+该数据集包含8个表，(Gages -II)数据集站点的土地覆盖/使用信息。这些数据包括来自两个不同数据源的土地使用变量:2001-2011年的国家土地覆盖数据集(NLCD)(每五年一次)和1974-2012年的NAWQA Wall-to-wall人为土地使用趋势数据集(NWALT)(每十年一次)。
+
+These data are intended as support for research efforts using the USGS GAGES-II sites.
+
+This dataset is in support of study sites in the GAGES-II dataset (Falcone, 2011) and based on the watershed boundaries published there. 
+
+5个NWALT的1974，1982，1992，2002，2012年数据，3个NLCD 2001，2006，2011年数据。
+
+每个文件的数据形式和GAGES-II数据集中的类似。
+
+### N-P Fertilizer-Manure
+
+This dataset consists of two tables with information regarding nitrogen and phosphorus application from farm fertilizer and manure for the conterminous United States sites of the U.S. Geological Survey (USGS) Geospatial Attributes of Gages for Evaluating Streamflow II (GAGES-II) dataset.  The data represent estimates of nitrogen and phosphorus from commercial farm fertilizer annually for the years 1987 to 2012, and nitrogen and phosphorus application from farm animal manure (cattle, hogs/pigs, chickens, turkeys, sheep, and horses) for five year periods from 1982 to 2012
+该数据集由两个表组成， (Gages -II)数据集站点的农田肥料和粪肥施氮和磷的信息。这些数据代表了从1987年到2012年，每年从商业农场肥料中获得氮和磷的估计数，以及从1982年到2012年，从农场动物粪便(牛、猪、鸡、火鸡、羊和马)中获得的氮和磷的施用情况
+
+These data are intended as support for research efforts using the USGS GAGES-II sites.
+
+This dataset is in support of study sites in the GAGES-II dataset (Falcone, 2011) and based on the watershed boundaries published there. These data were all derived from county-level data transformed into rasters by allocating the county statistics to land use pixels from the NAWQA Wall-to-Wall Anthropogenic Landuse Trends (NWALT) dataset (Falcone, 2015) in a consistent way (see Process Description). The county-level data themselves were derived from slightly different sources for different years, but believed to be reasonably consistent as a time series. For fertilizer the county data for 1987-2006 were from Gronberg and Spahr (2012), and for 2007-2012 from Brakebill and Gronberg (2017).  For manure the county data for 1982-1987 were from Ruddy and others (2006), for 2002 from Mueller and Gronberg (2013), and for 2007-2012 from Gronberg and Arnold (2017). 
+该数据集支持GAGES-II数据集(Falcone, 2011)中的研究地点，并基于该数据集发布的流域边界。这些数据均来自县级数据，通过将县统计数据以一致的方式分配到NAWQA Wall-to-Wall人为土地利用趋势(NWALT)数据集(Falcone, 2015)中的土地利用像素，转换成栅格(见过程描述)。县级数据本身来自于不同年份的略有不同的来源，但被认为是合理一致的时间序列。关于化肥，1987-2006年的县数据来自Gronberg和Spahr(2012)， 2007-2012年的数据来自Brakebill和Gronberg(2017)。关于肥料，1982-1987年的县数据来自Ruddy和其他人(2006年)，2002年来自Mueller和Gronberg(2013年)，2007-2012年来自Gronberg和Arnold(2017年)。
+
+1987－2012年每年的 fertilizer N_FERT_FARM_1987数据，和1982－2012每年的 manure 数据
+
+### PeakFlow_Codes-AnthroInfl
+
+This dataset consists of a table with information regarding anthropogenic influences from qualification codes that are part of the U.S. Geological Survey's (USGS) National Water Information System (NWIS) for sites in the Geospatial Attributes of Gages for Evaluating Streamflow II (GAGES-II) dataset. The table provides begin and end years for anthropogenic streamflow influences derived from three NWIS Peak Streamflow qualification codes; for example in what years (or if it continues) the flow record has been affected by regulation or diversion.  The information here should be considered as supplemental information, and a partial list of these influences.  That is, there are likely some sites here which have Regulation, Diversion, or Land Use effects not flagged in this file.
+该数据集包含一个表格，其中包含美国地质勘探局(USGS)国家水信息系统(NWIS)的资格代码，这些代码是用于评估流向II (Gages -II)数据集的地理空间属性中的站点的信息。该表提供了三个NWIS峰流量限定码对人为流量影响的起始年和结束年;例如，在什么年份(或是否继续)，流量记录受到了调节或分流的影响。这里的信息应该作为补充信息，以及这些影响的部分列表。也就是说，这里可能有一些有规则、分流或土地使用影响的站点没有在此文件中标记。
+
+These data are intended as support for research efforts using the USGS GAGES-II sites.
+    
+This dataset is in support of study sites in the GAGES-II dataset (Falcone, 2011) and based on the watershed boundaries published there.
+
+数据项有：peak_yr1q5,peak_yrnq5,peak_yr1q6,peak_yrnq6,peak_yr1qC,peak_yrnqC,peak_yr1,peak_yrn
+
+### Population-Housing
+
+This dataset consists of information regarding population and housing unit density for the conterminous United States sites of the U.S. Geological Survey (USGS) Geospatial Attributes of Gages for Evaluating Streamflow II (GAGES-II) dataset.  The data include population density for the periods 1990, 2000, and 2010, and housing unit density estimates for decadal periods from 1940 to 2010.
+该数据集由美国地质调查局(USGS)用于评价流II (Gages -II)数据集的地理空间属性的美国站点的人口和住房单元密度信息组成。这些数据包括1990年、2000年和2010年期间的人口密度，以及1940年至2010年期间的住房单位密度估计。
+
+These data are intended as support for research efforts using the USGS GAGES-II sites.
+
+This dataset is in support of study sites in the GAGES-II dataset (Falcone, 2011) and based on the watershed boundaries published there. 
+
+STAID,PDEN_1990_BLOCK,PDEN_2000_BLOCK,PDEN_2010_BLOCK,HDEN_1940,HDEN_1950,HDEN_1960,HDEN_1970,HDEN_1980,HDEN_1990,HDEN_2000,HDEN_2010
+
+### Timber
+
+This dataset consists of a tables with information regarding timber and forest cutting activity for the conterminous United States sites of the U.S. Geological Survey (USGS) Geospatial Attributes of Gages for Evaluating Streamflow II (GAGES-II) dataset.  The data represent estimates the percent of the watershed affected by timber and forestry activities annually from 1999 to 2012.
+该数据集包含一个表格，(Gages -II)数据集站点的木材和森林砍伐活动的信息。这些数据代表了从1999年到2012年每年受木材和林业活动影响的流域百分比的估计。
+
+These data are intended as support for research efforts using the USGS GAGES-II sites.
+
+This dataset is in support of study sites in the GAGES-II dataset (Falcone, 2011) and based on the watershed boundaries published there. Data were derived from Timber supplemental geospatial rasters published as part of the NAWQA Wall-to-wall Anthropogenic Landuse Trends (NWALT) dataset (Falcone, 2015), which were in turn derived primarily from USGS LANDFIRE disturbance data (https://www.landfire.gov/disturbance.php). The NWALT Timber data are 60-meter (m) national rasters mapping areas which were believed to have been modified via anthropogenic forestry activities, and exclude natural disturbances such as forest fires or pest infestations. 
+
+STAID,timber1999,timber2000,timber2001,timber2002,timber2003,timber2004,timber2005,timber2006,timber2007,timber2008,timber2009,timber2010,timber2011,timber2012
+
+### WaterUse
+
+This dataset consists of a tables with information regarding water use for the conterminous United States sites of the U.S. Geological Survey (USGS) Geospatial Attributes of Gages for Evaluating Streamflow II (GAGES-II) dataset.  The data consist of mean freshwater withdrawals in units of millions of gallons per day per square kilometer for five-year periods from 1985 to 2010.
+该数据集包含一个表格，(Gages -II)数据集站点的用水信息。这些数据包括从1985年到2010年的每年时间里，每平方公里每天数百万加仑的淡水平均提取量。
+
+These data are intended as support for research efforts using the USGS GAGES-II sites.
+
+This dataset is in support of study sites in the GAGES-II dataset (Falcone, 2011) and based on the watershed boundaries published there. Data are most appropriate for broad-scale applications and calculations, multi-county scale and coarser.  Users should be cognizant of some potential issues in comparing water use over time: water use values may change for various reasons: counties may begin importing or exporting water, industries may open or close between years, or jurisdictional/political changes may occur.  For example, a change may occur in how two adjacent counties are permitted to withdraw from a common river, potentially changing the numbers for each of them quite a bit in a time series.  Some states may have changed the method by which they estimated water use for some uses over time, for example thermoelectric power. Users should be conservative in drawing conclusions about water use trends at fine spatial scales.
+该数据集支持GAGES-II数据集(Falcone, 2011)中的研究地点，并基于该数据集发布的流域边界。数据最适合于大规模应用和计算，多县规模和较粗。用户应该认识到在比较一段时间内的用水情况时可能出现的一些潜在问题:水的使用价值可能由于各种原因发生变化:县可能开始进口或出口水，行业可能在几年内开放或关闭，司法/政治可能发生变化。例如，如果两个相邻的县被允许从一条共同的河流中撤出，可能会发生变化，这可能会在一个时间序列中对每个县的数量产生相当大的变化。随着时间的推移，一些州可能已经改变了他们估算某些用途用水量的方法，例如热电动力。使用者在得出关于水在精细空间尺度上的使用趋势的结论时应持保守态度。
+
+STAID,wu1985,wu1990,wu1995,wu2000,wu2005,wu2010
+    
