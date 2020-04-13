@@ -11,7 +11,7 @@
 # Automated-retrieval info: https://help.waterdata.usgs.gov/faq/automated-retrievals
 #
 # Contact:   gs-w_support_nwisweb@usgs.gov
-# retrieved: 2019-10-28 16:14:49 EDT       (sdww01)
+# retrieved: 2020-04-04 11:26:07 EDT       (caww01)
 #
 # Data for the following 2 site(s) are contained in this file
 #    USGS 01013500 Fish River near Fort Kent, Maine

@@ -1,6 +1,6 @@
-# 雷达测雨数据在中国某流域水文预报中的应用
+# 雷达测雨数据在东北某些流域水文预报中的应用
 
-Welcome to the hydro-radar-precipitation wiki!
+
 
 ## 项目介绍
 
