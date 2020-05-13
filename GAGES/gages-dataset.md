@@ -563,7 +563,7 @@ coverage类型文件和shapefile一样也是一种GIS数据类型，但是和sha
 
 ## GAGES-II 人类活动影响
 
-主要参考了：[U.S. Geological Survey GAGES-II time series data from consistent sources of land use, water use, agriculture, timber activities, dam removals, and other historical anthropogenic influences](https://www.sciencebase.gov/catalog/item/59692a64e4b0d1f9f05fbd39)
+主要参考了：[U.S. Geological Survey GAGES-II time series data from consistent sources of land use, water use, agriculture, timber activities, dam removals, and other historical anthropogenic influences](https://www.sciencebase.gov/catalog/item/59692a64e4b0d1f9f05fbd39)，直接下载数据的url是：https://www.sciencebase.gov/catalog/file/get/59692a64e4b0d1f9f05fbd39
 
 这部分数据集是GAGES-II CONUS 的 9067 个站点的 简单的小时间序列数据，主要包括如作物类型，灌溉，牲畜，大坝移除，不透水度，森林植被，土地利用等人类活动数据。有如下内容：
 

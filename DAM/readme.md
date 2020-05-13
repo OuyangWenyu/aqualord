@@ -129,19 +129,21 @@ WY
 纬度：(Number) Latitude at dam centerline as a single value in decimal degrees, NAD83.
 NID-Storage: (Acre-Feet, Number) Calculated field: Maximum value of normal storage and maximum storage. Accepted as the general storage of the dam.
 purposes:Enter one or more of the following codes to indicate the current purpose(s) for which the reservoir is used:
-    - I for Irrigation;
-    - H for Hydroelectric;
-    - C for Flood Control and Storm Water Management;
-    - N for Navigation;
-    - S for Water Supply;
-    - R for Recreation;
-    - P for Fire Protection, Stock, Or Small Farm Pond;
-    - F for Fish and Wildlife Pond;
-    - D for Debris Control;
-    - T for Tailings;
-    - G for Grade Stabilization;
-    - O for Other.
-    The order should indicate the relative decreasing importance of the purpose. Codes are concatenated if the dam has multiple purposes. For example, SCR would indicate the primary purposes, Water Supply, followed by Flood Control and Storm Water Management, and then Recreation.
+
+- I for Irrigation;
+- H for Hydroelectric;
+- C for Flood Control and Storm Water Management;
+- N for Navigation;
+- S for Water Supply;
+- R for Recreation;
+- P for Fire Protection, Stock, Or Small Farm Pond;
+- F for Fish and Wildlife Pond;
+- D for Debris Control;
+- T for Tailings;
+- G for Grade Stabilization;
+- O for Other.
+
+The order should indicate the relative decreasing importance of the purpose. Codes are concatenated if the dam has multiple purposes. For example, SCR would indicate the primary purposes, Water Supply, followed by Flood Control and Storm Water Management, and then Recreation.
 
 ## 7
 
