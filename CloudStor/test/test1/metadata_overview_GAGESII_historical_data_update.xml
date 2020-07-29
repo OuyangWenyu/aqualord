@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>James A. Falcone</origin>
+        <pubdate>2017</pubdate>
+        <title>U.S. Geological Survey GAGES-II time series data from consistent sources of land use, water use, agriculture, timber activities, dam removals, and other historical anthropogenic influences</title>
+        <geoform>Comma-separated text files</geoform>
+        <onlink>https://doi.org/10.5066/F7HQ3XS4</onlink>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>This product is a series of ten datasets containing tabular data from historical time series sources for the 9,067 conterminous United States sites in the U.S. Geological Survey (USGS) Geospatial Attributes of Gages for Evaluating Streamflow II (GAGES-II) dataset. The tables contain time-series data derived from consistent sources of agricultural commodities such as crop types, irrigation, and livestock (1950-2012), dam removals (1930-2013), imperviousness (1974-2012 and 2001-2011) and forest canopy (2011), land use (1974-2012 and 2001-2011),  estimated nutrients application from fertilizer and manure (1982 -2012), population and housing unit density (1940-2010), timber activities (1999-2012), water use (1985-2010), and dates of anthropogenic influences on flow recorded by USGS Water Science Centers.</abstract>
+      <purpose>These data are intended as support for research efforts using the USGS GAGES-II sites.</purpose>
+      <supplinf>Each of the ten datasets provided here contains data for a particular theme, for example Land Use or Water Use.  The tables provided in each dataset are in comma-separated text format. Each dataset has a companion metadata .xml record which describes the data, methods, and references for those data. Data are for the 9,067 conterminous U.S. GAGES-II sites, with the exception of Dataset 7 Peakflow Codes (see below), which are for all 9,322 sites, including Alaska, Hawaii, and Puerto Rico. Dataset 1, BasinID is a copy of basin identification fields already published in GAGES-II and provided simply as a convenience.
+Data are compiled from data sources which have a consistent derivation as a time series.  For example, land use is given here from two different sources, (the National Land Cover Dataset (NLCD), Homer and others, 2015; and the NAWQA Wall-to-Wall Anthropogenic Landuse Trends (NWALT) dataset, Falcone, 2015), each of which may have different value in different applications, and each of which has consistent derivation within its own time series. However, a 1992 version of the NLCD also exists, but was created with different methods (see https://www.mrlc.gov/nlcd1992.php) and is thus not directly comparable to the 2001-2011 series.  Data from the 1992 NLCD are therefore not given here.
+Data presented here are based on the published watershed boundaries in Falcone, 2011 (https://water.usgs.gov/GIS/metadata/usgswrd/XML/gagesII_Sept2011.xml), which are primarily based on the NHDPlus Version 1 dataset (McKay and others, 2012). Since that publication, updates have been made to national watershed boundary frameworks, such as the Watershed Boundary Dataset (National Resources Conservation Services, 2017) and the release of the NHDPlus Version 2, from which more consistent and possibly more accurate watershed boundaries might be available in some cases.  However, for consistency with the previously-published GAGES-II data, the data published here are based on the 2011 boundaries.
+The geospatial processing for the project was based on datasets which all used the following standard projection information: PROJECTION ALBERS, UNITS meters, SPHEROID GRS1980, DATUM NAD83, PARAMETERS, 29 30 0.000, 45 30 0.000, -96 00 0.000, 23 00 0.000, 0.0, 0.0.
+The following is a list of the datasets and a brief description.  Each dataset consists of a zip file containing one or more comma-separated tables, with a separate .xml metadata record giving details for the data in those tables.  References for data sources are given in the individual .xml files.
+Dataset 1: BasinID: One table with basic watershed identification information, exactly as published in Falcone (2011), provided as a convenience.  The fields include: Station ID, Station Name, HUC, Latitude/Longitude, State, HCDN-2009 flag, reference/non-reference flag, and aggregated ecoregion.
+Dataset 2: Census of Agriculture: One table with data derived from county-level Census of Agriculture data allocated to land use pixels for 1950, 1964, 1974, 1982, 1992, 2002, and 2012.  Data are given for 14 items: six variables for specific crops (corn for grain, corn for silage, cotton, hay-alfalfa, soybeans, and wheat), four variables for livestock (chickens, cows/calves, hogs/pigs, and sheep), and four variables for agricultural practices or land uses (fertilizer application, harvested cropland, irrigation, and orchards).
+Dataset 3: Dam Removals: One table with a list and location of known dam removals within GAGES-II watersheds between 1931-2013.  There are 732 GAGES-II watersheds which have had a known dam removal in that period.
+Dataset 4: Imperv-Canopy: Three tables with percent imperviousness from the National Land Cover Dataset (NLCD) (every five years, 2001-2011) and from the NAWQA Wall-to-wall Anthropogenic Landuse Trends (NWALT) product (every 10 years, 1974-2012) and percent forest canopy from NLCD 2011, including riparian zone canopy.
+Dataset 5: LandUse: Eight tables with land use and land cover data from the NLCD (every five years, 2001-2011), and the NWALT (every 10 years, 1974-2012).
+Dataset 6: N-P from Fertilizer and Manure: Four tables with data for estimates of nitrogen and phosphorus from farm fertilizer application, annual data from 1987-2012, and from manure, every five years from 1982-2012.
+Dataset 7: Peakflow Codes regarding Anthropogenic Influences: One table with codes and time periods recorded by USGS Water Science Centers when discharge records were known to be influenced by significant anthropogenic activities.
+Dataset 8: Population-Housing: One table with mean population density from Census block data for 10-year periods from 1990-2010, and mean housing density for 10 year periods from 1940-2010.
+Dataset 9: Timber: One table with percent of watershed affected by timber or forest cutting, annually from 1999-2012.
+Dataset 10: WaterUse: One table with mean watershed total freshwater withdrawals, from USGS water use data for five year periods from 1985-2010.
+References:
+Falcone, J.A., 2011, GAGES-II:  Geospatial Attributes of Gages for Evaluating Streamflow.  Digital spatial data set, http://water.usgs.gov/GIS/metadata/usgswrd/XML/gagesII_Sept2011.xml.
+Falcone, J.A., 2015, U.S. conterminous wall-to-wall anthropogenic land use trends (NWALT), 1974-2012. U.S. Geological Survey Data Series 948, 33 p. plus appendices 3-6 as separate files, http://dx.doi.org/10.3133/ds948.
+Homer, C.G., Dewitz, J.A., Yang, L., Jin, S., Danielson, P., Xian, G., Coulston, J., Herold, N.D., Wickham, J.D., and Megown, K., 2015, Completion of the 2011 National Land Cover Database for the conterminous United States-Representing a decade of land cover change information. Photogrammetric Engineering and Remote Sensing, v. 81, no. 5, p. 345-354.
+McKay, L., Bondelid, T., Dewald, T., Johnston, C., Moore, R., and Rea, A., 2012, NHDPlus version 2: User Guide, 2012: U.S. Environmental Protection Agency, www.horizon-systems.com/NHDPlus/index.php.
+National Resources Conservation Services, 2017, U.S. Department of Agriculture National Resources Conservation Service Watershed Boundary Dataset (WBD), accessed July 26, 2017 at: https://www.nrcs.usda.gov/wps/portal/nrcs/detail/national/home/?cid=nrcs143_021630.</supplinf>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <rngdates>
+          <begdate>19310101</begdate>
+          <enddate>20141231</enddate>
+        </rngdates>
+      </timeinfo>
+      <current>observed</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>As needed</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-124.732770</westbc>
+        <eastbc>-66.969271</eastbc>
+        <northbc>49.371730</northbc>
+        <southbc>24.956376</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>None</themekt>
+        <themekey>Watershed</themekey>
+        <themekey>Watershed boundaries</themekey>
+        <themekey>inlandWaters</themekey>
+        <themekey>Geospatial Analysis</themekey>
+        <themekey>Geospatial Datasets</themekey>
+        <themekey>Geographic Information Systems</themekey>
+        <themekey>GAGES-II</themekey>
+        <themekey>Imperviousness</themekey>
+        <themekey>Land use change</themekey>
+        <themekey>Census of Agriculture</themekey>
+        <themekey>Crop Practices</themekey>
+        <themekey>Trends</themekey>
+        <themekey>Forest Canopy</themekey>
+        <themekey>Riparian Canopy</themekey>
+        <themekey>Nitrogen application</themekey>
+        <themekey>Phosphorus application</themekey>
+        <themekey>Fertilizer</themekey>
+        <themekey>Manure</themekey>
+        <themekey>Population change</themekey>
+        <themekey>Housing</themekey>
+        <themekey>Water Use</themekey>
+      </theme>
+      <place>
+        <placekt>None</placekt>
+        <placekey>United States</placekey>
+        <placekey>Conterminous U.S.</placekey>
+        <placekey>Puerto Rico</placekey>
+      </place>
+    </keywords>
+    <accconst>None. Please see 'Distribution Info' for details.</accconst>
+    <useconst>Please read use constraints in the metadata records for individual data layers, as applicable.</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>U.S. Geological Survey, National Water Quality project.</cntorg>
+          <cntper>James Falcone</cntper>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>Mailing</addrtype>
+          <address>12201 Sunrise Valley Dr.</address>
+          <address>MS 413 National Center</address>
+          <city>Reston</city>
+          <state>VA</state>
+          <postal>20192</postal>
+          <country>USA</country>
+        </cntaddr>
+        <cntvoice>703-648-5008</cntvoice>
+        <cntemail>jfalcone@usgs.gov</cntemail>
+      </cntinfo>
+    </ptcontac>
+    <datacred>The peak flow-derived flags of anthropogenic influences (Dataset 7) were assembled by David Wolock of the USGS.  Grateful acknowledgment to him for this contribution. Thank you to Andrew LaMotte of the USGS for reviewing these data.</datacred>
+    <native>Environment as of Metadata Creation: Microsoft Windows 7 Version 6.1 (Build 7601) Service Pack 1; Esri ArcGIS 10.3.1 (Build 4959) Service Pack N/A (Build N/A)</native>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>See individual data layers, as applicable.</attraccr>
+    </attracc>
+    <logic>No formal logical accuracy tests were conducted.</logic>
+    <complete>Data are complete</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>A formal accuracy assessment of the horizontal positional information in the data set has not been conducted.</horizpar>
+      </horizpa>
+      <vertacc>
+        <vertaccr>A formal accuracy assessment of the vertical positional information in the data set has either not been conducted, or is not applicable.</vertaccr>
+      </vertacc>
+    </posacc>
+    <lineage>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>James A. Falcone</origin>
+            <pubdate>20111012</pubdate>
+            <title>GAGES-II: Geospatial Attributes of Gages for Evaluating Streamflow</title>
+            <geoform>Digital Data Set</geoform>
+            <pubinfo>
+              <pubplace>online</pubplace>
+              <publish>U.S. Geological Survey</publish>
+            </pubinfo>
+            <onlink>https://water.usgs.gov/GIS/metadata/usgswrd/XML/gagesII_Sept2011.xml</onlink>
+          </citeinfo>
+        </srccite>
+        <typesrc>Digital and/or Hardcopy Resources</typesrc>
+        <srctime>
+          <timeinfo>
+            <sngdate>
+              <caldate>20111012</caldate>
+            </sngdate>
+          </timeinfo>
+          <srccurr>publication date</srccurr>
+        </srctime>
+        <srccitea>Falcone, 2011</srccitea>
+        <srccontr>Sites for which these data provide updated data.</srccontr>
+      </srcinfo>
+      <procstep>
+        <procdesc>Please see detailed process descriptions for each dataset in this data release</procdesc>
+        <procdate>Unknown</procdate>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>US Geological Survey - ScienceBase</cntorg>
+        </cntorgp>
+        <cntaddr>
+          <addrtype>Mailing</addrtype>
+          <address>Denver Federal Center, Building 810, Mail Stop 302</address>
+          <city>Denver</city>
+          <state>CO</state>
+          <postal>80225</postal>
+          <country>USA</country>
+        </cntaddr>
+        <cntvoice>1-888-275-8747 (1-888-ASK-USGS)</cntvoice>
+        <cntemail>sciencebase@usgs.gov</cntemail>
+      </cntinfo>
+    </distrib>
+    <distliab>Although this data set has been used by the U.S. Geological
+Survey, U.S. Department of the Interior, no warranty expressed or
+implied is made by the U.S. Geological Survey as to the accuracy
+of the data and related materials. The act of distribution shall not 
+constitute any such warranty, and no responsibility is assumed by 
+the U.S. Geological Survey in the use of this data, software, or 
+related materials.
+Any use of trade, product, or firm names is for descriptive 
+purposes only and does not imply endorsement by the U.S. 
+Government.</distliab>
+    <stdorder>
+      <digform>
+        <digtinfo>
+          <formname>Tabular Digital Data Set</formname>
+        </digtinfo>
+        <digtopt>
+          <onlinopt>
+            <computer>
+              <networka>
+                <networkr>https://doi.org/10.5066/F7HQ3XS4</networkr>
+              </networka>
+            </computer>
+          </onlinopt>
+        </digtopt>
+      </digform>
+      <fees>None. This dataset is provided by USGS as a public service.</fees>
+    </stdorder>
+  </distinfo>
+  <metainfo>
+    <metd>20170915</metd>
+    <metc>
+      <cntinfo>
+        <cntperp>
+          <cntper>James Falcone</cntper>
+          <cntorg>U.S. Geological Survey</cntorg>
+        </cntperp>
+        <cntpos>Ask USGS -- Water Webserver Team</cntpos>
+        <cntaddr>
+          <addrtype>Mailing</addrtype>
+          <address>12201 Sunrise Valley Dr., MS 413</address>
+          <city>Reston</city>
+          <state>VA</state>
+          <postal>20192</postal>
+          <country>USA</country>
+        </cntaddr>
+        <cntvoice>1-888-275-8747 (1-888-ASK-USGS)</cntvoice>
+        <cntemail>https://answers.usgs.gov/</cntemail>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+  </metainfo>
+</metadata>
