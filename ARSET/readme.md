@@ -1,6 +1,6 @@
 # Applied Remote Sensing Training
 
-Applied Remote Sensing Training（ARSET）是NASA 的一个计划，该计划提供卫星遥感培训，旨在培养**将NASA地球科学数据整合到机构决策活动中的技能（获取和使用NASA卫星和模型数据以提供决策支持的技能）**。提供有关空气质量，气候，灾害，健康，土地，水资源和野火管理的培训（主要是四个方面：空气质量与健康，灾难，土地，水资源）。通过在线和线下培训， 自2009年以来，ARSET已吸引来自170个国家/地区的32,000多名参与者以及全球7500多个组织。在他们的年度报告中可以了解ARSET计划所做的一切：
+Applied Remote Sensing Training（[ARSET](https://appliedsciences.nasa.gov/what-we-do/capacity-building/arset)）是NASA 的一个计划，该计划提供卫星遥感培训，旨在培养**将NASA地球科学数据整合到机构决策活动中的技能（获取和使用NASA卫星和模型数据以提供决策支持的技能）**。提供有关空气质量，气候，灾害，健康，土地，水资源和野火管理的培训（主要是四个方面：空气质量与健康，灾难，土地，水资源）。通过在线和线下培训， 自2009年以来，ARSET已吸引来自170个国家/地区的32,000多名参与者以及全球7500多个组织。在他们的年度报告中可以了解ARSET计划所做的一切：
 
 - [2016 ARSET年度报告](https://arset.gsfc.nasa.gov/sites/default/files/users/2016-ARSET-Annual-Report.pdf)
 - [2017 ARSET年度报告](https://arset.gsfc.nasa.gov/sites/default/files/users/2017-ARSET-Annual-Report.pdf)
