@@ -8,6 +8,7 @@ dependencies:
   - kaggle
   - pydrive
   - xarray
+  - h5py
   - netcdf4
   - matplotlib
   - gdal

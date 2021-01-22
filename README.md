@@ -10,6 +10,7 @@
 - CAMELS：衡量水文模型性能常用数据集
 - CloudStor：记录从各类云端存储下载数据的方法，比如kaggle，box，google drive等
 - DAM: 大坝水库相关数据集
+- DataFormat：常见数据格式
 - daymet：一个气象forcing数据集
 - EOMarket：一个汇总地理空间数据及应用的平台
 - GAGES：USGS的径流数据集
@@ -28,7 +29,7 @@ conda: python=3.7, jupyterlab kaggle, pydrive, xarray, netcdf4, matplotlib, gdal
 pip: wget, pyModis
 ```
 
-可以执行以下代码安装环境：
+可以在本项目根目录下执行以下代码安装环境：
 
 ```Shell
 conda env create -f environment.yml
