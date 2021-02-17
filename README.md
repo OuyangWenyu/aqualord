@@ -16,6 +16,7 @@
 - GAGES：USGS的径流数据集
 - GRACE：重力卫星数据
 - ICESat：主要关注其在内陆水体测量方面的数据
+- Landsat：主要关注内陆水体表面识别方面
 - LDAS：NASA陆面同化系统数据
 - MODIS：MODIS 相关数据集多，用途广泛
 - NH：美国National Hydrography基础数据

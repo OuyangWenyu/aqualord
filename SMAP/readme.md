@@ -284,3 +284,6 @@ SDS操作数据已通过DAAC自动分发，以存档和分发给用户。
 
 ## Application
 
+github上有一些比较方便的SMAP数据获取程序，可以参考[这里](https://github.com/TUW-GEO/smap_io)，使用较多的是R工具，在[这里](https://github.com/ropensci/smapr)
+
+本文件夹下也尝试下使用该工具。
