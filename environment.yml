@@ -3,15 +3,19 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.7
+  - python=3.8
   - jupyterlab
   - kaggle
   - pydrive
-  - xarray
-  - h5py
-  - netcdf4
-  - matplotlib
+  - pygeoogc 
+  - pygeoutils
+  - py3dep
+  - pynhd
+  - pygeohydro
+  - pydaymet
   - gdal
+  - h5py
+  - cartopy
   - future
   - wxpython
   - pip:
