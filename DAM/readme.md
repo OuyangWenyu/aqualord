@@ -48,7 +48,7 @@ This dataset contains the time series of area values for 6817 global reservoirs 
 
 基本方法是先设置一些简化的几何模型，然后根据数据集数据对各水库筛选出最优的shape，再根据各个shape的基本几何关系推求出S－A－D关系。
 
-最后结果有70%的水库总库容误差都在5%以内，85%的误差在25%以内。另一些比较有意思的结论，其一，主要用途为发电，灌溉和供水的水库用常规的几何形状就能很好表示；另外，大部分水库都是用Rectangular‐Prism 形状姣好。
+最后结果有70%的水库总库容误差都在5%以内，85%的误差在25%以内。另一些比较有意思的结论，其一，主要用途为发电，灌溉和供水的水库用常规的几何形状就能很好表示；另外，大部分水库都是用Rectangular‐Prism 形状较好。
 
 ## 5
 
@@ -66,6 +66,8 @@ GOODD是一个新的全球大坝和水库的数据库，主要参考：[GOODD, a
 ## 6
 
 一个美国陆军工程兵团的大坝数据库：[National Inventory of Dams More than 90,000 dams nation-wide](http://nid.usace.army.mil/)
+
+读取可以参考本文件夹下另外两个jupyter文件，主要使用了[HyRiver](https://hyriver.readthedocs.io/en/latest/)，不过USACE的网站老是连不上，所以这块程序经常挂掉。
 
 选择 “academic” 可以看到网页，然后选择下载即可下载数据了。可以利用下面的链接下载： https://nid.sec.usace.army.mil/ords/NID_R.DOWNLOADFILE?InFileName=NID2018.xlsx 2018年的总的统计数据。
 
