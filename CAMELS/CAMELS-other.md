@@ -42,7 +42,7 @@ CAMELS-BR可在(https://doi.org/10.5281/zenodo.3709337) 免费获得。
 
 2）与来自美国和智利的CAMEL数据集的干旱流域数据相结合，为干旱区水文研究提供了前所未有的资源。
 
-CAMELS-AUS可以从(https://doi.pangaea.de/10.1594/PANGAEA.921850)  免费下载。
+CAMELS-AUS可以从(https://doi.pangaea.de/10.1594/PANGAEA.921850) 免费下载。
 
 ## CAMELS-GB
 
