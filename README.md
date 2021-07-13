@@ -11,6 +11,7 @@
 - DAM: 大坝水库相关数据集
 - DataFormat：常见数据格式
 - daymet：一个气象forcing数据集
+- Electric：电力系统方面与水相关的数据
 - EOMarket：一个汇总地理空间数据及应用的平台
 - GAGES：USGS的径流数据集
 - GRACE：重力卫星数据
