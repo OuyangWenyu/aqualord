@@ -3,21 +3,23 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.8
+  - python
   - jupyterlab
   - kaggle
   - pydrive
-  - pygeoogc 
-  - pygeoutils
   - py3dep
   - pynhd
-  - pygeohydro
-  - pydaymet
+  - pygeohydro 
+  - pydaymet 
+  - pygeoogc 
+  - pygeoutils
+  - async_retriever
   - gdal
   - h5py
   - cartopy
   - future
   - wxpython
+  - pip
   - pip:
     - dataretrieval
     - wget
