@@ -145,7 +145,37 @@ MODIS数据从卫星仪器上通过Tracking and Data Relay Satellite System (TDR
 
 如果有需要可以在“Additional Criteria”中定义更多标准，比如只下载白天的数据。
 
-最后点击Results面板，然后就能看到给出的下载项了，不过下载键只能一个个点击下载，也能提交批量申请，不过也比较麻烦，下载好像也是要第二天才开始的。所以这种方法不是太方便，我们换一种。
+最后点击Results面板，然后就能看到给出的下载项了，不过下载键只能一个个点击下载，也能提交批量申请，不过也比较麻烦，下载好像也是要第二天才开始的。
+
+这时候可以尝试下 USGS 的批量下载工具：https://www.usgs.gov/media/images/earthexplorer-bulk-download-application-bda
+
+下载地址： https://dds.cr.usgs.gov/bulk
+
+具体使用教程：https://www.usgs.gov/media/videos/eros-earthexplorer-how-do-a-bulk-download
+
+不过安装windows 64位的软件需要先安装java 64位 java 10.x或者java 11.x。
+
+下载安装java：https://www.oracle.com/java/technologies/downloads/#java11-windows
+
+选择 64位 java11 exe文件就行，然后安装时候一路默认即可。安装后配置下java环境：https://blog.csdn.net/climber16/article/details/83242425
+
+我的默认安装地址是 C:\Program Files\Java\jdk-11.0.12
+
+然后命令行执行：
+
+```Shell
+java --version
+```
+
+如果正确，那么配置成功，如果不行，检查下有没有重复的java路径配置。
+
+下面就安装USGS的工具，安装的时候记得安装到用户文件夹下，否则会报错。
+
+然后需要登陆，登录的用户名和密码是USGS的用户名密码，不是earth data的。
+
+然后我们回到之前的下载页面，不过按照教程选择不了bulk选项，可能是新版本了，所以这块怎么下载还有待更新。。。
+
+还是考虑从 NASA Earthdata直接下载数据。
 
 ### 从 NASA Earthdata直接下载数据
 
@@ -171,20 +201,9 @@ MODIS数据从卫星仪器上通过Tracking and Data Relay Satellite System (TDR
 
 ![](img/QQ截图20211018101505.jpg)
 
-总之，最后还是用代码下载数据，所以我们下面看看如何使用python下载modis数据。
-
-### 代码获取数据
-
-接下来结合github上的开源项目，来看看MODIS产品代码获取方式。
-
-参考资料：
+接下来参考了资料：
 
 - [USGS -- Data Prep Scripts](https://lpdaac.usgs.gov/tools/data-prep-scripts/)
-- [lucadelu/pyModis](https://github.com/lucadelu/pyModis)
-- [jgomezdans/get_modis](https://github.com/jgomezdans/get_modis)
-- [Gabriel-Desharnais/Modis-python-suite](https://github.com/Gabriel-Desharnais/Modis-python-suite)
-
-先重点参考[USGS -- Data Prep Scripts](https://lpdaac.usgs.gov/tools/data-prep-scripts/)。
 
 因为MODIS数据基本在LP DAAC Data下，所以我们看看[How to Access the LP DAAC Data Pool with Python](https://git.earthdata.nasa.gov/projects/LPDUR/repos/daac_data_download_python/browse)
 

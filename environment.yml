@@ -19,6 +19,7 @@ dependencies:
   - cartopy
   - future
   - wxpython
+  - pyhdf
   - pip
   - pip:
     - dataretrieval
