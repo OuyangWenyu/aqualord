@@ -23,5 +23,3 @@ dependencies:
   - pip:
     - dataretrieval
     - wget
-    - pyModis
-
