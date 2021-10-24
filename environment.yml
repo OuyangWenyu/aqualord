@@ -20,7 +20,9 @@ dependencies:
   - future
   - wxpython
   - pyhdf
+  - pyresample
   - pip
   - pip:
     - dataretrieval
     - wget
+    - smap_io
