@@ -229,21 +229,11 @@ python DAACDataDownload.py -dir <insert local directory to save files to> -f <in
 python C:\User\Downloads\DAACDataDownload.py -dir C:\User\datapool_downloads -f C:\User\datapool_downloads\MYD13-Point-Test-3-granule-list.txt
 ```
 
-## 常用MODIS数据（未完待续。。。）
+## 常用MODIS数据
 
 MODIS的数据产品非常多，比如关于Land cover相关内容在USGS上搜索MOD：https://lpdaac.usgs.gov/product_search/?query=MOD&view=cards&sort=title ，可以看到有非常多的MODIS相关产品，它们可能对应了不同的波段，不同的检测目标等。
 
-因此这里就日常积累下看到的文献中会用到哪些MODIS产品。
-
-### MOD09A1 v006
-
-参考：https://lpdaac.usgs.gov/products/mod09a1v006/
-
-MODIS/Terra Surface Reflectance 8-Day L3 Global 500 m SIN Grid，MODIS Terra MOD09A1版本6的产品提供了对Terra MODIS波段1至7的**地表光谱反射率**的估计，这些反射率是根据大气条件(如气体、气溶胶和瑞利散射)进行校正后得到的。除了7个500米的反射波段外，还有2个质量层quality layers 和4个观测波段。对于每个像素，在8天的合成周期内从所有的获取中选择一个值，像素选择的标准包括云和太阳天顶solar zenith。当若干个获取都符合标准时，使用最小通道3(蓝色)值的像素。
-
-### MYD11A2 v006
-
-MODIS/Aqua Land Surface Temperature/Emissivity 8-Day L3 Global 1 km SIN Grid，MYD11A2版本6 提供了平均8天每像素**地表温度和发射率(LST&E)**，在1200×1200公里的网格中提供1公里(km)的空间分辨率。MYD11A2中的每个像素值是8天内收集的所有相应的MYD11A1 LST像素的简单平均值。之所以选择8天的合成期，是因为这段时间是Terra和Aqua平台精确的地面轨迹重复期的两倍。除了日间和夜间的地表温度波段外，还提供了相关的质量控制评估、观测时间、观测天顶角、晴空覆盖以及31和32波段的地表覆盖类型辐射率。
+这里就日常积累下我自己会用到的一些产品。
 
 ### MCD12Q1 v006
 
