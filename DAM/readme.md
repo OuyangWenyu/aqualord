@@ -1,6 +1,6 @@
 # 水库数据
 
-这里收集整理一些关于水库数据集的情况。主要在google dataset 搜索引擎上收集，然后整理了老师推荐的一些数据资源。
+这里收集整理一些关于水库数据集的情况。
 
 ## 1
 
@@ -66,6 +66,8 @@ GOODD是一个新的全球大坝和水库的数据库，主要参考：[GOODD, a
 ## 6
 
 一个美国陆军工程兵团的大坝数据库：[National Inventory of Dams More than 90,000 dams nation-wide](http://nid.usace.army.mil/)
+
+老网站可能访问不通了，新网站可以查看这里：[National Inventory of Dams](https://damsdev.net/#/)
 
 读取可以参考本文件夹下另外两个jupyter文件，主要使用了[HyRiver](https://hyriver.readthedocs.io/en/latest/)，不过USACE的网站老是连不上，所以这块程序经常挂掉。
 
@@ -146,6 +148,8 @@ purposes:Enter one or more of the following codes to indicate the current purpos
 - O for Other.
 
 The order should indicate the relative decreasing importance of the purpose. Codes are concatenated if the dam has multiple purposes. For example, SCR would indicate the primary purposes, Water Supply, followed by Flood Control and Storm Water Management, and then Recreation.
+
+其下载使用方法可以借助[这里](https://github.com/cheginit/pygeohydro)的代码。
 
 ## 7
 
