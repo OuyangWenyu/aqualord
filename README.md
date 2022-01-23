@@ -6,6 +6,7 @@
 
 - [Satellite Remote Sensing for Water Resources Management: Potential for Supporting Sustainable Development in Data-Poor Regions](https://doi.org/10.1029/2017WR022437)
 - [Applied Remote Sensing Training](https://arset.gsfc.nasa.gov/)
+- [FrontierDevelopmentLab/sat-extractor](https://github.com/FrontierDevelopmentLab/sat-extractor)
 - ……
 
 ## 主要内容
