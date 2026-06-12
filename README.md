@@ -1,48 +1,78 @@
-# Data for WRM
+# 遥感卫星潜在覆盖查询 MVP
 
-本项目总结平时接触到的有可能用于Water Resources Management(WRM)的数据资源，主要记录数据的基本情况和下载获取方式，如果有些数据自己实际使用了，也会记录相关的数据处理方法。
+一个基于 Next.js、CesiumJS、CelesTrak TLE 和 `satellite.js` 的 3D 遥感卫星潜在覆盖查询工具。
 
-参考资料：
+核心交互：
 
-- [Satellite Remote Sensing for Water Resources Management: Potential for Supporting Sustainable Development in Data-Poor Regions](https://doi.org/10.1029/2017WR022437)
-- [Applied Remote Sensing Training](https://arset.gsfc.nasa.gov/)
-- ……
+- 点选 3D 地球或输入经纬度
+- 查询当前有多少精选卫星几何覆盖该点
+- 查询未来 72 小时潜在过境窗口
+- 在 Cesium 地球上高亮相关卫星、轨道和 footprint
+- 淡化显示 CelesTrak earth resources catalog，用于视觉探索
 
-## 主要内容
+## 配置
 
-目前主要内容如下（*日常积累，持续更新*）：
+Cesium Ion token 是 MVP 必需配置。
 
-- ARSET：NASA的卫星遥感数据使用教程
-- CAMELS：大尺度水文建模常用数据集
-- DAM: 大坝水库相关数据集
-- DEM：数字高程数据下载
-- DataFormat：常见数据格式
-- daymet：一个气象forcing数据集，也是CAMELS数据集的数据源之一，介绍如何下载读取使用它
-- Electric：电力系统方面与水相关的数据，目前只简单介绍了下美国电网情况
-- EOMarket：一个汇总地理空间数据及应用的平台
-- GAGES：USGS评价径流的数据集
-- GRACE：重力卫星数据，目前只是看论文时候遇到了，简单了解了下
-- HydroSHEDS：这是水文领域比较常见的一个公开数据集，目前只是加入它进来，留个坑
-- ICESat：主要关注其在内陆水体测量方面的数据，目前只是因为看到了相关论文，简单了解其情况
-- Landsat：目前仅简单介绍了下基本情况
-- LDAS：NASA陆面同化系统数据
-- MODIS：MODIS 产品的简介和基本下载方法
-- NH：美国National Hydrography基础数据介绍
-- NLCD：美国Land Cover数据库，可以直接通过[HyRiver](https://github.com/cheginit/HyRiver)相关库读取其数据
-- SMAP：NASA测土壤含水量卫星的数据，记录其基本情况和下载方法
-- WebService：记录从各类云服务下载数据的方法，目前主要是Google drive和Kaggle
-
-## 环境配置
-
-可以在本项目根目录下执行以下代码安装python运行环境（已安装好miniconda或anaconda）：
-
-```Shell
-conda env create -f environment.yml
+```bash
+cp .env.example .env.local
 ```
 
-## 参与贡献
+然后填写：
 
-1. Fork 本项目
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
+```bash
+CESIUM_TOKEN=your_cesium_ion_token_here
+```
+
+## 运行
+
+```bash
+npm install
+npm run dev
+```
+
+打开 `http://localhost:3000`。
+
+## 模型边界
+
+结果仅表示几何潜在覆盖；未评估云量、昼夜条件、侧摆成像、任务排程和数据实际可用性。
+
+MVP 覆盖判断使用近似模型：
+
+```txt
+轨下点到查询点的大圆距离 <= 传感器幅宽 / 2
+```
+
+默认预测：
+
+```txt
+未来 72 小时
+60 秒时间步长
+按窗口开始时间升序
+```
+
+## 数据策略
+
+可信查询层：
+
+- 10-20 颗精选遥感卫星
+- 人工维护传感器类型、幅宽和分辨率
+- 参与覆盖查询
+
+视觉探索层：
+
+- CelesTrak `GROUP=resource`
+- 仅用于轨道/点位视觉展示
+- 不参与覆盖查询
+
+## 主要目录
+
+```txt
+src/app/api/tle/curated       精选卫星 TLE API
+src/app/api/tle/eo-catalog    EO catalog 视觉层 API
+src/components                Cesium 和查询 UI
+src/domain/coverage           覆盖预测
+src/domain/orbits             SGP4 传播
+src/domain/satellites         卫星配置和类型
+src/domain/tle                TLE 解析
+```

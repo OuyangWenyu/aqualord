@@ -1,0 +1,29 @@
+{
+  "name": "satellite-tracker",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@cesium/widgets": "^12.3.0",
+    "cesium": "^1.132.0",
+    "next": "^15.4.6",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "satellite.js": "^6.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.2.1",
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "eslint": "^9.33.0",
+    "eslint-config-next": "^15.4.6",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}
