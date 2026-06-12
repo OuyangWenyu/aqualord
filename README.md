@@ -1,57 +1,89 @@
 # Data for WRM
 
-本项目总结平时接触到的有可能用于Water Resources Management(WRM)的数据资源，主要记录数据的基本情况和下载获取方式，如果有些数据自己实际使用了，也会记录相关的数据处理方法。
+Aqualord is a reference repository for Water Resources Management (WRM) data sources. It records remote sensing, hydrology, and climate datasets, including basic descriptions, access methods, and processing notes where examples exist.
 
-参考资料：
+References:
 
 - [Satellite Remote Sensing for Water Resources Management: Potential for Supporting Sustainable Development in Data-Poor Regions](https://doi.org/10.1029/2017WR022437)
 - [Applied Remote Sensing Training](https://arset.gsfc.nasa.gov/)
 - [FrontierDevelopmentLab/sat-extractor](https://github.com/FrontierDevelopmentLab/sat-extractor)
-- ……
 
-## 主要内容
+## Contents
 
-目前主要内容如下（*日常积累，持续更新*）：
+- `ARSET/`: NASA Applied Remote Sensing training materials
+- `CAMELS/`: large-sample catchment hydrology datasets
+- `CMIP6/`: NEX-GDDP-CMIP6 downscaled climate data
+- `DAM/`: dam and reservoir datasets
+- `DataFormat/`: netCDF and HDF5 notes
+- `Daymet/`: daily meteorological forcing data
+- `DEM/`: digital elevation data
+- `Electric/`: US electric grid data relevant to water
+- `EOMarket/`: earth observation market platform notes
+- `GAGES/`: USGS streamflow reference datasets
+- `GRACE/`: Gravity Recovery and Climate Experiment data
+- `HydroSHEDS/`: hydrological SRTM-derived datasets
+- `ICESat/`: laser altimetry for inland water bodies
+- `Landsat/`: Landsat mission overview
+- `LDAS/`: NASA Land Data Assimilation System
+- `MODIS/`: MODIS product notes and download scripts
+- `NH/`: US National Hydrography datasets
+- `NLCD/`: US National Land Cover Database
+- `SMAP/`: NASA soil moisture satellite data
+- `WebService/`: cloud data access notes
 
-- ARSET：NASA的卫星遥感数据使用教程
-- CAMELS：大尺度水文建模常用数据集
-- DAM: 大坝水库相关数据集
-- DEM：数字高程数据下载
-- DataFormat：常见数据格式
-- daymet：一个气象forcing数据集，也是CAMELS数据集的数据源之一，介绍如何下载读取使用它
-- Electric：电力系统方面与水相关的数据，目前只简单介绍了下美国电网情况
-- EOMarket：一个汇总地理空间数据及应用的平台
-- GAGES：USGS评价径流的数据集
-- GRACE：重力卫星数据，目前只是看论文时候遇到了，简单了解了下
-- HydroSHEDS：这是水文领域比较常见的一个公开数据集，目前只是加入它进来，留个坑
-- ICESat：主要关注其在内陆水体测量方面的数据，目前只是因为看到了相关论文，简单了解其情况
-- Landsat：目前仅简单介绍了下基本情况
-- LDAS：NASA陆面同化系统数据
-- MODIS：MODIS 产品的简介和基本下载方法
-- NH：美国National Hydrography基础数据介绍
-- NLCD：美国Land Cover数据库，可以直接通过[HyRiver](https://github.com/cheginit/HyRiver)相关库读取其数据
-- SMAP：NASA测土壤含水量卫星的数据，记录其基本情况和下载方法
-- WebService：记录从各类云服务下载数据的方法，目前主要是Google drive和Kaggle
+## Python Environment
 
-## 环境配置
+The Python project uses `uv`:
 
-项目环境统一使用 `uv` 管理，在本项目根目录下执行：
-
-```Shell
+```shell
 uv sync --dev
 uv run pytest
 ```
 
-Install the CLI as a global uv tool for use from any directory:
+Install the CLI as a global uv tool:
 
-```Shell
+```shell
 uv tool install --editable D:\Code\aqualord --force
 aqualord opportunities --geo examples\query-dalian.geojson --hours 48 --format json
 ```
 
-## 参与贡献
+## Satellite Coverage MVP
 
-1. Fork 本项目
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
+This branch also includes a Next.js + CesiumJS MVP for potential remote-sensing satellite coverage queries. It uses CelesTrak TLE data and `satellite.js` to estimate geometric coverage for a selected ground point.
+
+Core workflow:
+
+- Select a point on the 3D globe or enter latitude/longitude.
+- Query current potential coverage from curated earth-observation satellites.
+- Predict potential coverage windows for the next 72 hours.
+- Visualize satellites, orbit rings, ground tracks, swath strips, and footprints in Cesium.
+
+Configure a Cesium Ion token:
+
+```shell
+cp .env.example .env.local
+```
+
+Then set:
+
+```shell
+CESIUM_TOKEN=your_cesium_ion_token_here
+```
+
+Run the web app:
+
+```shell
+npm install
+npm run dev
+```
+
+Open `http://localhost:3000`.
+
+The MVP reports only geometric potential coverage. It does not evaluate cloud cover, day/night conditions, off-nadir tasking, SAR imaging modes, scheduling constraints, or actual data availability.
+
+## Contribution
+
+1. Fork this repository.
+2. Create a feature branch.
+3. Commit changes.
+4. Open a pull request.
