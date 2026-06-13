@@ -1,0 +1,146 @@
+[
+  {
+    "catalog_entry_id": "sentinel-2a",
+    "field_path": "sensor.resolution",
+    "source_name": "ESA Sentinel-2 mission documentation",
+    "source_url": "https://sentiwiki.copernicus.eu/web/s2-mission",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "sentinel-2a",
+    "field_path": "sensor.swath_km",
+    "source_name": "ESA Sentinel-2 mission documentation",
+    "source_url": "https://sentiwiki.copernicus.eu/web/s2-mission",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "sentinel-2a",
+    "field_path": "data_access",
+    "source_name": "Copernicus Data Space",
+    "source_url": "https://dataspace.copernicus.eu/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "sentinel-2b",
+    "field_path": "sensor.resolution",
+    "source_name": "ESA Sentinel-2 mission documentation",
+    "source_url": "https://sentiwiki.copernicus.eu/web/s2-mission",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "sentinel-2b",
+    "field_path": "sensor.swath_km",
+    "source_name": "ESA Sentinel-2 mission documentation",
+    "source_url": "https://sentiwiki.copernicus.eu/web/s2-mission",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "sentinel-2b",
+    "field_path": "data_access",
+    "source_name": "Copernicus Data Space",
+    "source_url": "https://dataspace.copernicus.eu/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "landsat-8",
+    "field_path": "sensor.resolution",
+    "source_name": "USGS Landsat 8 documentation",
+    "source_url": "https://www.usgs.gov/landsat-missions/landsat-8",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "landsat-8",
+    "field_path": "sensor.swath_km",
+    "source_name": "USGS Landsat 8 documentation",
+    "source_url": "https://www.usgs.gov/landsat-missions/landsat-8",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "landsat-8",
+    "field_path": "data_access",
+    "source_name": "USGS EarthExplorer",
+    "source_url": "https://earthexplorer.usgs.gov/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "landsat-9",
+    "field_path": "sensor.resolution",
+    "source_name": "USGS Landsat 9 documentation",
+    "source_url": "https://www.usgs.gov/landsat-missions/landsat-9",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "landsat-9",
+    "field_path": "sensor.swath_km",
+    "source_name": "USGS Landsat 9 documentation",
+    "source_url": "https://www.usgs.gov/landsat-missions/landsat-9",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "landsat-9",
+    "field_path": "data_access",
+    "source_name": "USGS EarthExplorer",
+    "source_url": "https://earthexplorer.usgs.gov/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "noaa-20",
+    "field_path": "sensor.resolution",
+    "source_name": "NOAA JPSS mission documentation",
+    "source_url": "https://www.nesdis.noaa.gov/current-satellite-missions/currently-flying/joint-polar-satellite-system",
+    "retrieved_at": "2026-06-12",
+    "confidence": "low"
+  },
+  {
+    "catalog_entry_id": "noaa-20",
+    "field_path": "sensor.swath_km",
+    "source_name": "NOAA JPSS mission documentation",
+    "source_url": "https://www.nesdis.noaa.gov/current-satellite-missions/currently-flying/joint-polar-satellite-system",
+    "retrieved_at": "2026-06-12",
+    "confidence": "low"
+  },
+  {
+    "catalog_entry_id": "noaa-20",
+    "field_path": "data_access",
+    "source_name": "NOAA CLASS",
+    "source_url": "https://www.avl.class.noaa.gov/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "smap",
+    "field_path": "sensor.resolution",
+    "source_name": "NASA SMAP documentation",
+    "source_url": "https://smap.jpl.nasa.gov/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "low"
+  },
+  {
+    "catalog_entry_id": "smap",
+    "field_path": "sensor.swath_km",
+    "source_name": "NASA SMAP documentation",
+    "source_url": "https://smap.jpl.nasa.gov/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "low"
+  },
+  {
+    "catalog_entry_id": "smap",
+    "field_path": "data_access",
+    "source_name": "NSIDC SMAP",
+    "source_url": "https://nsidc.org/data/smap",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  }
+]

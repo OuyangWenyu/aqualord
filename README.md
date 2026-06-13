@@ -35,10 +35,18 @@
 
 ## 环境配置
 
-可以在本项目根目录下执行以下代码安装python运行环境（已安装好miniconda或anaconda）：
+项目环境统一使用 `uv` 管理，在本项目根目录下执行：
 
 ```Shell
-conda env create -f environment.yml
+uv sync --dev
+uv run pytest
+```
+
+Install the CLI as a global uv tool for use from any directory:
+
+```Shell
+uv tool install --editable D:\Code\aqualord --force
+aqualord opportunities --geo examples\query-dalian.geojson --hours 48 --format json
 ```
 
 ## 参与贡献

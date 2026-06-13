@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aqualord"
+version = "0.1.0"
+description = "Agent-callable remote-sensing observation opportunity tooling."
+requires-python = ">=3.10"
+
+[project.scripts]
+aqualord = "aqualord.cli:main"
+
+[tool.setuptools]
+packages = ["aqualord", "aqualord.data"]
+
+[tool.setuptools.package-data]
+aqualord = ["data/*.json"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

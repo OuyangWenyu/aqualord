@@ -1,0 +1,24 @@
+[
+  {
+    "platform_id": "sentinel-2a",
+    "fetched_at": "2025-01-01T00:00:00Z",
+    "pass_windows": [
+      {
+        "pass_start": "2026-06-12T03:16:00Z",
+        "peak_time": "2026-06-12T03:18:00Z",
+        "pass_end": "2026-06-12T03:21:00Z"
+      }
+    ]
+  },
+  {
+    "platform_id": "landsat-8",
+    "fetched_at": "2025-01-01T00:00:00Z",
+    "pass_windows": [
+      {
+        "pass_start": "2026-06-12T02:05:00Z",
+        "peak_time": "2026-06-12T02:08:00Z",
+        "pass_end": "2026-06-12T02:11:00Z"
+      }
+    ]
+  }
+]

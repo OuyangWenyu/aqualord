@@ -191,3 +191,6 @@ CloudStor/mycreds.txt
 /SMAP/data
 /DEM/data
 cache
+.aqualord-cache/
+.aqualord-test-cache/
+.omx

@@ -1,0 +1,32 @@
+[
+  {
+    "platform_id": "sentinel-2a",
+    "provider": "celestrak",
+    "provider_lookup_id": "40697"
+  },
+  {
+    "platform_id": "sentinel-2b",
+    "provider": "celestrak",
+    "provider_lookup_id": "42063"
+  },
+  {
+    "platform_id": "landsat-8",
+    "provider": "celestrak",
+    "provider_lookup_id": "39084"
+  },
+  {
+    "platform_id": "landsat-9",
+    "provider": "celestrak",
+    "provider_lookup_id": "49260"
+  },
+  {
+    "platform_id": "noaa-20",
+    "provider": "celestrak",
+    "provider_lookup_id": "43013"
+  },
+  {
+    "platform_id": "smap",
+    "provider": "celestrak",
+    "provider_lookup_id": "40376"
+  }
+]

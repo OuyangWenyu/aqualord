@@ -1,0 +1,4 @@
+interface:
+  display_name: "Aqualord Opportunities"
+  short_description: "Query Aqualord observation opportunities from GeoJSON."
+  default_prompt: "Use $aqualord-opportunities to query future remote-sensing observation opportunities for a region."

@@ -1,0 +1,24 @@
+{
+  "command": "opportunities",
+  "opportunity_method": "centroid_pass_approx",
+  "opportunities": [
+    {
+      "platform": "Sentinel-2A",
+      "sensor": {
+        "name": "MSI",
+        "modality": "multispectral_optical",
+        "resolution": "10/20/60 m",
+        "swath_km": 290
+      },
+      "pass_start": "2026-06-12T03:16:00Z",
+      "peak_time": "2026-06-12T03:18:00Z",
+      "pass_end": "2026-06-12T03:21:00Z",
+      "confidence": "medium",
+      "warnings": [
+        "theoretical_opportunity",
+        "does_not_confirm_acquisition",
+        "does_not_confirm_product_availability"
+      ]
+    }
+  ]
+}

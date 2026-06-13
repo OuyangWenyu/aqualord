@@ -1,0 +1,146 @@
+[
+  {
+    "id": "sentinel-2a",
+    "provider": "ESA",
+    "program": "Copernicus",
+    "mission": "Sentinel-2",
+    "constellation": "Sentinel-2",
+    "platform": "Sentinel-2A",
+    "sensor": {
+      "name": "MSI",
+      "modality": "multispectral_optical",
+      "resolution": "10/20/60 m",
+      "swath_km": 290
+    },
+    "products": [
+      {"name": "Sentinel-2 L2A", "level": "L2A"}
+    ],
+    "data_access": [
+      {
+        "kind": "provider_page",
+        "href": "https://dataspace.copernicus.eu/",
+        "label": "Copernicus Data Space"
+      }
+    ]
+  },
+  {
+    "id": "sentinel-2b",
+    "provider": "ESA",
+    "program": "Copernicus",
+    "mission": "Sentinel-2",
+    "constellation": "Sentinel-2",
+    "platform": "Sentinel-2B",
+    "sensor": {
+      "name": "MSI",
+      "modality": "multispectral_optical",
+      "resolution": "10/20/60 m",
+      "swath_km": 290
+    },
+    "products": [
+      {"name": "Sentinel-2 L2A", "level": "L2A"}
+    ],
+    "data_access": [
+      {
+        "kind": "provider_page",
+        "href": "https://dataspace.copernicus.eu/",
+        "label": "Copernicus Data Space"
+      }
+    ]
+  },
+  {
+    "id": "landsat-8",
+    "provider": "USGS",
+    "program": "Landsat",
+    "mission": "Landsat 8",
+    "constellation": "Landsat",
+    "platform": "Landsat 8",
+    "sensor": {
+      "name": "OLI/TIRS",
+      "modality": "multispectral_thermal",
+      "resolution": "15/30/100 m",
+      "swath_km": 185
+    },
+    "products": [
+      {"name": "Landsat Collection 2 Level-2", "level": "L2"}
+    ],
+    "data_access": [
+      {
+        "kind": "provider_page",
+        "href": "https://earthexplorer.usgs.gov/",
+        "label": "USGS EarthExplorer"
+      }
+    ]
+  },
+  {
+    "id": "landsat-9",
+    "provider": "USGS",
+    "program": "Landsat",
+    "mission": "Landsat 9",
+    "constellation": "Landsat",
+    "platform": "Landsat 9",
+    "sensor": {
+      "name": "OLI-2/TIRS-2",
+      "modality": "multispectral_thermal",
+      "resolution": "15/30/100 m",
+      "swath_km": 185
+    },
+    "products": [
+      {"name": "Landsat Collection 2 Level-2", "level": "L2"}
+    ],
+    "data_access": [
+      {
+        "kind": "provider_page",
+        "href": "https://earthexplorer.usgs.gov/",
+        "label": "USGS EarthExplorer"
+      }
+    ]
+  },
+  {
+    "id": "noaa-20",
+    "provider": "NOAA",
+    "program": "JPSS",
+    "mission": "JPSS-1",
+    "constellation": "JPSS",
+    "platform": "NOAA-20",
+    "sensor": {
+      "name": "VIIRS",
+      "modality": "multispectral_optical_thermal",
+      "resolution": "375/750 m",
+      "swath_km": 3060
+    },
+    "products": [
+      {"name": "VIIRS Surface Reflectance", "level": "L2"}
+    ],
+    "data_access": [
+      {
+        "kind": "provider_page",
+        "href": "https://www.avl.class.noaa.gov/",
+        "label": "NOAA CLASS"
+      }
+    ]
+  },
+  {
+    "id": "smap",
+    "provider": "NASA",
+    "program": "Earth Systematic Missions",
+    "mission": "SMAP",
+    "constellation": "SMAP",
+    "platform": "SMAP",
+    "sensor": {
+      "name": "L-band Radiometer",
+      "modality": "passive_microwave",
+      "resolution": "9/36 km",
+      "swath_km": 1000
+    },
+    "products": [
+      {"name": "SMAP L3 Soil Moisture", "level": "L3"}
+    ],
+    "data_access": [
+      {
+        "kind": "provider_page",
+        "href": "https://nsidc.org/data/smap",
+        "label": "NSIDC SMAP"
+      }
+    ]
+  }
+]
