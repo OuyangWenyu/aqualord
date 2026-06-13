@@ -84,6 +84,7 @@ CloudStor/daymet_CntlPlains_mean_2004.csv
 CloudStor/daymet_CntlPlains_mean_2005.csv
 CloudStor/kaggle.json
 CloudStor/mycreds.txt
+/envs/
 /SMAP/data
 /DEM/data
 cache/
