@@ -44,6 +44,7 @@ venv.bak/
 node_modules/
 .npm-cache/
 .next/
+.next-dev.*
 out/
 /coverage/
 npm-debug.log*
