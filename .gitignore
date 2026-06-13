@@ -86,6 +86,7 @@ CloudStor/kaggle.json
 CloudStor/mycreds.txt
 /envs/
 /SMAP/data
+/reference/opportunity-sources/smap/data/
 /DEM/data
 cache/
 .aqualord-cache/

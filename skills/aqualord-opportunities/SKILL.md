@@ -11,13 +11,15 @@ Use the CLI as the source of truth. Do not reimplement catalog lookup, GeoJSON p
 
 1. Confirm `aqualord` is installed with `aqualord --help`.
 2. If the user supplied GeoJSON, use it directly. If they supplied a place, bbox, point, basin, or rough area, create a temporary GeoJSON file.
-3. Run:
+3. Run the base command when the user only needs catalog/query-shape validation:
 
 ```bash
 aqualord opportunities --geo <query.geojson> --hours <hours> --format json
 ```
 
-For deterministic fixture demos, add:
+The base command currently uses `orbit_provider=none`, so it can return zero opportunities even when relevant satellites exist. Do not interpret that as "no observation opportunities"; interpret it as "no orbit provider was loaded."
+
+For deterministic opportunity demos, add:
 
 ```bash
 --orbit-provider fixture --start 2026-06-12T00:00:00Z
@@ -60,5 +62,7 @@ uv run --project D:\Code\aqualord aqualord opportunities --geo <query.geojson> -
 ## Boundaries
 
 Do not present fixture output as live prediction. The fixture provider only verifies the CLI/output workflow. Real future opportunity results require a real orbit propagation provider.
+
+Do not treat an empty result from `orbit_provider=none` as evidence that no satellite can observe the region.
 
 Do not call historical STAC assets an Observation Opportunity. Historical archive search belongs to a separate Asset Query path.

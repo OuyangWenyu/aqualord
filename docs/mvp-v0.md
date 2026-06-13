@@ -67,7 +67,11 @@ Predicted opportunities are not STAC Items. ADR 0001 records this decision: `doc
 
 ## Legacy Knowledge Sources
 
-Existing folders such as `Landsat/`, `MODIS/`, `SMAP/`, `CAMELS/`, `GAGES/`, `HydroSHEDS/`, and `NH/` remain legacy knowledge sources. MVP v0 builds the new package alongside these notes rather than moving or reorganizing them.
+Legacy folders previously kept at the repository root have moved under `reference/`. They remain knowledge and provenance sources for catalog curation, future Asset Query work, and tutorials.
+
+These legacy knowledge sources are supporting references, not runtime inputs.
+
+MVP v0 does not read directly from `reference/`. Runtime query behavior is driven by structured data under `aqualord/data/*.json`. See `docs/legacy-knowledge-sources.md` and `reference/README.md` for the status labels and source index.
 
 ## Future Asset Query Path
 
