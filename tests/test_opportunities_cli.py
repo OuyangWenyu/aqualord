@@ -80,7 +80,7 @@ def test_default_result_includes_minimal_mission_catalog(tmp_path):
 
     catalog = result["mission_catalog"]
     assert len(catalog) >= 5
-    assert len(catalog) <= 10
+    assert len(catalog) <= 30
 
     entry = catalog[0]
     for field in [

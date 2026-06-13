@@ -28,8 +28,8 @@ def load_default_catalog() -> list[dict[str, Any]]:
 def validate_catalog(entries: Any) -> list[dict[str, Any]]:
     if not isinstance(entries, list):
         raise ValueError("Mission Catalog must be a list.")
-    if not 5 <= len(entries) <= 10:
-        raise ValueError("MVP v0 Mission Catalog must contain 5-10 platform entries.")
+    if not 5 <= len(entries) <= 30:
+        raise ValueError("MVP v0 Mission Catalog must contain 5-30 platform entries.")
 
     for entry in entries:
         if not isinstance(entry, dict):

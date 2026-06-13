@@ -28,5 +28,50 @@
     "platform_id": "smap",
     "provider": "celestrak",
     "provider_lookup_id": "40376"
+  },
+  {
+    "platform_id": "sentinel-1a",
+    "provider": "celestrak",
+    "provider_lookup_id": "39634"
+  },
+  {
+    "platform_id": "sentinel-3a",
+    "provider": "celestrak",
+    "provider_lookup_id": "41335"
+  },
+  {
+    "platform_id": "sentinel-3b",
+    "provider": "celestrak",
+    "provider_lookup_id": "43437"
+  },
+  {
+    "platform_id": "terra",
+    "provider": "celestrak",
+    "provider_lookup_id": "25994"
+  },
+  {
+    "platform_id": "aqua",
+    "provider": "celestrak",
+    "provider_lookup_id": "27424"
+  },
+  {
+    "platform_id": "suomi-npp",
+    "provider": "celestrak",
+    "provider_lookup_id": "37849"
+  },
+  {
+    "platform_id": "noaa-21",
+    "provider": "celestrak",
+    "provider_lookup_id": "54234"
+  },
+  {
+    "platform_id": "saocom-1a",
+    "provider": "celestrak",
+    "provider_lookup_id": "43641"
+  },
+  {
+    "platform_id": "saocom-1b",
+    "provider": "celestrak",
+    "provider_lookup_id": "46984"
   }
 ]

@@ -142,5 +142,221 @@
     "source_url": "https://nsidc.org/data/smap",
     "retrieved_at": "2026-06-12",
     "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "sentinel-1a",
+    "field_path": "sensor.resolution",
+    "source_name": "ESA Sentinel-1 mission documentation",
+    "source_url": "https://sentiwiki.copernicus.eu/web/s1-mission",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "sentinel-1a",
+    "field_path": "sensor.swath_km",
+    "source_name": "ESA Sentinel-1 mission documentation",
+    "source_url": "https://sentiwiki.copernicus.eu/web/s1-mission",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "sentinel-1a",
+    "field_path": "data_access",
+    "source_name": "Copernicus Data Space",
+    "source_url": "https://dataspace.copernicus.eu/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "sentinel-3a",
+    "field_path": "sensor.resolution",
+    "source_name": "ESA Sentinel-3 mission documentation",
+    "source_url": "https://sentiwiki.copernicus.eu/web/s3-mission",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "sentinel-3a",
+    "field_path": "sensor.swath_km",
+    "source_name": "ESA Sentinel-3 mission documentation",
+    "source_url": "https://sentiwiki.copernicus.eu/web/s3-mission",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "sentinel-3a",
+    "field_path": "data_access",
+    "source_name": "Copernicus Data Space",
+    "source_url": "https://dataspace.copernicus.eu/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "sentinel-3b",
+    "field_path": "sensor.resolution",
+    "source_name": "ESA Sentinel-3 mission documentation",
+    "source_url": "https://sentiwiki.copernicus.eu/web/s3-mission",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "sentinel-3b",
+    "field_path": "sensor.swath_km",
+    "source_name": "ESA Sentinel-3 mission documentation",
+    "source_url": "https://sentiwiki.copernicus.eu/web/s3-mission",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "sentinel-3b",
+    "field_path": "data_access",
+    "source_name": "Copernicus Data Space",
+    "source_url": "https://dataspace.copernicus.eu/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "terra",
+    "field_path": "sensor.resolution",
+    "source_name": "NASA Terra mission documentation",
+    "source_url": "https://terra.nasa.gov/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "terra",
+    "field_path": "sensor.swath_km",
+    "source_name": "NASA Terra mission documentation",
+    "source_url": "https://terra.nasa.gov/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "terra",
+    "field_path": "data_access",
+    "source_name": "LP DAAC",
+    "source_url": "https://lpdaac.usgs.gov/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "aqua",
+    "field_path": "sensor.resolution",
+    "source_name": "NASA Aqua mission documentation",
+    "source_url": "https://aqua.nasa.gov/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "aqua",
+    "field_path": "sensor.swath_km",
+    "source_name": "NASA Aqua mission documentation",
+    "source_url": "https://aqua.nasa.gov/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "aqua",
+    "field_path": "data_access",
+    "source_name": "LP DAAC",
+    "source_url": "https://lpdaac.usgs.gov/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "suomi-npp",
+    "field_path": "sensor.resolution",
+    "source_name": "NOAA JPSS mission documentation",
+    "source_url": "https://www.nesdis.noaa.gov/current-satellite-missions/currently-flying/joint-polar-satellite-system",
+    "retrieved_at": "2026-06-12",
+    "confidence": "low"
+  },
+  {
+    "catalog_entry_id": "suomi-npp",
+    "field_path": "sensor.swath_km",
+    "source_name": "NOAA JPSS mission documentation",
+    "source_url": "https://www.nesdis.noaa.gov/current-satellite-missions/currently-flying/joint-polar-satellite-system",
+    "retrieved_at": "2026-06-12",
+    "confidence": "low"
+  },
+  {
+    "catalog_entry_id": "suomi-npp",
+    "field_path": "data_access",
+    "source_name": "NOAA CLASS",
+    "source_url": "https://www.avl.class.noaa.gov/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "noaa-21",
+    "field_path": "sensor.resolution",
+    "source_name": "NOAA JPSS mission documentation",
+    "source_url": "https://www.nesdis.noaa.gov/current-satellite-missions/currently-flying/joint-polar-satellite-system",
+    "retrieved_at": "2026-06-12",
+    "confidence": "low"
+  },
+  {
+    "catalog_entry_id": "noaa-21",
+    "field_path": "sensor.swath_km",
+    "source_name": "NOAA JPSS mission documentation",
+    "source_url": "https://www.nesdis.noaa.gov/current-satellite-missions/currently-flying/joint-polar-satellite-system",
+    "retrieved_at": "2026-06-12",
+    "confidence": "low"
+  },
+  {
+    "catalog_entry_id": "noaa-21",
+    "field_path": "data_access",
+    "source_name": "NOAA CLASS",
+    "source_url": "https://www.avl.class.noaa.gov/",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "saocom-1a",
+    "field_path": "sensor.resolution",
+    "source_name": "CONAE SAOCOM mission documentation",
+    "source_url": "https://www.argentina.gob.ar/ciencia/conae",
+    "retrieved_at": "2026-06-12",
+    "confidence": "low"
+  },
+  {
+    "catalog_entry_id": "saocom-1a",
+    "field_path": "sensor.swath_km",
+    "source_name": "CONAE SAOCOM mission documentation",
+    "source_url": "https://www.argentina.gob.ar/ciencia/conae",
+    "retrieved_at": "2026-06-12",
+    "confidence": "low"
+  },
+  {
+    "catalog_entry_id": "saocom-1a",
+    "field_path": "data_access",
+    "source_name": "CONAE",
+    "source_url": "https://www.argentina.gob.ar/ciencia/conae",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
+  },
+  {
+    "catalog_entry_id": "saocom-1b",
+    "field_path": "sensor.resolution",
+    "source_name": "CONAE SAOCOM mission documentation",
+    "source_url": "https://www.argentina.gob.ar/ciencia/conae",
+    "retrieved_at": "2026-06-12",
+    "confidence": "low"
+  },
+  {
+    "catalog_entry_id": "saocom-1b",
+    "field_path": "sensor.swath_km",
+    "source_name": "CONAE SAOCOM mission documentation",
+    "source_url": "https://www.argentina.gob.ar/ciencia/conae",
+    "retrieved_at": "2026-06-12",
+    "confidence": "low"
+  },
+  {
+    "catalog_entry_id": "saocom-1b",
+    "field_path": "data_access",
+    "source_name": "CONAE",
+    "source_url": "https://www.argentina.gob.ar/ciencia/conae",
+    "retrieved_at": "2026-06-12",
+    "confidence": "medium"
   }
 ]

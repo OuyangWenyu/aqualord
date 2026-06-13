@@ -142,5 +142,221 @@
         "label": "NSIDC SMAP"
       }
     ]
+  },
+  {
+    "id": "sentinel-1a",
+    "provider": "ESA",
+    "program": "Copernicus",
+    "mission": "Sentinel-1",
+    "constellation": "Sentinel-1",
+    "platform": "Sentinel-1A",
+    "sensor": {
+      "name": "C-SAR",
+      "modality": "sar",
+      "resolution": "5/20/40 m",
+      "swath_km": 250
+    },
+    "products": [
+      {"name": "Sentinel-1 GRD", "level": "L1"}
+    ],
+    "data_access": [
+      {
+        "kind": "provider_page",
+        "href": "https://dataspace.copernicus.eu/",
+        "label": "Copernicus Data Space"
+      }
+    ]
+  },
+  {
+    "id": "sentinel-3a",
+    "provider": "ESA",
+    "program": "Copernicus",
+    "mission": "Sentinel-3",
+    "constellation": "Sentinel-3",
+    "platform": "Sentinel-3A",
+    "sensor": {
+      "name": "OLCI",
+      "modality": "multispectral_optical",
+      "resolution": "300 m",
+      "swath_km": 1270
+    },
+    "products": [
+      {"name": "Sentinel-3 OLCI L1", "level": "L1"}
+    ],
+    "data_access": [
+      {
+        "kind": "provider_page",
+        "href": "https://dataspace.copernicus.eu/",
+        "label": "Copernicus Data Space"
+      }
+    ]
+  },
+  {
+    "id": "sentinel-3b",
+    "provider": "ESA",
+    "program": "Copernicus",
+    "mission": "Sentinel-3",
+    "constellation": "Sentinel-3",
+    "platform": "Sentinel-3B",
+    "sensor": {
+      "name": "OLCI",
+      "modality": "multispectral_optical",
+      "resolution": "300 m",
+      "swath_km": 1270
+    },
+    "products": [
+      {"name": "Sentinel-3 OLCI L1", "level": "L1"}
+    ],
+    "data_access": [
+      {
+        "kind": "provider_page",
+        "href": "https://dataspace.copernicus.eu/",
+        "label": "Copernicus Data Space"
+      }
+    ]
+  },
+  {
+    "id": "terra",
+    "provider": "NASA",
+    "program": "Earth Observing System",
+    "mission": "Terra",
+    "constellation": "EOS AM",
+    "platform": "Terra",
+    "sensor": {
+      "name": "MODIS",
+      "modality": "multispectral_optical",
+      "resolution": "250/500/1000 m",
+      "swath_km": 2330
+    },
+    "products": [
+      {"name": "MODIS Surface Reflectance", "level": "L2"}
+    ],
+    "data_access": [
+      {
+        "kind": "provider_page",
+        "href": "https://lpdaac.usgs.gov/",
+        "label": "LP DAAC"
+      }
+    ]
+  },
+  {
+    "id": "aqua",
+    "provider": "NASA",
+    "program": "Earth Observing System",
+    "mission": "Aqua",
+    "constellation": "EOS PM",
+    "platform": "Aqua",
+    "sensor": {
+      "name": "MODIS",
+      "modality": "multispectral_optical",
+      "resolution": "250/500/1000 m",
+      "swath_km": 2330
+    },
+    "products": [
+      {"name": "MODIS Surface Reflectance", "level": "L2"}
+    ],
+    "data_access": [
+      {
+        "kind": "provider_page",
+        "href": "https://lpdaac.usgs.gov/",
+        "label": "LP DAAC"
+      }
+    ]
+  },
+  {
+    "id": "suomi-npp",
+    "provider": "NOAA",
+    "program": "JPSS",
+    "mission": "Suomi NPP",
+    "constellation": "JPSS",
+    "platform": "Suomi NPP",
+    "sensor": {
+      "name": "VIIRS",
+      "modality": "multispectral_optical_thermal",
+      "resolution": "375/750 m",
+      "swath_km": 3060
+    },
+    "products": [
+      {"name": "VIIRS Surface Reflectance", "level": "L2"}
+    ],
+    "data_access": [
+      {
+        "kind": "provider_page",
+        "href": "https://www.avl.class.noaa.gov/",
+        "label": "NOAA CLASS"
+      }
+    ]
+  },
+  {
+    "id": "noaa-21",
+    "provider": "NOAA",
+    "program": "JPSS",
+    "mission": "JPSS-2",
+    "constellation": "JPSS",
+    "platform": "NOAA-21",
+    "sensor": {
+      "name": "VIIRS",
+      "modality": "multispectral_optical_thermal",
+      "resolution": "375/750 m",
+      "swath_km": 3060
+    },
+    "products": [
+      {"name": "VIIRS Surface Reflectance", "level": "L2"}
+    ],
+    "data_access": [
+      {
+        "kind": "provider_page",
+        "href": "https://www.avl.class.noaa.gov/",
+        "label": "NOAA CLASS"
+      }
+    ]
+  },
+  {
+    "id": "saocom-1a",
+    "provider": "CONAE",
+    "program": "SIASGE",
+    "mission": "SAOCOM 1",
+    "constellation": "SAOCOM",
+    "platform": "SAOCOM 1A",
+    "sensor": {
+      "name": "SAR-L",
+      "modality": "sar",
+      "resolution": "10/100 m",
+      "swath_km": 350
+    },
+    "products": [
+      {"name": "SAOCOM L1", "level": "L1"}
+    ],
+    "data_access": [
+      {
+        "kind": "provider_page",
+        "href": "https://www.argentina.gob.ar/ciencia/conae",
+        "label": "CONAE"
+      }
+    ]
+  },
+  {
+    "id": "saocom-1b",
+    "provider": "CONAE",
+    "program": "SIASGE",
+    "mission": "SAOCOM 1B",
+    "constellation": "SAOCOM",
+    "platform": "SAOCOM 1B",
+    "sensor": {
+      "name": "SAR-L",
+      "modality": "sar",
+      "resolution": "10/100 m",
+      "swath_km": 350
+    },
+    "products": [
+      {"name": "SAOCOM L1", "level": "L1"}
+    ],
+    "data_access": [
+      {
+        "kind": "provider_page",
+        "href": "https://www.argentina.gob.ar/ciencia/conae",
+        "label": "CONAE"
+      }
+    ]
   }
 ]
